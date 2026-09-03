@@ -1,4 +1,4 @@
-# INFINITE — Hackathon Demo (Blue)
+# INFINITE — Hackathon Demo
 
 Static site for the **INFINITE: The Internet of Agents Hackathon**, MIT Media Lab, Oct 30 – Nov 1, 2026. Original dark-blue synthwave theme with the animated origami-crane scene.
 
@@ -22,6 +22,10 @@ The 3D scene pulls Three.js from jsDelivr CDN (`three@0.160.0`), so an internet 
 - `css/styles.css` — all styles
 - `js/scene.js` — Three.js ocean + origami crane flock (module)
 - `js/main.js` — nav, scroll reveals (module)
+
+## v2 (Gold variant)
+
+A re-themed fork lives in the `v2/` directory: black & gold palette, layered tentacles/anemone scroll effect, glowing infinity logo, partner logos. Same structure and content — just a different visual language.
 
 ## Notes
 
