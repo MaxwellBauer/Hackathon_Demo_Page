@@ -2,6 +2,8 @@
 
 Static site for the **INFINITE: The Internet of Agents Hackathon**, MIT Media Lab, Oct 30 – Nov 1, 2026. Original dark-blue synthwave theme with the animated origami-crane scene.
 
+![Origami cranes — blue theme](cranes-blue.gif)
+
 ## Run
 
 No build step. Any static file server works:
@@ -25,9 +27,12 @@ The 3D scene pulls Three.js from jsDelivr CDN (`three@0.160.0`), so an internet 
 
 ## v2 (Gold variant)
 
-A re-themed fork lives in the `v2/` directory: black & gold palette, layered tentacles/anemone scroll effect, glowing infinity logo, partner logos. Same structure and content — just a different visual language.
+A re-themed variant lives in the `v2/` directory: black & gold palette, layered tentacles/anemone scroll effect, glowing infinity logo, partner logos. Same structure and content — just a different visual language.
+
+![Origami cranes — gold theme](v2/cranes-gold.gif)
 
 ## Notes
 
 - Relative asset paths throughout, so the site is portable to any static host.
 - `prefers-reduced-motion` is respected: the 3D scene renders one static frame only.
+
