@@ -1,15 +1,27 @@
 # INFINITE — Hackathon Demo
 
-Static site for the **INFINITE: The Internet of Agents Hackathon**, MIT Media Lab, Oct 30 – Nov 1, 2026. Original dark-blue synthwave theme with the animated origami-crane scene.
+Static site for the **INFINITE: The Internet of Agents Hackathon**, MIT Media Lab, Oct 30 – Nov 1, 2026.
 
-![Origami cranes — blue theme](cranes-blue.gif)
+Two visual themes of the same hackathon page — pick the one you like, or use them side-by-side to A/B test the look.
+
+## v1 — Blue (synthwave)
+
+Origami cranes over an ocean surface, dark blue + cyan. Original theme.
+
+![v1 — origami cranes](v1/cranes-blue.gif)
+
+## v2 — Gold (black & gold variant)
+
+Re-themed fork: glowing infinity logo, partner logos, layered tentacles/anemone effect that fades in as you scroll, same content and structure.
+
+![v2 — origami cranes](v2/cranes-gold.gif)
 
 ## Run
 
 No build step. Any static file server works:
 
 ```bash
-cd <this folder>
+cd v1    # or v2
 python3 -m http.server 8000
 ```
 
@@ -17,22 +29,14 @@ Then open `http://localhost:8000`.
 
 The 3D scene pulls Three.js from jsDelivr CDN (`three@0.160.0`), so an internet connection is needed to render the background. Text and layout are fully local.
 
-## Files
+## Structure
 
-- `index.html` — main page (hero, purpose, challenge, resources, areas, judging, apply teaser)
-- `apply.html` — dedicated application form (linked from hero/CTA)
-- `css/styles.css` — all styles
-- `js/scene.js` — Three.js ocean + origami crane flock (module)
-- `js/main.js` — nav, scroll reveals (module)
+- `v1/` — blue synthwave theme (original)
+- `v2/` — black & gold theme (variant)
 
-## v2 (Gold variant)
-
-A re-themed variant lives in the `v2/` directory: black & gold palette, layered tentacles/anemone scroll effect, glowing infinity logo, partner logos. Same structure and content — just a different visual language.
-
-![Origami cranes — gold theme](v2/cranes-gold.gif)
+Both themes share the same nav/sections/apply page and the same `js/main.js` interactions. Only the palette, hero logo treatment, and the canvas overlay effects differ.
 
 ## Notes
 
-- Relative asset paths throughout, so the site is portable to any static host.
-- `prefers-reduced-motion` is respected: the 3D scene renders one static frame only.
-
+- Relative asset paths throughout, so either theme runs standalone at any static host.
+- `prefers-reduced-motion` is respected: animations render one static frame only when the user requests reduced motion.
