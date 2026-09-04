@@ -22,7 +22,7 @@ Both website pages declare a scalable SVG favicon containing only the gold origa
 
 ## Rebrand Scope
 
-Update user-facing titles, descriptions, navigation, footer text, and the Formspree email subject on both website pages. Remove the old glowing infinity brand mark and the duplicate partner strip at the bottom of the homepage. Keep the existing public URL, form endpoint, application fields, and event title.
+Update user-facing titles, descriptions, navigation, footer text, and the Formspree email subject on both website pages. The homepage footer reads “Swarm · Oct 30 – Nov 1, 2026 · MIT Media Lab” rather than using a seasonal date. Remove the old glowing infinity brand mark and the duplicate partner strip at the bottom of the homepage. Keep the existing public URL, form endpoint, application fields, and event title.
 
 ## Deferred Work
 
