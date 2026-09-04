@@ -382,10 +382,10 @@ function makeFish(color) {
 const CRANE_FLOCK_SIZE = isMobile ? 36 : 72;
 const FISH_FLOCK_SIZE = isMobile ? 160 : 420; // hundreds for dense school
 const NUM_CLUSTERS = 3;
-const NUM_BALLS = 6; // more balls — they merge and overlap organically
+const NUM_FISH_SCHOOLS = 6;
 
 const flock = []; // cranes
-const baitBalls = []; // bait ball formations (like clusters but balls)
+const fishSchools = []; // independently migrating fish schools
 const fishAll = []; // all fish
 const looker = new THREE.Object3D();
 
@@ -406,9 +406,9 @@ for (let c = 0; c < NUM_CLUSTERS; c++) {
   });
 }
 
-// Bait balls — offset centers that fish swarm around like a sphere
-for (let b = 0; b < NUM_BALLS; b++) {
-  baitBalls.push({
+// Fish-school destinations drift slowly across the underwater scene
+for (let b = 0; b < NUM_FISH_SCHOOLS; b++) {
+  fishSchools.push({
     center: new THREE.Vector3(),
     seed: b * 1.9,
     speedX: 0.04 + b * 0.008,
@@ -472,8 +472,7 @@ for (let i = 0; i < FISH_FLOCK_SIZE; i++) {
   const scale = THREE.MathUtils.randFloat(2.5, 4.5); // larger fish
   group.scale.setScalar(scale);
 
-  const clusterIdx = Math.floor(Math.random() * NUM_BALLS);
-  const cluster = baitBalls[clusterIdx];
+  const clusterIdx = Math.floor(Math.random() * NUM_FISH_SCHOOLS);
 
   const pos = new THREE.Vector3(
     THREE.MathUtils.randFloatSpread(100),
@@ -516,164 +515,203 @@ const _acc = new THREE.Vector3();
 const _tmp = new THREE.Vector3();
 const _diff = new THREE.Vector3();
 
-function limitMag(v, max) {
-  const m = v.length();
-  if (m > max) v.multiplyScalar(max / m);
-  return v;
+const BOID_PRESETS = {
+  crane: {
+    perception: 34,
+    separationRadius: 12,
+    minSpeed: 8,
+    maxSpeed: 20,
+    maxForce: 24,
+    separationWeight: 2.5,
+    alignmentWeight: 1.15,
+    cohesionWeight: 0.55,
+    migrationWeight: 0.35,
+    wander: { x: 3.2, y: 1.5, z: 3.2 },
+    bounds: { x: 140, yMin: 12, yMax: 48, zMin: -120, zMax: 20 },
+    boundaryForce: 35,
+    isCrane: true,
+  },
+  fish: {
+    perception: 26,
+    separationRadius: 11,
+    minSpeed: 6,
+    maxSpeed: 15,
+    maxForce: 20,
+    separationWeight: 2.2,
+    alignmentWeight: 1.65,
+    cohesionWeight: 1.15,
+    migrationWeight: 0.45,
+    wander: { x: 0.9, y: 0.45, z: 0.9 },
+    bounds: { x: 140, yMin: -28, yMax: -8, zMin: -120, zMax: 20 },
+    boundaryForce: 32,
+    isCrane: false,
+  },
+};
+
+// Reuse grid buckets every frame so dense fish schools only inspect nearby boids.
+const spatialGrid = new Map();
+const gridBuckets = [];
+let activeGridBuckets = 0;
+const GRID_AXIS_SIZE = 64;
+const GRID_AXIS_OFFSET = GRID_AXIS_SIZE / 2;
+
+function gridKey(clusterIdx, x, y, z) {
+  return (((clusterIdx * GRID_AXIS_SIZE + x + GRID_AXIS_OFFSET) * GRID_AXIS_SIZE
+    + y + GRID_AXIS_OFFSET) * GRID_AXIS_SIZE + z + GRID_AXIS_OFFSET);
 }
 
-// Generic boids update — works for both cranes and fish
-function updateFlock(flockArr, clusterArr, dt, t, isCrane) {
-  // Update cluster centers
+function buildSpatialGrid(flockArr, cellSize) {
+  spatialGrid.clear();
+  activeGridBuckets = 0;
+
+  for (const boid of flockArr) {
+    const pos = boid.group.position;
+    boid.gridX = Math.floor(pos.x / cellSize);
+    boid.gridY = Math.floor(pos.y / cellSize);
+    boid.gridZ = Math.floor(pos.z / cellSize);
+
+    const key = gridKey(boid.clusterIdx, boid.gridX, boid.gridY, boid.gridZ);
+    let bucket = spatialGrid.get(key);
+    if (!bucket) {
+      bucket = gridBuckets[activeGridBuckets] || [];
+      bucket.length = 0;
+      gridBuckets[activeGridBuckets] = bucket;
+      activeGridBuckets++;
+      spatialGrid.set(key, bucket);
+    }
+    bucket.push(boid);
+  }
+}
+
+function limitMag(vector, max) {
+  const magnitude = vector.length();
+  if (magnitude > max) vector.multiplyScalar(max / magnitude);
+  return vector;
+}
+
+function steer(vector, velocity, config) {
+  if (vector.lengthSq() < 1e-6) return vector.set(0, 0, 0);
+  vector.normalize().multiplyScalar(config.maxSpeed).sub(velocity);
+  return limitMag(vector, config.maxForce);
+}
+
+// Natural boids update shared by the looser crane flock and tighter fish schools.
+function updateFlock(flockArr, clusterArr, dt, t, config) {
   for (let c = 0; c < clusterArr.length; c++) {
-    const cl = clusterArr[c];
-    cl.center.set(
-      Math.sin(t * cl.speedX + cl.seed) * cl.rangeX,
-      cl.baseY + Math.sin(t * cl.speedY + cl.seed * 2) * cl.rangeY,
-      cl.baseZ + Math.sin(t * cl.speedZ + cl.seed * 3) * cl.rangeZ
+    const cluster = clusterArr[c];
+    cluster.center.set(
+      Math.sin(t * cluster.speedX + cluster.seed) * cluster.rangeX,
+      cluster.baseY + Math.sin(t * cluster.speedY + cluster.seed * 2) * cluster.rangeY,
+      cluster.baseZ + Math.sin(t * cluster.speedZ + cluster.seed * 3) * cluster.rangeZ
     );
   }
 
-  const PERCEPTION = 26;
-  const PERCEPTION_SQ = PERCEPTION * PERCEPTION;
-  const SEP_R = isCrane ? 10 : 14; // larger separation for fish so they don't clump
-  const SEP_SQ = SEP_R * SEP_R;
-  const MIN_SPEED = isCrane ? 8 : 5;
-  const MAX_SPEED = isCrane ? 22 : 16;
-  const MAX_FORCE = isCrane ? 28 : 22;
-  // Bait ball radius — fish orbit within this sphere
-  const BALL_R = 18;
+  const perceptionSq = config.perception * config.perception;
+  const separationSq = config.separationRadius * config.separationRadius;
+  buildSpatialGrid(flockArr, config.perception);
 
-  for (let i = 0; i < flockArr.length; i++) {
-    const b = flockArr[i];
-    const pos = b.group.position;
-    const myCluster = clusterArr[b.clusterIdx];
+  for (const boid of flockArr) {
+    const pos = boid.group.position;
+    const destination = clusterArr[boid.clusterIdx];
 
     _sep.set(0, 0, 0);
     _ali.set(0, 0, 0);
     _coh.set(0, 0, 0);
-    let nAli = 0, nCoh = 0;
+    let neighborCount = 0;
 
-    for (let j = 0; j < flockArr.length; j++) {
-      if (i === j) continue;
-      const o = flockArr[j];
-      _diff.subVectors(pos, o.group.position);
-      const d2 = _diff.lengthSq();
-      if (d2 > PERCEPTION_SQ) continue;
+    for (let gx = boid.gridX - 1; gx <= boid.gridX + 1; gx++) {
+      for (let gy = boid.gridY - 1; gy <= boid.gridY + 1; gy++) {
+        for (let gz = boid.gridZ - 1; gz <= boid.gridZ + 1; gz++) {
+          const bucket = spatialGrid.get(gridKey(boid.clusterIdx, gx, gy, gz));
+          if (!bucket) continue;
 
-      if (d2 < SEP_SQ && d2 > 1e-4) {
-        _sep.addScaledVector(_diff, 1 / d2);
-      }
+          for (const other of bucket) {
+            if (other === boid) continue;
+            _diff.subVectors(pos, other.group.position);
+            const distanceSq = _diff.lengthSq();
+            if (distanceSq > perceptionSq || distanceSq < 1e-4) continue;
 
-      if (o.clusterIdx === b.clusterIdx) {
-        _ali.add(o.vel);
-        _coh.add(o.group.position);
-        nAli++;
-        nCoh++;
+            if (distanceSq < separationSq) {
+              _sep.addScaledVector(_diff, 1 / distanceSq);
+            }
+            _ali.add(other.vel);
+            _coh.add(other.group.position);
+            neighborCount++;
+          }
+        }
       }
     }
 
     _acc.set(0, 0, 0);
 
     if (_sep.lengthSq() > 0) {
-      _sep.normalize().multiplyScalar(MAX_SPEED).sub(b.vel);
-      _acc.addScaledVector(limitMag(_sep, MAX_FORCE), 2.8); // stronger separation
+      _acc.addScaledVector(steer(_sep, boid.vel, config), config.separationWeight);
     }
-    if (nAli > 0) {
-      _ali.divideScalar(nAli).normalize().multiplyScalar(MAX_SPEED).sub(b.vel);
-      _acc.addScaledVector(limitMag(_ali, MAX_FORCE), 1.1);
-    }
-    if (nCoh > 0) {
-      _coh.divideScalar(nCoh).sub(pos).normalize().multiplyScalar(MAX_SPEED).sub(b.vel);
-      _acc.addScaledVector(limitMag(_coh, MAX_FORCE), 0.85);
+    if (neighborCount > 0) {
+      _ali.divideScalar(neighborCount);
+      _acc.addScaledVector(steer(_ali, boid.vel, config), config.alignmentWeight);
+
+      _coh.divideScalar(neighborCount).sub(pos);
+      _acc.addScaledVector(steer(_coh, boid.vel, config), config.cohesionWeight);
     }
 
-    // Fish: attract toward ball center with organic, multi-frequency movement
-    if (!isCrane) {
-      _tmp.subVectors(myCluster.center, pos);
-      // Primary pull — keeps the school coherent
-      _acc.addScaledVector(_tmp.normalize().multiplyScalar(MAX_SPEED), 3.2);
-      // Organic swirl — each ball drifts at a different frequency (no perfect circles)
-      const swirlFreq = 0.6 + b.glideSeed * 0.004;
-      const swirl = Math.sin(t * swirlFreq * Math.PI * 2 + b.glideSeed * Math.PI * 2);
-      const swirl2 = Math.cos(t * 0.37 + b.glideSeed * Math.PI * 3);
-      _acc.x += swirl * 8;
-      _acc.y += swirl2 * 4;
-      // Second-order organic motion
-      _acc.x += Math.sin(t * 0.19 + b.glideSeed * 9.1) * 5;
-      _acc.z += Math.cos(t * 0.23 + b.glideSeed * 7.3) * 5;
-      // Slight vertical compression for that shoe-shape look
-      _acc.y -= (_tmp.y * 2) + Math.sin(t * 0.21 + b.glideSeed * 4.7) * 1.5;
-    } else {
-      // Crane pull toward cluster (weaker than fish)
-      _tmp.subVectors(myCluster.center, pos).normalize().multiplyScalar(MAX_SPEED).sub(b.vel);
-      _acc.addScaledVector(limitMag(_tmp, MAX_FORCE), 0.6);
+    // A weak migrating destination moves each school through the scene without
+    // overpowering the local separation, alignment, and cohesion rules.
+    _tmp.subVectors(destination.center, pos);
+    _acc.addScaledVector(steer(_tmp, boid.vel, config), config.migrationWeight);
+
+    const wanderRate = config.isCrane ? 1 : 0.55;
+    _acc.x += Math.sin(t * wanderRate + boid.glideSeed * 13.7) * config.wander.x;
+    _acc.y += Math.cos(t * wanderRate * 0.8 + boid.glideSeed * 7.1) * config.wander.y;
+    _acc.z += Math.sin(t * wanderRate * 0.9 + boid.glideSeed * 3.3) * config.wander.z;
+
+    const bounds = config.bounds;
+    if (Math.abs(pos.x) > bounds.x) {
+      _acc.x -= Math.sign(pos.x) * config.boundaryForce;
     }
+    if (pos.y < bounds.yMin) _acc.y += config.boundaryForce;
+    if (pos.y > bounds.yMax) _acc.y -= config.boundaryForce;
+    if (pos.z < bounds.zMin) _acc.z += config.boundaryForce;
+    if (pos.z > bounds.zMax) _acc.z -= config.boundaryForce;
 
-    // Gentle wander
-    if (isCrane) {
-      _acc.x += Math.sin(t * 1.1 + b.glideSeed * 13.7) * 3.5;
-      _acc.y += Math.cos(t * 0.9 + b.glideSeed * 7.1) * 1.8;
-      _acc.z += Math.sin(t * 1.0 + b.glideSeed * 3.3) * 3.5;
-    } else {
-      // Fish subtler wander — they should look like they're in place
-      _acc.x += Math.sin(t * 0.5 + b.glideSeed * 13.7) * 1.2;
-      _acc.y += Math.cos(t * 0.4 + b.glideSeed * 7.1) * 0.8;
-      _acc.z += Math.sin(t * 0.5 + b.glideSeed * 3.3) * 1.2;
+    boid.vel.addScaledVector(limitMag(_acc, config.maxForce), dt);
+    const speed = boid.vel.length();
+    if (speed > config.maxSpeed) boid.vel.multiplyScalar(config.maxSpeed / speed);
+    if (speed < config.minSpeed && speed > 1e-4) {
+      boid.vel.multiplyScalar(config.minSpeed / speed);
     }
+    pos.addScaledVector(boid.vel, dt);
 
-    // Soft bounds
-    const boundsX = 140;
-    const boundsYmin = isCrane ? 12 : -28;
-    const boundsYmax = isCrane ? 48 : -8;
-    const boundsZmin = -120;
-    const boundsZmax = 20;
-    if (Math.abs(pos.x) > boundsX) _acc.x -= Math.sign(pos.x) * 35;
-    if (pos.y < boundsYmin) _acc.y += 35;
-    if (pos.y > boundsYmax) _acc.y -= 35;
-    if (pos.z < boundsZmin) _acc.z += 35;
-    if (pos.z > boundsZmax) _acc.z -= 35;
-
-    b.vel.addScaledVector(limitMag(_acc, MAX_FORCE), dt);
-    const speed = b.vel.length();
-    if (speed > MAX_SPEED) b.vel.multiplyScalar(MAX_SPEED / speed);
-    if (speed < MIN_SPEED) b.vel.multiplyScalar(MIN_SPEED / Math.max(speed, 1e-4));
-    pos.addScaledVector(b.vel, dt);
-
-    // Orientation (smooth) + banking
     looker.position.copy(pos);
-    _tmp.addVectors(pos, b.vel);
+    _tmp.addVectors(pos, boid.vel);
     looker.lookAt(_tmp);
-    b.group.quaternion.slerp(looker.quaternion, 1 - Math.exp(-6 * dt));
+    boid.group.quaternion.slerp(looker.quaternion, 1 - Math.exp(-6 * dt));
 
-    const dir = _tmp.copy(b.vel).normalize();
-    const turn = b.prevDir.x * dir.z - b.prevDir.z * dir.x;
+    const direction = _tmp.copy(boid.vel).normalize();
+    const turn = boid.prevDir.x * direction.z - boid.prevDir.z * direction.x;
     const targetRoll = THREE.MathUtils.clamp(-turn * 8, -0.55, 0.55);
-    b.roll += (targetRoll - b.roll) * (1 - Math.exp(-4 * dt));
-    b.group.rotateZ(b.roll);
-    b.prevDir.copy(dir);
+    boid.roll += (targetRoll - boid.roll) * (1 - Math.exp(-4 * dt));
+    boid.group.rotateZ(boid.roll);
+    boid.prevDir.copy(direction);
 
-    if (isCrane) {
-      // Crane flap animation
+    if (config.isCrane) {
       const flapGate = THREE.MathUtils.smoothstep(
-        Math.sin(t * 0.45 + b.glideSeed * 6.0), -0.15, 0.15
+        Math.sin(t * 0.45 + boid.glideSeed * 6), -0.15, 0.15
       );
-      b.flapAmp += (flapGate - b.flapAmp) * (1 - Math.exp(-5 * dt));
-      const flapPhase = t * b.flapFreq * Math.PI * 2 + b.phase;
+      boid.flapAmp += (flapGate - boid.flapAmp) * (1 - Math.exp(-5 * dt));
+      const flapPhase = t * boid.flapFreq * Math.PI * 2 + boid.phase;
       const flapSin = Math.sin(flapPhase);
-      if (b.flapAmp > 0.4 && b.prevFlapSin >= 0 && flapSin < 0) {
-        b.vel.y += 2.6 * b.flapAmp;
+      if (boid.flapAmp > 0.4 && boid.prevFlapSin >= 0 && flapSin < 0) {
+        boid.vel.y += 2.6 * boid.flapAmp;
       }
-      b.prevFlapSin = flapSin;
-      const wingAngle = 0.62 - b.flapAmp * (flapSin * 0.5 + 0.5) * 1.35;
-      b.left.hinge.rotation.z = wingAngle;
-      b.right.hinge.rotation.z = -wingAngle;
+      boid.prevFlapSin = flapSin;
+      const wingAngle = 0.62 - boid.flapAmp * (flapSin * 0.5 + 0.5) * 1.35;
+      boid.left.hinge.rotation.z = wingAngle;
+      boid.right.hinge.rotation.z = -wingAngle;
     } else {
-      // Fish tail wiggle
-      const wiggle = Math.sin(t * b.wiggleFreq + b.phase) * 0.3;
-      b.group.rotation.z += wiggle;
-      // Cute tail bob
-      b.group.position.y += Math.sin(t * 0.4 + b.phase * 0.5) * 0.1;
+      const wiggle = Math.sin(t * boid.wiggleFreq + boid.phase) * 0.3;
+      boid.group.rotation.z += wiggle;
+      boid.group.position.y += Math.sin(t * 0.4 + boid.phase * 0.5) * 0.1;
     }
   }
 }
@@ -786,14 +824,14 @@ function frame() {
   const fishOpacity  = Math.min(1, Math.max(0, (uw - 0.08) * 1.6));
 
   if (craneOpacity > 0) {
-    updateFlock(flock, clusters, dt, t, true);
+    updateFlock(flock, clusters, dt, t, BOID_PRESETS.crane);
     for (let b of flock) {
       b.mat.opacity = craneOpacity;
     }
   }
 
   if (fishOpacity > 0) {
-    updateFlock(fishAll, baitBalls, dt, t, false);
+    updateFlock(fishAll, fishSchools, dt, t, BOID_PRESETS.fish);
     for (let f of fishAll) {
       f.mat.opacity = fishOpacity;
       f.group.visible = uw > 0.03;
