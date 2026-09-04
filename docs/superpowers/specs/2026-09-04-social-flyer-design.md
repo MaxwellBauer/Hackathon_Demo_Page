@@ -24,9 +24,14 @@ Use a 1600 × 900 canvas with a minimum 72-pixel safe margin around essential co
 
 1. The top row contains the Swarm crane wordmark followed by the MIT, LAMM, and E14 identities in that order. The institutional identities use the same muted off-white treatment as the website and are evenly spaced.
 2. The center-left contains the dominant editorial headline, set across three visual lines: `The Internet of`, `Agents`, and `Hackathon`. `Agents` uses the website's gold italic serif treatment; the remaining words use the ivory display treatment.
-3. The lower-left contains one event-details line exactly as written: `Oct 30 – Nov 1, 2026 · MIT Media Lab 6th floor`.
-4. The right side contains a spacious gold-framed application panel with a large QR code and the label `Apply`.
-5. The QR panel contains no visible URL. The post captions provide a clickable fallback link.
+3. Beneath the headline, retain this blurb exactly: `A hackathon on decentralized AI swarms — agents built by different labs, startups, and companies discovering each other, sharing capabilities, and coordinating on real scientific and engineering problems.` Set it in readable Inter across three lines without competing with the headline.
+4. The lower-left contains one event-details line exactly as written: `Oct 30 – Nov 1, 2026 · MIT Media Lab 6th floor`.
+5. The right side contains a spacious gold-framed application panel with a large QR code and the label `Apply`.
+6. The QR panel contains no visible URL. The post captions provide a clickable fallback link.
+
+## Typography
+
+Use the same three font families as the website: Bitter for display text, Inter for sans-serif text, and IBM Plex Mono for labels and the Swarm wordmark. Embed the required WOFF2 font files directly in the generated SVG with `@font-face` data URLs. Do not depend on remote Google Fonts loading and do not convert text to outlines; the SVG must remain editable while rendering consistently offline. Use the website's corresponding weights and Bitter italic style.
 
 ## Application Destination
 
@@ -67,5 +72,7 @@ Update `v2/assets/social/social-captions.md` for Swarm. Both captions must state
 - Decode the QR code from the final PNG and verify the exact application URL.
 - Confirm no visible URL appears in the flyer artwork.
 - Confirm the event line matches the approved wording exactly.
+- Confirm the complete blurb matches the approved wording exactly and is not clipped.
+- Confirm Bitter, Inter, and IBM Plex Mono are embedded in the SVG and are the fonts used in the PNG export, with no remote font dependency or serif fallback.
 - Visually inspect hierarchy, clipping, contrast, logo spacing, crane restraint, and consistency with the deployed website.
 - Check the final PNG at full size and at a reduced social-feed preview size.
