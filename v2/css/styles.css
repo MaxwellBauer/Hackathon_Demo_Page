@@ -127,9 +127,9 @@ body.no-webgl {
   min-height: 74px;
   padding: 0.55rem 1.5rem;
   display: grid;
-  grid-template-columns: minmax(220px, 1.15fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(220px, 1.15fr) minmax(0, 3fr);
   align-items: center;
-  column-gap: clamp(0.55rem, 1.1vw, 1.1rem);
+  column-gap: clamp(2rem, 3vw, 3rem);
 }
 
 .identity {
@@ -153,6 +153,19 @@ body.no-webgl {
 .identity--swarm {
   justify-self: stretch;
   justify-content: flex-start;
+}
+
+.identity__institutions {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.5rem, 2vw, 2rem);
+}
+
+.identity__institutions > .identity {
+  flex: 0 0 auto;
+  padding-inline: 0;
 }
 
 .identity__swarm-crane {
@@ -184,9 +197,9 @@ body.no-webgl {
 }
 
 .identity__lattice {
-  width: 34px;
-  height: 34px;
-  flex: 0 0 34px;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
   object-fit: cover;
   border-radius: 50%;
   mix-blend-mode: screen;
@@ -196,7 +209,7 @@ body.no-webgl {
   display: flex;
   flex-direction: column;
   font-family: var(--sans);
-  font-size: 0.58rem;
+  font-size: 0.68rem;
   font-weight: 600;
   line-height: 1.14;
   letter-spacing: -0.025em;
@@ -297,6 +310,12 @@ body.no-webgl {
     justify-content: flex-start;
   }
 
+  .identity__institutions {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    gap: clamp(1.25rem, 6vw, 4rem);
+  }
+
   .identity__swarm-crane {
     height: 30px;
   }
@@ -306,37 +325,28 @@ body.no-webgl {
     letter-spacing: 0.2em;
   }
 
-  .identity--mit {
-    grid-column: 1;
-    grid-row: 2;
-  }
-
   .identity--mit img {
     width: min(100%, 96px);
     height: auto;
     max-height: 25px;
   }
 
-  .identity--lamm {
-    grid-column: 2;
-    grid-row: 2;
-    gap: 0.3rem;
+  .identity__institutions > .identity--mit {
+    width: 96px;
+    flex-basis: 96px;
   }
 
+  .identity--lamm { gap: 0.3rem; }
+
   .identity__lattice {
-    width: 27px;
-    height: 27px;
-    flex-basis: 27px;
+    width: 31px;
+    height: 31px;
+    flex-basis: 31px;
   }
 
   .identity__lamm-word {
-    font-size: 0.41rem;
+    font-size: 0.48rem;
     line-height: 1.1;
-  }
-
-  .identity--e14 {
-    grid-column: 3;
-    grid-row: 2;
   }
 
   .identity--e14 img {
@@ -364,6 +374,26 @@ body.no-webgl {
   .apply-main {
     padding-top: 8.5rem;
   }
+}
+
+@media (min-width: 1241px) and (max-width: 1500px) {
+  .nav__identity-row {
+    padding-inline: 1rem;
+    grid-template-columns: 195px minmax(0, 1fr);
+    column-gap: 1.125rem;
+  }
+
+  .identity__institutions { gap: 1rem; }
+  .identity--mit img { height: 28px; }
+
+  .identity__lattice {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+
+  .identity__lamm-word { font-size: 0.62rem; }
+  .identity--e14 img { height: 30px; }
 }
 
 /* ---------- Hero ---------- */
