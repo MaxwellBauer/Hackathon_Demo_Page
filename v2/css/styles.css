@@ -107,7 +107,7 @@ body.no-webgl {
   inset: 0 0 auto;
   z-index: 10;
   display: grid;
-  grid-template-columns: minmax(570px, 0.95fr) minmax(640px, 1.05fr);
+  grid-template-columns: minmax(600px, 1fr) minmax(640px, 1fr);
   align-items: center;
   color: var(--ink);
   background: rgba(0, 0, 0, 0.76);
@@ -127,7 +127,7 @@ body.no-webgl {
   min-height: 74px;
   padding: 0.55rem 1.5rem;
   display: grid;
-  grid-template-columns: minmax(175px, 0.82fr) repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(220px, 1.15fr) repeat(3, minmax(0, 1fr));
   align-items: center;
   column-gap: clamp(0.55rem, 1.1vw, 1.1rem);
 }
@@ -159,13 +159,13 @@ body.no-webgl {
   height: 40px;
   filter: none;
   transform-origin: 50% 55%;
-  animation: crane-glide 4.8s ease-in-out infinite;
+  animation: crane-takeoff 3.6s cubic-bezier(0.45, 0, 0.3, 1) infinite;
 }
 
-@keyframes crane-glide {
-  0%, 100% { transform: translate3d(0, 1px, 0) rotate(-1deg); }
-  45% { transform: translate3d(4px, -3px, 0) rotate(2deg); }
-  70% { transform: translate3d(1px, -1px, 0) rotate(0deg); }
+@keyframes crane-takeoff {
+  0%, 100% { transform: translate3d(0, 1px, 0) rotate(-2deg) scale(1); }
+  38% { transform: translate3d(3px, -8px, 0) rotate(5deg) scale(1.04); }
+  62% { transform: translate3d(1px, -5px, 0) rotate(2deg) scale(1.02); }
 }
 
 .identity__swarm-word {
@@ -406,7 +406,7 @@ body.no-webgl {
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--ink-dim);
-  margin-bottom: 2.2rem;
+  margin-bottom: 0.9rem;
   animation: fadeUp 1s ease 0.2s both;
 }
 
@@ -414,6 +414,16 @@ body.no-webgl {
   width: 6px; height: 6px; border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 12px var(--accent);
+}
+
+.hero__crane {
+  display: block;
+  width: clamp(82px, 8vw, 120px);
+  height: auto;
+  margin-bottom: 0.55rem;
+  transform-origin: 50% 55%;
+  animation: crane-takeoff 3.6s cubic-bezier(0.45, 0, 0.3, 1) infinite;
+  filter: drop-shadow(0 0 16px rgba(217, 160, 56, 0.28));
 }
 
 .hero__title {
@@ -981,6 +991,7 @@ body.no-webgl {
 /* ---------- Responsive ---------- */
 
 @media (max-width: 820px) {
+  .hero__crane { width: 76px; margin-bottom: 0.35rem; }
   .hero__stats { gap: 1.6rem; flex-wrap: wrap; justify-content: center; }
   .track { grid-template-columns: 1fr; gap: 0.4rem; }
   .rubric__row { grid-template-columns: 1fr; gap: 0.9rem; }
@@ -990,6 +1001,6 @@ body.no-webgl {
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
-  .ticker__track, .grain, .hero__scrollcue span, .identity__swarm-crane { animation: none; }
+  .ticker__track, .grain, .hero__scrollcue span, .identity__swarm-crane, .hero__crane { animation: none; }
   html { scroll-behavior: auto; }
 }
