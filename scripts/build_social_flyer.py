@@ -122,7 +122,7 @@ def build_svg(qr_rects: str, qr_modules: int) -> str:
     <text x="735" y="88" class="sans" font-size="22" font-weight="500" fill="#f7f2e6" opacity=".62">Laboratory for Atomistic and</text>
     <text x="735" y="114" class="sans" font-size="22" font-weight="500" fill="#f7f2e6" opacity=".62">Molecular Mechanics</text>
 
-    <image href="{e14}" x="1050" y="69" width="52" height="52" style="filter:brightness(0) invert(1);opacity:.62"/>
+    <image href="{e14}" x="1090" y="69" width="52" height="52" style="filter:brightness(0) invert(1);opacity:.62"/>
   </g>
 
   <g aria-hidden="true">
