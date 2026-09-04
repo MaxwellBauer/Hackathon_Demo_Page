@@ -158,14 +158,12 @@ body.no-webgl {
 .identity__swarm-crane {
   height: 40px;
   filter: none;
-  transform-origin: 50% 55%;
-  animation: crane-takeoff 3.6s cubic-bezier(0.45, 0, 0.3, 1) infinite;
+  animation: crane-glide 3.2s ease-in-out infinite;
 }
 
-@keyframes crane-takeoff {
-  0%, 100% { transform: translate3d(0, 1px, 0) rotate(-2deg) scale(1); }
-  38% { transform: translate3d(3px, -8px, 0) rotate(5deg) scale(1.04); }
-  62% { transform: translate3d(1px, -5px, 0) rotate(2deg) scale(1.02); }
+@keyframes crane-glide {
+  0%, 100% { transform: translate3d(0, 2px, 0); }
+  50% { transform: translate3d(0, -2px, 0); }
 }
 
 .identity__swarm-word {
@@ -421,8 +419,7 @@ body.no-webgl {
   width: clamp(82px, 8vw, 120px);
   height: auto;
   margin-bottom: 0.55rem;
-  transform-origin: 50% 55%;
-  animation: crane-takeoff 3.6s cubic-bezier(0.45, 0, 0.3, 1) infinite;
+  animation: crane-glide 3.2s ease-in-out infinite;
   filter: drop-shadow(0 0 16px rgba(217, 160, 56, 0.28));
 }
 
