@@ -223,10 +223,22 @@ body.no-webgl {
   filter: brightness(0) invert(1);
 }
 
+.identity--e14 { margin-left: 6px; }
+
 .identity--mit,
 .identity--lamm,
 .identity--e14 {
   opacity: 0.62;
+  transition: opacity 0.2s ease, outline-color 0.2s ease;
+}
+
+.identity__institutions > a.identity:hover { opacity: 0.82; }
+
+.identity__institutions > a.identity:focus-visible {
+  opacity: 0.9;
+  outline: 1px solid var(--accent-soft);
+  outline-offset: 5px;
+  border-radius: 3px;
 }
 
 .nav__bar {
