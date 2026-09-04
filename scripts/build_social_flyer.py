@@ -5,6 +5,9 @@ from __future__ import annotations
 
 import base64
 from pathlib import Path
+import re
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
 
 import cv2
 
@@ -15,12 +18,42 @@ LOGO_DIR = ROOT / "v2" / "assets" / "logos"
 SVG_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.svg"
 PNG_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.png"
 APPLICATION_URL = "https://infinite-hackathon.vercel.app/apply.html"
+FONT_TEXT = (
+    "SWARM The Internet of Agents Hackathon APPLICATIONS OPEN Apply "
+    "A hackathon on decentralized AI swarms — agents built by different labs, startups, "
+    "and companies discovering each other, sharing capabilities, and coordinating on real "
+    "scientific and engineering problems. Oct 30 – Nov 1, 2026 · MIT Media Lab 6th floor"
+)
 
 
 def data_uri(path: Path, media_type: str) -> str:
     """Return a file as an embeddable base64 data URI."""
     encoded = base64.b64encode(path.read_bytes()).decode("ascii")
     return f"data:{media_type};base64,{encoded}"
+
+
+def embedded_font_css() -> str:
+    """Fetch the website's font subsets and embed them into the SVG."""
+    params = [
+        ("family", "Bitter:ital,wght@0,300;1,300"),
+        ("family", "IBM Plex Mono:wght@400;700"),
+        ("family", "Inter:wght@300;400;500;600"),
+        ("display", "block"),
+        ("text", FONT_TEXT),
+    ]
+    request = Request(
+        "https://fonts.googleapis.com/css2?" + urlencode(params),
+        headers={"User-Agent": "Mozilla/5.0 AppleWebKit/537.36 Chrome/145 Safari/537.36"},
+    )
+    css = urlopen(request, timeout=30).read().decode("utf-8")
+    font_urls = set(re.findall(r"url\((https://fonts\.gstatic\.com[^)]+)\)", css))
+    if not font_urls:
+        raise RuntimeError("Google Fonts returned no WOFF2 font files")
+    for font_url in font_urls:
+        font_request = Request(font_url, headers={"User-Agent": request.headers["User-agent"]})
+        encoded = base64.b64encode(urlopen(font_request, timeout=30).read()).decode("ascii")
+        css = css.replace(font_url, f"data:font/woff2;base64,{encoded}")
+    return css
 
 
 def qr_row_runs(matrix) -> str:
@@ -58,6 +91,7 @@ def build_svg(qr_rects: str, qr_modules: int) -> str:
     mit = data_uri(LOGO_DIR / "mit-lockup.svg", "image/svg+xml")
     e14 = data_uri(LOGO_DIR / "e14-logo.svg", "image/svg+xml")
     lattice = data_uri(LOGO_DIR / "lamm-lattice-white-poster.png", "image/png")
+    font_css = embedded_font_css()
 
     qr_scale = 7
     qr_quiet = 4
@@ -71,7 +105,7 @@ def build_svg(qr_rects: str, qr_modules: int) -> str:
   <desc id="description">A black-and-gold social flyer for the Swarm hackathon at the MIT Media Lab from October 30 through November 1, 2026, with a QR code to apply.</desc>
   <defs>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,300;0,400;1,300&amp;family=IBM+Plex+Mono:wght@400;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap');
+      {font_css}
       .serif {{ font-family: "Bitter", Georgia, "DejaVu Serif", serif; }}
       .sans {{ font-family: "Inter", Arial, "DejaVu Sans", sans-serif; }}
       .mono {{ font-family: "IBM Plex Mono", "DejaVu Sans Mono", monospace; }}
@@ -139,12 +173,19 @@ def build_svg(qr_rects: str, qr_modules: int) -> str:
     <text x="86" y="330" class="serif" font-size="78" font-weight="300" letter-spacing="-2" fill="#f7f2e6">The Internet of</text>
     <text x="82" y="472" class="serif" font-size="142" font-weight="300" font-style="italic" letter-spacing="-5" fill="url(#gold)">Agents</text>
     <text x="86" y="590" class="serif" font-size="108" font-weight="300" letter-spacing="-3" fill="#f7f2e6">Hackathon</text>
-    <line x1="88" y1="632" x2="1076" y2="632" stroke="#d9a038" stroke-opacity=".24"/>
+    <line x1="88" y1="622" x2="1076" y2="622" stroke="#d9a038" stroke-opacity=".24"/>
+  </g>
+
+  <g aria-label="A hackathon on decentralized AI swarms — agents built by different labs, startups, and companies discovering each other, sharing capabilities, and coordinating on real scientific and engineering problems."
+    class="sans" font-size="25" font-weight="300" fill="#d8d1c2" opacity=".78">
+    <text x="89" y="670">A hackathon on decentralized AI swarms — agents built by different</text>
+    <text x="89" y="706">labs, startups, and companies discovering each other, sharing capabilities,</text>
+    <text x="89" y="742">and coordinating on real scientific and engineering problems.</text>
   </g>
 
   <g aria-label="Event details">
-    <circle cx="96" cy="785" r="5" fill="#d9a038"/>
-    <text x="121" y="796" class="sans" font-size="30" font-weight="400" fill="#f7f2e6">Oct 30 – Nov 1, 2026 · MIT Media Lab 6th floor</text>
+    <circle cx="96" cy="806" r="5" fill="#d9a038"/>
+    <text x="121" y="817" class="sans" font-size="30" font-weight="400" fill="#f7f2e6">Oct 30 – Nov 1, 2026 · MIT Media Lab 6th floor</text>
   </g>
 
   <g aria-label="Application QR code">
