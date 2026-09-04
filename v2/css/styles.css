@@ -308,7 +308,7 @@ body.no-webgl {
   padding: 8rem 2rem 5rem;
 }
 
-.apply-page__inner { max-width: 760px; width: 100%; }
+.apply-page__inner { max-width: 960px; width: 100%; }
 
 .apply-page__title {
   font-family: var(--serif);
@@ -318,27 +318,43 @@ body.no-webgl {
   margin: 1rem 0 1rem;
 }
 
-.apply-page__sub { color: var(--ink-dim); margin-bottom: 3rem; max-width: 46ch; }
+.apply-page__sub { color: var(--ink-dim); margin-bottom: 3rem; max-width: 52ch; font-size: 1.08rem; }
 .apply-page__sub a { color: var(--accent-soft); }
 
-.apply-form { display: grid; gap: 1.6rem; }
+.apply-form { display: grid; gap: 2.6rem; }
+
+.apply-form__section {
+  display: grid;
+  gap: 2rem;
+  padding-top: 2.8rem;
+  border-top: 1px solid var(--line);
+}
+
+.apply-form__section:first-of-type { padding-top: 0; border-top: 0; }
+
+.apply-form__section-title {
+  font-family: var(--serif);
+  font-size: 1.9rem;
+  font-weight: 300;
+  color: var(--ink);
+}
 
 .apply-form__grid {
   display: grid;
-  gap: 1.4rem;
+  gap: 1.7rem;
   grid-template-columns: 1fr 1fr;
 }
 @media (max-width: 640px) { .apply-form__grid { grid-template-columns: 1fr; } }
 
-.field { display: grid; gap: 0.45rem; }
+.field { display: grid; gap: 0.6rem; }
 .field--full { grid-column: 1 / -1; }
 
 .field__label {
   font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--ink-dim);
+  color: rgba(247, 242, 230, 0.82);
 }
 .field__label b { color: var(--accent); }
 
@@ -348,36 +364,81 @@ body.no-webgl {
   background: rgba(247, 242, 230, 0.04);
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 0.85rem 1rem;
+  padding: 1rem 1.1rem;
+  min-height: 3.45rem;
   color: var(--ink);
   font: inherit;
-  transition: border-color 0.25s ease;
+  font-size: 1.05rem;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.field select option { background: var(--bg); color: var(--ink); }
+.field textarea { resize: vertical; min-height: 9rem; }
+
+.field__hint {
+  color: var(--ink-faint);
+  font-size: 0.92rem;
+}
+
+.dropbox-upload {
+  justify-self: start;
+  margin-top: 0.25rem;
 }
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
   outline: none;
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(217, 160, 56, 0.12);
 }
 
-.apply-form__set { border: none; padding: 0; display: grid; gap: 0.8rem; }
+.question-group {
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
 
-.apply-form__checks { display: grid; gap: 0.6rem; grid-template-columns: 1fr 1fr; }
+.field--other { max-width: 440px; }
+
+.apply-form__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.7rem;
+}
+
+.apply-form__checks { display: grid; gap: 0.8rem; grid-template-columns: 1fr 1fr; }
 @media (max-width: 640px) { .apply-form__checks { grid-template-columns: 1fr; } }
 
-.chk { display: flex; gap: 0.6rem; align-items: center; font-size: 0.92rem; color: var(--ink-dim); cursor: pointer; }
-.chk input { accent-color: var(--accent); width: 1rem; height: 1rem; }
+.chk { display: flex; gap: 0.7rem; align-items: center; font-size: 1rem; color: var(--ink-dim); cursor: pointer; }
+.chk input { accent-color: var(--accent); width: 1.2rem; height: 1.2rem; }
 
 .apply-form__row { display: flex; align-items: center; gap: 1.2rem; margin-top: 0.6rem; }
+.apply-form__row button:disabled { opacity: 0.6; cursor: wait; transform: none; }
 
 .apply-form__status {
   font-family: var(--mono);
   font-size: 0.78rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   color: var(--accent-soft);
 }
+.apply-form__status--error { color: #ff9f8a; }
 
-.apply-done { padding: 2rem 0; }
+.apply-done { padding: 2rem 0; outline: none; }
+
+.form-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .apply-main { padding: 7rem 1rem 3rem; }
+  .apply-form__row { align-items: flex-start; flex-direction: column; }
+}
 
 .hero__sub {
   max-width: 560px;
@@ -783,6 +844,7 @@ body.no-webgl {
 @media (max-width: 820px) {
   .nav { padding: 0.9rem 1.2rem; }
   .nav__links { display: none; }
+  .apply-page .nav__links { display: flex; }
   .hero__stats { gap: 1.6rem; flex-wrap: wrap; justify-content: center; }
   .track { grid-template-columns: 1fr; gap: 0.4rem; }
   .rubric__row { grid-template-columns: 1fr; gap: 0.9rem; }
