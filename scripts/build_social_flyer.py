@@ -139,6 +139,7 @@ def export_flyer() -> None:
                 lammE14Gap: e14.left - lamm.right,
                 pageOverflow: document.documentElement.scrollWidth > 1600 || document.documentElement.scrollHeight > 900,
                 titleLines: document.querySelectorAll('.flyer__title-line').length,
+                detailMarker: getComputedStyle(document.querySelector('.flyer__details'), '::before').content,
                 visibleText: document.querySelector('.flyer').innerText
               };
             }"""
@@ -149,6 +150,8 @@ def export_flyer() -> None:
             raise RuntimeError("Flyer page overflows the 1600 × 900 canvas")
         if geometry["titleLines"] != 2:
             raise RuntimeError("Headline must use the approved two-line treatment")
+        if geometry["detailMarker"] not in ("none", "normal"):
+            raise RuntimeError("The event line must not have a leading marker")
         # The MIT and LAMM artwork have different internal transparent edges.
         # A four-pixel box-gap correction produces equal visible whitespace.
         if abs((geometry["lammE14Gap"] - geometry["mitLammGap"]) - 4) > 0.5:
