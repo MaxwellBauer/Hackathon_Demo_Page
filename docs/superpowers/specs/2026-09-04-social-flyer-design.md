@@ -20,13 +20,12 @@ The layout uses an asymmetric two-column structure. The left two-thirds hold the
 
 ## Copy Hierarchy
 
-1. Eyebrow: `MIT MEDIA LAB · FALL 2026`
-2. Brand: `∞ INFINITE`
-3. Title: `THE INTERNET OF AGENTS HACKATHON`
-4. Description: `Build decentralized agent swarms that tackle meaningful scientific and engineering problems.`
-5. Event details: `OCT 30 – NOV 1, 2026` and `MIT MEDIA LAB · CAMBRIDGE, MA`
-6. Call to action: `APPLY NOW`
-7. Visible URL: `infinite-hackathon.vercel.app/apply.html`
+1. Brand: `∞ INFINITE`
+2. Title: `THE INTERNET OF AGENTS HACKATHON`
+3. Description: `Build decentralized agent swarms that tackle meaningful scientific and engineering problems.`
+4. Event details: `OCT 30 – NOV 1, 2026` and `MIT MEDIA LAB · CAMBRIDGE, MA`
+5. Call to action: `APPLY NOW`
+6. Visible URL: `infinite-hackathon.vercel.app/apply.html`
 
 The QR code must encode `https://infinite-hackathon.vercel.app/apply.html` exactly and include sufficient clear space for reliable scanning.
 
