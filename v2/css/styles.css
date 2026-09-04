@@ -100,13 +100,15 @@ body.no-webgl {
     linear-gradient(to top, #1a1204 0%, #050505 38%, #000000 75%);
 }
 
-/* ---------- Two-tier identity header ---------- */
+/* ---------- Unified identity and navigation header ---------- */
 
 .nav {
   position: fixed;
   inset: 0 0 auto;
   z-index: 10;
-  display: block;
+  display: grid;
+  grid-template-columns: minmax(570px, 0.95fr) minmax(640px, 1.05fr);
+  align-items: center;
   color: var(--ink);
   background: rgba(0, 0, 0, 0.76);
   border-bottom: 1px solid var(--line);
@@ -121,14 +123,13 @@ body.no-webgl {
 }
 
 .nav__identity-row {
-  width: min(100%, 1280px);
-  min-height: 76px;
-  margin: 0 auto;
-  padding: 0.65rem 2.5rem;
+  width: 100%;
+  min-height: 74px;
+  padding: 0.55rem 1.5rem;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: minmax(175px, 0.82fr) repeat(3, minmax(0, 1fr));
   align-items: center;
-  gap: clamp(1.5rem, 4vw, 4.5rem);
+  column-gap: clamp(0.55rem, 1.1vw, 1.1rem);
 }
 
 .identity {
@@ -138,6 +139,7 @@ body.no-webgl {
   align-items: center;
   justify-content: center;
   gap: 0.72rem;
+  padding-inline: clamp(0.45rem, 1vw, 0.9rem);
   color: var(--ink);
   text-decoration: none;
 }
@@ -150,11 +152,20 @@ body.no-webgl {
 
 .identity--swarm {
   justify-self: stretch;
+  justify-content: flex-start;
 }
 
-.identity__swarm-mark {
-  height: 52px;
+.identity__swarm-crane {
+  height: 40px;
   filter: none;
+  transform-origin: 50% 55%;
+  animation: crane-glide 4.8s ease-in-out infinite;
+}
+
+@keyframes crane-glide {
+  0%, 100% { transform: translate3d(0, 1px, 0) rotate(-1deg); }
+  45% { transform: translate3d(4px, -3px, 0) rotate(2deg); }
+  70% { transform: translate3d(1px, -1px, 0) rotate(0deg); }
 }
 
 .identity__swarm-word {
@@ -166,69 +177,70 @@ body.no-webgl {
 }
 
 .identity--mit img {
-  height: 44px;
+  height: 32px;
   filter: brightness(0) invert(1);
-  opacity: 0.94;
 }
 
 .identity--lamm {
   gap: 0.65rem;
 }
 
-.identity__lattice,
-.identity__lattice-poster {
-  width: 50px;
-  height: 50px;
-  flex: 0 0 50px;
+.identity__lattice {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
   object-fit: cover;
   border-radius: 50%;
   mix-blend-mode: screen;
 }
 
-.identity__lattice-poster {
-  display: none;
-}
-
 .identity__lamm-word {
-  max-width: 168px !important;
-  max-height: 36px;
-  filter: brightness(0) invert(1);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--sans);
+  font-size: 0.58rem;
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.025em;
+  white-space: nowrap;
   opacity: 0.94;
 }
 
 .identity--e14 img {
-  height: 50px;
+  height: 34px;
   filter: brightness(0) invert(1);
-  opacity: 0.94;
+}
+
+.identity--mit,
+.identity--lamm,
+.identity--e14 {
+  opacity: 0.62;
 }
 
 .nav__bar {
-  min-height: 50px;
-  padding: 0 2.5rem;
-  display: grid;
-  grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
+  min-height: 74px;
+  padding: 0 1.5rem 0 0.75rem;
+  display: flex;
   align-items: center;
-  border-top: 1px solid rgba(217, 160, 56, 0.12);
+  justify-content: flex-end;
+  gap: clamp(1.25rem, 2vw, 2.5rem);
+  border-left: 1px solid rgba(217, 160, 56, 0.12);
 }
 
 .nav__date {
-  justify-self: start;
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  color: var(--ink-faint);
+  display: none;
 }
 
 .nav__links {
   display: flex;
   justify-self: center;
-  gap: clamp(1.1rem, 2.4vw, 2rem);
+  gap: clamp(0.9rem, 1.45vw, 1.55rem);
 }
 
 .nav__links a {
   color: var(--ink-dim);
   text-decoration: none;
-  font-size: 0.74rem;
+  font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   transition: color 0.25s;
@@ -252,10 +264,6 @@ body.no-webgl {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-.nav__cta {
-  justify-self: end;
-}
-
 .nav__cta:hover,
 .nav__mobile-action:hover {
   transform: translateY(-2px);
@@ -266,11 +274,11 @@ body.no-webgl {
   display: none;
 }
 
-.nav__bar--apply .nav__links {
-  grid-column: 2;
-}
+@media (max-width: 1240px) {
+  .nav {
+    display: block;
+  }
 
-@media (max-width: 820px) {
   .nav__identity-row {
     min-height: 102px;
     padding: 0.55rem 1rem 0.65rem;
@@ -281,6 +289,7 @@ body.no-webgl {
 
   .identity {
     height: 38px;
+    padding-inline: 0;
   }
 
   .identity--swarm {
@@ -290,8 +299,8 @@ body.no-webgl {
     justify-content: flex-start;
   }
 
-  .identity__swarm-mark {
-    height: 38px;
+  .identity__swarm-crane {
+    height: 30px;
   }
 
   .identity__swarm-word {
@@ -305,9 +314,9 @@ body.no-webgl {
   }
 
   .identity--mit img {
-    width: min(100%, 108px);
+    width: min(100%, 96px);
     height: auto;
-    max-height: 29px;
+    max-height: 25px;
   }
 
   .identity--lamm {
@@ -316,16 +325,15 @@ body.no-webgl {
     gap: 0.3rem;
   }
 
-  .identity__lattice,
-  .identity__lattice-poster {
-    width: 31px;
-    height: 31px;
-    flex-basis: 31px;
+  .identity__lattice {
+    width: 27px;
+    height: 27px;
+    flex-basis: 27px;
   }
 
   .identity__lamm-word {
-    width: min(100%, 82px) !important;
-    max-height: 22px;
+    font-size: 0.41rem;
+    line-height: 1.1;
   }
 
   .identity--e14 {
@@ -334,7 +342,7 @@ body.no-webgl {
   }
 
   .identity--e14 img {
-    height: 31px;
+    height: 27px;
   }
 
   .nav__mobile-action {
@@ -350,15 +358,13 @@ body.no-webgl {
   .nav__bar {
     display: none;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .identity__lattice {
-    display: none;
+  .hero {
+    padding-top: 8.5rem;
   }
 
-  .identity__lattice-poster {
-    display: block;
+  .apply-main {
+    padding-top: 8.5rem;
   }
 }
 
@@ -371,8 +377,9 @@ body.no-webgl {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 10.5rem 1.5rem 4rem;
+  padding: 7.5rem 1.5rem 4rem;
   position: relative;
+  overflow: hidden;
 }
 
 /* soft radial shadow behind hero text for readability */
@@ -437,7 +444,7 @@ body.no-webgl {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10.5rem 2rem 5rem;
+  padding: 7.5rem 2rem 5rem;
 }
 
 .apply-page__inner { max-width: 960px; width: 100%; }
@@ -983,6 +990,6 @@ body.no-webgl {
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
-  .ticker__track, .grain, .hero__scrollcue span { animation: none; }
+  .ticker__track, .grain, .hero__scrollcue span, .identity__swarm-crane { animation: none; }
   html { scroll-behavior: auto; }
 }

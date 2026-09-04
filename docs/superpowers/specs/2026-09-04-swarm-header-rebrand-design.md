@@ -6,9 +6,9 @@ Rename the INFINITE hackathon to Swarm while retaining “The Internet of Agents
 
 ## Header
 
-On desktop, a single header line contains the Swarm brand, three evenly spaced institutional identity slots in the order MIT, LAMM, E14, the section navigation, and the Apply action. On narrower screens, Swarm and the page action occupy the first row; MIT, LAMM, and E14 share the second row, and section links remain hidden.
+On desktop, a single header line contains the Swarm brand, a clear visual gap, three evenly spaced institutional identity slots in the order MIT, LAMM, E14, the section navigation, and the Apply action. The three institutional identities are smaller and use a shared muted off-white treatment so the Swarm identity remains primary. On narrower screens, Swarm and the page action occupy the first row; MIT, LAMM, and E14 share the second row, and section links remain hidden.
 
-The Swarm identity uses a small static gold origami crane followed by a white SWARM wordmark. It has no abstract S symbol and no separate gold node. MIT and E14 use their supplied official SVGs in white. LAMM uses exactly one symbol—the supplied white lattice animation, looping continuously—followed by text-only “Laboratory for Atomistic and Molecular Mechanics” lettering sized to match the MIT lockup visually. No static LAMM symbol is present in the markup.
+The Swarm identity uses a small gold origami crane followed by a white SWARM wordmark. The crane moves with a restrained continuous glide and tilt; the motion is disabled when the visitor requests reduced motion. The identity has no abstract S symbol and no separate gold node. MIT and E14 use their supplied official SVGs. LAMM uses exactly one symbol—the supplied lattice animation, looping continuously—followed by text-only “Laboratory for Atomistic and Molecular Mechanics” lettering sized to match the MIT lockup visually. No static LAMM symbol is present in the markup.
 
 ## Rebrand Scope
 
