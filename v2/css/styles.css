@@ -380,11 +380,11 @@ body.no-webgl {
 @media (min-width: 1241px) and (max-width: 1500px) {
   .nav__identity-row {
     padding-inline: 1rem;
-    grid-template-columns: 195px minmax(0, 1fr);
-    column-gap: 1.125rem;
+    grid-template-columns: 185px minmax(0, 1fr);
+    column-gap: 10px;
   }
 
-  .identity__institutions { gap: 1rem; }
+  .identity__institutions { gap: 22px; }
   .identity--mit img { height: 28px; }
 
   .identity__lattice {
