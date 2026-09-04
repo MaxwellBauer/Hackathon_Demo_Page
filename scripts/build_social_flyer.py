@@ -1,63 +1,25 @@
 #!/usr/bin/env python3
-"""Build the cinematic Swarm social flyer and social captions."""
+"""Build the Swarm flyer QR code and export its HTML source to PNG and PDF."""
 
 from __future__ import annotations
 
-import base64
 from pathlib import Path
-import re
-from urllib.parse import urlencode
-from urllib.request import Request, urlopen
 
 import cv2
 
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "v2" / "assets" / "social"
-LOGO_DIR = ROOT / "v2" / "assets" / "logos"
-SVG_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.svg"
+HTML_PATH = ROOT / "v2" / "flyer.html"
+QR_PATH = OUTPUT_DIR / "swarm-apply-qr.svg"
 PNG_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.png"
+PDF_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.pdf"
+CAPTIONS_PATH = OUTPUT_DIR / "social-captions.md"
 APPLICATION_URL = "https://infinite-hackathon.vercel.app/apply.html"
-FONT_TEXT = (
-    "SWARM The Internet of Agents Hackathon APPLICATIONS OPEN Apply "
-    "A hackathon on decentralized AI swarms — agents built by different labs, startups, "
-    "and companies discovering each other, sharing capabilities, and coordinating on real "
-    "scientific and engineering problems. Oct 30 – Nov 1, 2026 · MIT Media Lab 6th floor"
-)
-
-
-def data_uri(path: Path, media_type: str) -> str:
-    """Return a file as an embeddable base64 data URI."""
-    encoded = base64.b64encode(path.read_bytes()).decode("ascii")
-    return f"data:{media_type};base64,{encoded}"
-
-
-def embedded_font_css() -> str:
-    """Fetch the website's font subsets and embed them into the SVG."""
-    params = [
-        ("family", "Bitter:ital,wght@0,300;1,300"),
-        ("family", "IBM Plex Mono:wght@400;700"),
-        ("family", "Inter:wght@300;400;500;600"),
-        ("display", "block"),
-        ("text", FONT_TEXT),
-    ]
-    request = Request(
-        "https://fonts.googleapis.com/css2?" + urlencode(params),
-        headers={"User-Agent": "Mozilla/5.0 AppleWebKit/537.36 Chrome/145 Safari/537.36"},
-    )
-    css = urlopen(request, timeout=30).read().decode("utf-8")
-    font_urls = set(re.findall(r"url\((https://fonts\.gstatic\.com[^)]+)\)", css))
-    if not font_urls:
-        raise RuntimeError("Google Fonts returned no WOFF2 font files")
-    for font_url in font_urls:
-        font_request = Request(font_url, headers={"User-Agent": request.headers["User-agent"]})
-        encoded = base64.b64encode(urlopen(font_request, timeout=30).read()).decode("ascii")
-        css = css.replace(font_url, f"data:font/woff2;base64,{encoded}")
-    return css
 
 
 def qr_row_runs(matrix) -> str:
-    """Return compact horizontal SVG paths for runs of dark QR modules."""
+    """Return compact horizontal SVG rectangles for runs of dark QR modules."""
     runs = []
     for y, row in enumerate(matrix):
         start = None
@@ -71,135 +33,15 @@ def qr_row_runs(matrix) -> str:
     return "".join(runs)
 
 
-def terrain_lines() -> str:
-    """Build a lightweight perspective grid reminiscent of the website scene."""
-    paths = []
-    horizon = 635
-    for x in range(-520, 2121, 120):
-        paths.append(f'<path d="M800 {horizon} L{x} 900"/>')
-    for y in (658, 684, 714, 748, 788, 834, 886):
-        amplitude = max(4, (y - horizon) * 0.075)
-        paths.append(
-            f'<path d="M0 {y} C250 {y-amplitude:.1f} 430 {y+amplitude:.1f} 650 {y} '
-            f'S1050 {y-amplitude:.1f} 1260 {y} S1480 {y+amplitude:.1f} 1600 {y}"/>'
-        )
-    return "".join(paths)
-
-
-def build_svg(qr_rects: str, qr_modules: int) -> str:
-    crane = data_uri(LOGO_DIR / "swarm-crane.svg", "image/svg+xml")
-    mit = data_uri(LOGO_DIR / "mit-lockup.svg", "image/svg+xml")
-    e14 = data_uri(LOGO_DIR / "e14-logo.svg", "image/svg+xml")
-    lattice = data_uri(LOGO_DIR / "lamm-lattice-white-poster.png", "image/png")
-    font_css = embedded_font_css()
-
-    qr_scale = 7
-    qr_quiet = 4
-    qr_field = (qr_modules + qr_quiet * 2) * qr_scale
-    qr_x = 1196 + (336 - qr_field) / 2
-    qr_y = 319
-
-    return f'''<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-  width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
-  <title id="title">Swarm — The Internet of Agents Hackathon</title>
-  <desc id="description">A black-and-gold social flyer for the Swarm hackathon at the MIT Media Lab from October 30 through November 1, 2026, with a QR code to apply.</desc>
-  <defs>
-    <style>
-      {font_css}
-      .serif {{ font-family: "Bitter", Georgia, "DejaVu Serif", serif; }}
-      .sans {{ font-family: "Inter", Arial, "DejaVu Sans", sans-serif; }}
-      .mono {{ font-family: "IBM Plex Mono", "DejaVu Sans Mono", monospace; }}
-    </style>
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#ffdf8a"/>
-      <stop offset=".48" stop-color="#e1aa3e"/>
-      <stop offset="1" stop-color="#9b6816"/>
-    </linearGradient>
-    <radialGradient id="atmosphere" cx="47%" cy="45%" r="66%">
-      <stop offset="0" stop-color="#342307" stop-opacity=".38"/>
-      <stop offset=".55" stop-color="#161003" stop-opacity=".12"/>
-      <stop offset="1" stop-color="#000" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="terrainFade" x1="0" y1="0" x2="0" y2="1">
-      <stop stop-color="#d9a038" stop-opacity=".12"/>
-      <stop offset="1" stop-color="#d9a038" stop-opacity=".46"/>
-    </linearGradient>
-    <filter id="grain" x="-20%" y="-20%" width="140%" height="140%">
-      <feTurbulence type="fractalNoise" baseFrequency=".78" numOctaves="2" seed="11"/>
-      <feColorMatrix type="saturate" values="0"/>
-    </filter>
-    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="12" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
-    <clipPath id="latticeCrop"><circle cx="687" cy="94" r="30"/></clipPath>
-  </defs>
-
-  <rect width="1600" height="900" fill="#020202"/>
-  <rect width="1600" height="900" fill="url(#atmosphere)"/>
-  <ellipse cx="770" cy="651" rx="720" ry="105" fill="#d9a038" opacity=".035" filter="url(#softGlow)"/>
-
-  <g aria-hidden="true" fill="none" stroke="url(#terrainFade)" stroke-width="1.2" opacity=".72">
-    {terrain_lines()}
-  </g>
-  <rect y="610" width="1600" height="290" fill="url(#atmosphere)" opacity=".32"/>
-
-  <g aria-label="Hackathon organizers">
-    <image href="{crane}" x="78" y="62" width="92" height="59"/>
-    <text x="187" y="102" class="mono" font-size="24" font-weight="700" letter-spacing="7" fill="#f7f2e6">SWARM</text>
-    <line x1="336" y1="70" x2="336" y2="117" stroke="#d9a038" stroke-opacity=".3"/>
-
-    <image href="{mit}" x="390" y="72" width="190" height="46" style="filter:brightness(0) invert(1);opacity:.62"/>
-
-    <circle cx="687" cy="94" r="29" fill="#080808" stroke="#d9a038" stroke-opacity=".18"/>
-    <image href="{lattice}" x="652" y="59" width="70" height="70" preserveAspectRatio="xMidYMid slice" clip-path="url(#latticeCrop)" opacity=".72"/>
-    <text x="735" y="88" class="sans" font-size="22" font-weight="500" fill="#f7f2e6" opacity=".62">Laboratory for Atomistic and</text>
-    <text x="735" y="114" class="sans" font-size="22" font-weight="500" fill="#f7f2e6" opacity=".62">Molecular Mechanics</text>
-
-    <image href="{e14}" x="1090" y="69" width="52" height="52" style="filter:brightness(0) invert(1);opacity:.62"/>
-  </g>
-
-  <g aria-hidden="true">
-    <image href="{crane}" x="924" y="230" width="122" height="78" opacity=".33" transform="rotate(-8 985 269)"/>
-    <image href="{crane}" x="788" y="527" width="76" height="49" opacity=".24" transform="rotate(9 826 552)"/>
-    <image href="{crane}" x="1024" y="486" width="54" height="35" opacity=".18" transform="rotate(-11 1051 504)"/>
-    <image href="{crane}" x="671" y="204" width="48" height="31" opacity=".17" transform="rotate(12 695 220)"/>
-    <circle cx="1075" cy="338" r="2" fill="#ffdf8a" opacity=".45"/>
-    <circle cx="866" cy="235" r="1.5" fill="#ffdf8a" opacity=".32"/>
-    <circle cx="1098" cy="559" r="1.5" fill="#ffdf8a" opacity=".28"/>
-  </g>
-
-  <g aria-label="Event title">
-    <text x="86" y="330" class="serif" font-size="78" font-weight="300" letter-spacing="-2" fill="#f7f2e6">The Internet of</text>
-    <text x="82" y="472" class="serif" font-size="142" font-weight="300" font-style="italic" letter-spacing="-5" fill="url(#gold)">Agents</text>
-    <text x="86" y="590" class="serif" font-size="108" font-weight="300" letter-spacing="-3" fill="#f7f2e6">Hackathon</text>
-    <line x1="88" y1="622" x2="1076" y2="622" stroke="#d9a038" stroke-opacity=".24"/>
-  </g>
-
-  <g aria-label="A hackathon on decentralized AI swarms — agents built by different labs, startups, and companies discovering each other, sharing capabilities, and coordinating on real scientific and engineering problems."
-    class="sans" font-size="25" font-weight="300" fill="#d8d1c2" opacity=".78">
-    <text x="89" y="670">A hackathon on decentralized AI swarms — agents built by different</text>
-    <text x="89" y="706">labs, startups, and companies discovering each other, sharing capabilities,</text>
-    <text x="89" y="742">and coordinating on real scientific and engineering problems.</text>
-  </g>
-
-  <g aria-label="Event details">
-    <circle cx="96" cy="806" r="5" fill="#d9a038"/>
-    <text x="121" y="817" class="sans" font-size="30" font-weight="400" fill="#f7f2e6">Oct 30 – Nov 1, 2026 · MIT Media Lab 6th floor</text>
-  </g>
-
-  <g aria-label="Application QR code">
-    <rect x="1168" y="219" width="384" height="526" rx="8" fill="#070603" fill-opacity=".94" stroke="#d9a038" stroke-width="2"/>
-    <path d="M1168 283V219h64 M1488 219h64v64 M1168 681v64h64 M1488 745h64v-64" fill="none" stroke="#ffdf8a" stroke-width="3"/>
-    <text x="1360" y="276" text-anchor="middle" class="mono" font-size="22" letter-spacing="5" fill="#d9a038">APPLICATIONS OPEN</text>
-    <g transform="translate({qr_x:.1f} {qr_y})" shape-rendering="crispEdges">
-      <rect width="{qr_field}" height="{qr_field}" rx="3" fill="#f7f2e6"/>
-      <g transform="translate({qr_quiet * qr_scale} {qr_quiet * qr_scale}) scale({qr_scale})" fill="#020202">{qr_rects}</g>
-    </g>
-    <text x="1360" y="691" text-anchor="middle" class="sans" font-size="44" font-weight="600" letter-spacing="2" fill="#ffdf8a">Apply</text>
-  </g>
-
-  <rect width="1600" height="900" filter="url(#grain)" opacity=".026" style="mix-blend-mode:screen" pointer-events="none"/>
+def build_qr_svg() -> str:
+    """Create a crisp, high-contrast QR code with a four-module quiet zone."""
+    matrix = cv2.QRCodeEncoder_create().encode(APPLICATION_URL)
+    modules = len(matrix)
+    field = modules + 8
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="{field}" height="{field}"
+  viewBox="0 0 {field} {field}" shape-rendering="crispEdges" role="img" aria-label="Application QR code">
+  <rect width="{field}" height="{field}" fill="#f7f2e6"/>
+  <g transform="translate(4 4)" fill="#020202">{qr_row_runs(matrix)}</g>
 </svg>
 '''
 
@@ -229,25 +71,111 @@ Apply: {APPLICATION_URL}
 '''
 
 
-def export_png() -> None:
-    """Render the SVG through Chromium for a deterministic 1600 × 900 PNG."""
+def export_flyer() -> None:
+    """Render the same verified HTML page to a 1600 × 900 PNG and 16:9 PDF."""
     from playwright.sync_api import sync_playwright
 
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(args=["--font-render-hinting=none"])
         page = browser.new_page(viewport={"width": 1600, "height": 900}, device_scale_factor=1)
-        page.goto(SVG_PATH.as_uri(), wait_until="networkidle")
-        page.evaluate("document.fonts.ready")
-        page.screenshot(path=str(PNG_PATH), omit_background=False)
+        page.goto(HTML_PATH.as_uri(), wait_until="networkidle")
+        page.evaluate(
+            """async () => {
+              await document.fonts.ready;
+              await Promise.all(Array.from(document.images).map((image) => {
+                if (image.complete && image.naturalWidth > 0) return Promise.resolve();
+                return new Promise((resolve, reject) => {
+                  image.addEventListener('load', resolve, { once: true });
+                  image.addEventListener('error', reject, { once: true });
+                });
+              }));
+            }"""
+        )
+
+        checks = page.evaluate(
+            """() => ({
+              bitter: document.fonts.check('300 108.8px Bitter'),
+              bitterItalic: document.fonts.check('italic 300 108.8px Bitter'),
+              inter: document.fonts.check('300 25px Inter'),
+              plex: document.fonts.check('700 24px "IBM Plex Mono"')
+            })"""
+        )
+        if not all(checks.values()):
+            raise RuntimeError(f"Website fonts were not ready for export: {checks}")
+
+        styles = page.locator(".flyer__title").evaluate(
+            """element => {
+              const style = getComputedStyle(element);
+              return {
+                family: style.fontFamily,
+                size: style.fontSize,
+                weight: style.fontWeight,
+                lineHeight: style.lineHeight,
+                tracking: style.letterSpacing
+              };
+            }"""
+        )
+        expected = {
+            "size": "108.8px",
+            "weight": "300",
+            "lineHeight": "121.856px",
+            "tracking": "-2.176px",
+        }
+        if "Bitter" not in styles["family"] or any(styles[key] != value for key, value in expected.items()):
+            raise RuntimeError(f"Headline styles do not match the website: {styles}")
+
+        geometry = page.evaluate(
+            """() => {
+              const box = (selector) => {
+                const rect = document.querySelector(selector).getBoundingClientRect();
+                return { left: rect.left, right: rect.right, width: rect.width, height: rect.height };
+              };
+              const mit = box('.organizer--mit');
+              const lamm = box('.organizer--lamm');
+              const e14 = box('.organizer--e14');
+              return {
+                flyer: box('.flyer'),
+                mitLammGap: lamm.left - mit.right,
+                lammE14Gap: e14.left - lamm.right,
+                pageOverflow: document.documentElement.scrollWidth > 1600 || document.documentElement.scrollHeight > 900,
+                titleLines: document.querySelectorAll('.flyer__title-line').length,
+                visibleText: document.querySelector('.flyer').innerText
+              };
+            }"""
+        )
+        if geometry["flyer"]["width"] != 1600 or geometry["flyer"]["height"] != 900:
+            raise RuntimeError(f"Flyer canvas is not 1600 × 900: {geometry['flyer']}")
+        if geometry["pageOverflow"]:
+            raise RuntimeError("Flyer page overflows the 1600 × 900 canvas")
+        if geometry["titleLines"] != 2:
+            raise RuntimeError("Headline must use the approved two-line treatment")
+        # The MIT and LAMM artwork have different internal transparent edges.
+        # A four-pixel box-gap correction produces equal visible whitespace.
+        if abs((geometry["lammE14Gap"] - geometry["mitLammGap"]) - 4) > 0.5:
+            raise RuntimeError(f"Organizer optical-gap correction is missing: {geometry}")
+        if "vercel.app" in geometry["visibleText"]:
+            raise RuntimeError("The application URL must not be visible in the flyer")
+
+        page.locator(".flyer").screenshot(path=str(PNG_PATH), omit_background=False)
+        page.emulate_media(media="print")
+        page.pdf(
+            path=str(PDF_PATH),
+            print_background=True,
+            width="16in",
+            height="9in",
+            scale=0.96,
+            prefer_css_page_size=False,
+            page_ranges="1",
+            margin={"top": "0", "right": "0", "bottom": "0", "left": "0"},
+        )
         browser.close()
 
 
 def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    qr = cv2.QRCodeEncoder_create().encode(APPLICATION_URL)
-    SVG_PATH.write_text(build_svg(qr_row_runs(qr), len(qr)), encoding="utf-8")
-    (OUTPUT_DIR / "social-captions.md").write_text(build_captions(), encoding="utf-8")
-    export_png()
+    QR_PATH.write_text(build_qr_svg(), encoding="utf-8")
+    CAPTIONS_PATH.write_text(build_captions(), encoding="utf-8")
+    export_flyer()
 
 
 if __name__ == "__main__":
