@@ -23,7 +23,7 @@ The layout uses an asymmetric two-column structure. The left two-thirds hold the
 1. Brand: `∞ INFINITE`
 2. Title: `THE INTERNET OF AGENTS HACKATHON`
 3. Description: `Build decentralized agent swarms that tackle meaningful scientific and engineering problems.`
-4. Event details: `OCT 30 – NOV 1, 2026` and `MIT MEDIA LAB · CAMBRIDGE, MA`
+4. Event details: `Oct 30 – Nov 1, 2026` and `MIT Media Lab · 6th floor · Cambridge, MA`
 5. Call to action: `APPLY NOW`
 6. Visible URL: `infinite-hackathon.vercel.app/apply.html`
 

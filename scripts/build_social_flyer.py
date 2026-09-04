@@ -29,7 +29,7 @@ def qr_row_runs(matrix):
 def build_svg(qr_rects):
     return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title description">
   <title id="title">INFINITE — The Internet of Agents Hackathon</title>
-  <desc id="description">Social flyer for the October 30 through November 1, 2026 hackathon at MIT Media Lab, with a QR code linking to the application.</desc>
+  <desc id="description">Social flyer for the October 30 through November 1, 2026 hackathon at MIT Media Lab, 6th floor, with a QR code linking to the application.</desc>
   <defs>
     <radialGradient id="halo" cx="77%" cy="39%" r="64%">
       <stop offset="0" stop-color="#d9a038" stop-opacity=".12"/>
@@ -84,11 +84,11 @@ def build_svg(qr_rects):
   <g aria-label="Event details">
     <line x1="96" y1="684" x2="1014" y2="684" stroke="#d9a038" stroke-opacity=".52"/>
     <text x="96" y="729" class="mono" font-size="20" letter-spacing="4" fill="#d9a038">DATE</text>
-    <text x="96" y="772" class="sans" font-size="31" font-weight="500" fill="#f7f2e6">OCT 30 – NOV 1, 2026</text>
+    <text x="96" y="772" class="sans" font-size="31" font-weight="500" fill="#f7f2e6">Oct 30 – Nov 1, 2026</text>
     <line x1="485" y1="708" x2="485" y2="787" stroke="#d9a038" stroke-opacity=".35"/>
     <text x="530" y="729" class="mono" font-size="20" letter-spacing="4" fill="#d9a038">LOCATION</text>
-    <text x="530" y="772" class="sans" font-size="31" font-weight="500" fill="#f7f2e6">MIT MEDIA LAB</text>
-    <text x="530" y="808" class="sans" font-size="24" font-weight="300" fill="#a9a294">CAMBRIDGE, MA</text>
+    <text x="530" y="772" class="sans" font-size="31" font-weight="500" fill="#f7f2e6">MIT Media Lab · 6th floor</text>
+    <text x="530" y="808" class="sans" font-size="24" font-weight="300" fill="#a9a294">Cambridge, MA</text>
   </g>
 
   <g aria-label="Application panel">
@@ -125,7 +125,7 @@ def build_captions():
 
 Applications are open for INFINITE: The Internet of Agents Hackathon.
 
-Join us at the MIT Media Lab from October 30–November 1, 2026 to build decentralized agent swarms that tackle meaningful scientific and engineering problems.
+Join us at the MIT Media Lab, 6th floor, from October 30–November 1, 2026 to build decentralized agent swarms that tackle meaningful scientific and engineering problems.
 
 Apply directly: {APPLICATION_URL}
 
@@ -135,7 +135,7 @@ Apply directly: {APPLICATION_URL}
 
 Applications are open for INFINITE: The Internet of Agents Hackathon.
 
-Oct 30–Nov 1, 2026 · MIT Media Lab
+Oct 30–Nov 1, 2026 · MIT Media Lab, 6th floor
 
 Build decentralized agent swarms for meaningful scientific and engineering problems.
 
