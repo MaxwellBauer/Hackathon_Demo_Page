@@ -26,7 +26,7 @@ Use a 1600 × 900 canvas with a minimum 72-pixel safe margin around essential co
 1. The top row contains the Swarm crane wordmark followed by the MIT, LAMM, and E14 identities in that order. The institutional identities use the same muted off-white treatment as the website. Adjust for visible logo widths so the optical MIT-to-LAMM gap matches the optical LAMM-to-E14 gap.
 2. Center the primary copy horizontally within the left content region, which excludes the right-side QR panel. The headline reproduces the website's two-line treatment: `The Internet of Agents` on the first line and `Hackathon` on the second. `Agents` uses the website's gold italic serif treatment; the remaining words use the ivory display treatment.
 3. Beneath the headline, retain this blurb exactly: `A hackathon on decentralized AI swarms — agents built by different labs, startups, and companies discovering each other, sharing capabilities, and coordinating on real scientific and engineering problems.` Center it within the same left content region in readable Inter without competing with the headline.
-4. Center the event-details line within the same left content region exactly as written: `Oct 30 – Nov 1, 2026 · MIT Media Lab 6th floor`.
+4. Center the event-details line within the same left content region exactly as written: `Oct 30 – Nov 1, 2026 · MIT Media Lab 6th floor`. Present it as clean text only, without a leading dot, bullet, icon, or reserved marker spacing.
 5. The right side contains a spacious gold-framed application panel with a large QR code and the label `Apply`.
 6. The QR panel contains no visible URL. The post captions provide a clickable fallback link.
 
@@ -78,6 +78,7 @@ Update `v2/assets/social/social-captions.md` for Swarm. Both captions must state
 - Decode the QR code from the final PNG and verify the exact application URL.
 - Confirm no visible URL appears in the flyer artwork.
 - Confirm the event line matches the approved wording exactly.
+- Confirm no decorative marker appears before the event line and that the text remains centered after its removal.
 - Confirm the complete blurb matches the approved wording exactly and is not clipped.
 - Confirm Bitter, Inter, and IBM Plex Mono are loaded and used in the browser before exporting, with no serif fallback captured in either export.
 - Confirm the headline is centered within the left content region and uses the approved two-line website treatment.
