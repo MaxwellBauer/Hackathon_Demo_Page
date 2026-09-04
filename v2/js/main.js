@@ -1,5 +1,5 @@
 /* ============================================================
-   INFINITE — main.js
+   SWARM — main.js
    Nav state, scroll reveals, animated rubric bars.
    ============================================================ */
 

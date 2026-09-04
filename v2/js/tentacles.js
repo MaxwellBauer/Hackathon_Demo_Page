@@ -1,5 +1,5 @@
 /* ============================================================
-   INFINITE — GOLD FORK · tentacles.js
+   SWARM — GOLD FORK · tentacles.js
    A bottom-anchored field of cybernetic anemone sticks that
    only appear underwater (once the #areas section approaches).
    Small, low-poly, cheap to draw: capped segments, shadowBlur
