@@ -1,5 +1,5 @@
 /* ============================================================
-   INFINITE — scene.js
+   SWARM — scene.js
    Origami crane flock over a dynamic ocean surface that
    transitions underwater with origami fish swarms when you
    scroll to the Tracks section.

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Apply — INFINITE · The Internet of Agents Hackathon</title>
-  <meta name="description" content="Apply to the INFINITE hackathon. MIT Media Lab, Oct 30 – Nov 1, 2026." />
+  <title>Apply — Swarm · The Internet of Agents Hackathon</title>
+  <meta name="description" content="Apply to the Swarm hackathon. MIT Media Lab, Oct 30 – Nov 1, 2026." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;1,6..12,300;1,6..12,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -12,15 +12,36 @@
 </head>
 <body class="apply-page">
 
-  <!-- Nav -->
-  <header class="nav">
-    <a class="nav__brand" href="index.html">
-      <span class="nav__mark">∞</span>
-      <span class="nav__word">INFINITE</span>
-    </a>
-    <nav class="nav__links">
-      <a href="index.html">Back to site</a>
-    </nav>
+  <!-- Two-tier identity and navigation header -->
+  <header class="nav nav--scrolled">
+    <div class="nav__identity-row" aria-label="Hackathon organizers">
+      <a class="identity identity--swarm" href="index.html" aria-label="Swarm Hackathon home">
+        <img class="identity__swarm-mark" src="assets/logos/swarm-mark.svg" alt="" />
+        <span class="identity__swarm-word">SWARM</span>
+      </a>
+      <div class="identity identity--mit">
+        <img src="assets/logos/mit-lockup.svg" alt="Massachusetts Institute of Technology" />
+      </div>
+      <div class="identity identity--lamm">
+        <video class="identity__lattice" autoplay muted loop playsinline preload="metadata"
+          poster="assets/logos/lamm-lattice-white-poster.png" aria-hidden="true">
+          <source src="assets/logos/lamm-lattice-white.mp4" type="video/mp4" />
+        </video>
+        <img class="identity__lattice-poster" src="assets/logos/lamm-lattice-white-poster.png" alt="" />
+        <img class="identity__lamm-word" src="assets/logos/lamm-wordmark.svg"
+          alt="Laboratory for Atomistic and Molecular Mechanics" />
+      </div>
+      <div class="identity identity--e14">
+        <img src="assets/logos/e14-logo.svg" alt="E14 Fund" />
+      </div>
+      <a class="nav__mobile-action" href="index.html">Back to site</a>
+    </div>
+    <div class="nav__bar nav__bar--apply">
+      <span class="nav__date">Oct 30 – Nov 1, 2026</span>
+      <nav class="nav__links" aria-label="Application navigation">
+        <a href="index.html">Back to site</a>
+      </nav>
+    </div>
   </header>
 
   <main class="apply-main">
@@ -30,7 +51,7 @@
       <p class="apply-page__sub">Teams of 2–5. Tell us what you want to make and we'll get back to you.</p>
 
       <form class="apply-form" id="app-form" action="https://formspree.io/f/mljeldnn" method="POST">
-        <input type="hidden" name="_subject" value="New INFINITE Hackathon application" />
+        <input type="hidden" name="_subject" value="New Swarm Hackathon application" />
         <label class="form-honeypot" aria-hidden="true">
           Leave this field empty
           <input name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
