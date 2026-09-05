@@ -1005,7 +1005,10 @@ body.no-webgl {
 
 .footer {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem 2.5rem;
   padding: 2rem 2.5rem;
   border-top: 1px solid var(--line);
   font-family: var(--mono);
@@ -1016,6 +1019,31 @@ body.no-webgl {
   background: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
+
+.footer__compliance {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+
+.footer a {
+  color: var(--ink-dim);
+  text-decoration-color: rgba(217, 160, 56, 0.5);
+  text-underline-offset: 0.24em;
+  transition: color 0.2s ease, outline-color 0.2s ease;
+}
+
+.footer a:hover { color: var(--accent-warm); }
+
+.footer a:focus-visible {
+  color: var(--accent-warm);
+  outline: 1px solid var(--accent-soft);
+  outline-offset: 5px;
+  border-radius: 2px;
 }
 
 /* ---------- Reveal on scroll ---------- */
@@ -1037,6 +1065,7 @@ body.no-webgl {
   .rubric__row { grid-template-columns: 1fr; gap: 0.9rem; }
   .section { padding: 6rem 1.3rem 4rem; }
   .footer { flex-direction: column; gap: 0.5rem; align-items: center; }
+  .footer__compliance { justify-content: center; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

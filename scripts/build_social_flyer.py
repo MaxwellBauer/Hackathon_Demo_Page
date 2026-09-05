@@ -137,7 +137,8 @@ def export_flyer() -> None:
                 flyer: box('.flyer'),
                 mitLammGap: lamm.left - mit.right,
                 lammE14Gap: e14.left - lamm.right,
-                pageOverflow: document.documentElement.scrollWidth > 1600 || document.documentElement.scrollHeight > 900,
+                horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+                flyerOverflow: document.querySelector('.flyer').scrollWidth > document.querySelector('.flyer').clientWidth || document.querySelector('.flyer').scrollHeight > document.querySelector('.flyer').clientHeight,
                 titleLines: document.querySelectorAll('.flyer__title-line').length,
                 detailMarker: getComputedStyle(document.querySelector('.flyer__details'), '::before').content,
                 visibleText: document.querySelector('.flyer').innerText
@@ -146,8 +147,8 @@ def export_flyer() -> None:
         )
         if geometry["flyer"]["width"] != 1600 or geometry["flyer"]["height"] != 900:
             raise RuntimeError(f"Flyer canvas is not 1600 × 900: {geometry['flyer']}")
-        if geometry["pageOverflow"]:
-            raise RuntimeError("Flyer page overflows the 1600 × 900 canvas")
+        if geometry["horizontalOverflow"] or geometry["flyerOverflow"]:
+            raise RuntimeError(f"Flyer has unexpected overflow: {geometry}")
         if geometry["titleLines"] != 2:
             raise RuntimeError("Headline must use the approved two-line treatment")
         if geometry["detailMarker"] not in ("none", "normal"):

@@ -41,6 +41,13 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    .flyer-stage {
+      position: relative;
+      width: 1600px;
+      height: 900px;
+      overflow: hidden;
+    }
+
     .flyer {
       position: relative;
       width: 1600px;
@@ -262,6 +269,37 @@
       line-height: 1;
     }
 
+    .flyer-site-footer {
+      width: 1600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75rem 2rem;
+      padding: 1.35rem 2rem;
+      color: rgba(247, 242, 230, 0.62);
+      background: #050505;
+      border-top: 1px solid var(--line);
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+    }
+
+    .flyer-site-footer a {
+      color: var(--ink-dim);
+      text-underline-offset: 0.24em;
+      text-decoration-color: rgba(217, 160, 56, 0.5);
+    }
+
+    .flyer-site-footer a:hover { color: var(--accent-warm); }
+
+    .flyer-site-footer a:focus-visible {
+      color: var(--accent-warm);
+      outline: 1px solid var(--accent-soft);
+      outline-offset: 5px;
+      border-radius: 2px;
+    }
+
     .flock img {
       position: absolute;
       z-index: 1;
@@ -274,9 +312,20 @@
     .flock img:nth-child(3) { left: 850px; top: 595px; width: 76px; opacity: 0.24; transform: rotate(9deg); }
     .flock img:nth-child(4) { left: 680px; top: 190px; width: 50px; opacity: 0.16; transform: rotate(12deg); }
 
+    @media screen and (max-width: 1599px) {
+      html, body { min-width: 0; min-height: 0; }
+      body { display: block; }
+      .flyer-stage { width: 100vw; height: 56.25vw; }
+      .flyer { transform: scale(calc(100vw / 1600px)); transform-origin: top left; }
+      .flyer-site-footer { width: 100%; }
+    }
+
     @page { size: 1600px 900px; margin: 0; }
 
     @media print {
+      .flyer-site-footer { display: none; }
+      .flyer-stage { width: 1600px; height: 900px; }
+      .flyer { transform: none; }
       html,
       body {
         width: 1600px;
@@ -295,6 +344,7 @@
   </style>
 </head>
 <body>
+  <div class="flyer-stage">
   <main class="flyer" aria-label="Swarm — The Internet of Agents Hackathon promotional flyer">
     <svg class="terrain" viewBox="0 0 1600 900" aria-hidden="true" preserveAspectRatio="none">
       <defs>
@@ -364,5 +414,10 @@
       <span class="apply-panel__label">Apply</span>
     </a>
   </main>
+  </div>
+  <footer class="flyer-site-footer">
+    <span>Contact: <a href="mailto:fw2@mit.edu">fw2@mit.edu</a></span>
+    <a href="https://accessibility.mit.edu/">Accessibility</a>
+  </footer>
 </body>
 </html>
