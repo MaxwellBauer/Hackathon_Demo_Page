@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply — Swarm · The Internet of Agents Hackathon</title>
+  <meta name="description" content="Apply to the Swarm hackathon. MIT Media Lab, Oct 30 – Nov 1, 2026." />
+  <link rel="icon" type="image/svg+xml" href="assets/logos/swarm-favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;1,6..12,300;1,6..12,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="apply-page">
+
+  <!-- Unified identity and navigation header -->
+  <header class="nav nav--scrolled">
+    <div class="nav__identity-row" aria-label="Hackathon organizers">
+      <a class="identity identity--swarm" href="index.html" aria-label="Swarm Hackathon home">
+        <img class="identity__swarm-crane" src="assets/logos/swarm-crane.svg" alt="" />
+        <span class="identity__swarm-word">SWARM</span>
+      </a>
+      <div class="identity__institutions">
+        <a class="identity identity--mit" href="https://www.mit.edu/" target="_blank"
+          rel="noopener noreferrer" aria-label="Visit the MIT website">
+          <img src="assets/logos/mit-lockup.svg" alt="Massachusetts Institute of Technology" />
+        </a>
+        <a class="identity identity--lamm" href="https://lamm.mit.edu/" target="_blank"
+          rel="noopener noreferrer" aria-label="Visit the LAMM website">
+          <video class="identity__lattice" autoplay muted loop playsinline preload="metadata"
+            poster="assets/logos/lamm-lattice-white-poster.png" aria-hidden="true">
+            <source src="assets/logos/lamm-lattice-white.webm" type="video/webm" />
+            <source src="assets/logos/lamm-lattice-white.mp4" type="video/mp4" />
+          </video>
+          <span class="identity__lamm-word" aria-label="Laboratory for Atomistic and Molecular Mechanics">
+            <span>Laboratory for Atomistic and</span>
+            <span>Molecular Mechanics</span>
+          </span>
+        </a>
+        <a class="identity identity--e14" href="https://www.e14.vc/" target="_blank"
+          rel="noopener noreferrer" aria-label="Visit the E14 Fund website">
+          <img src="assets/logos/e14-logo.svg" alt="E14 Fund" />
+        </a>
+      </div>
+      <a class="nav__mobile-action" href="index.html">Back to site</a>
+    </div>
+    <div class="nav__bar nav__bar--apply">
+      <span class="nav__date">Oct 30 – Nov 1, 2026</span>
+      <nav class="nav__links" aria-label="Application navigation">
+        <a href="index.html">Back to site</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="apply-main">
+    <section class="apply-page__inner">
+      <span class="apply__kicker">Swarm · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
+      <h1 class="apply-page__title">Apply to build</h1>
+      <p class="apply-page__sub">Teams of 2–5. Tell us what you want to make and we'll get back to you.</p>
+
+      <form class="apply-form" id="app-form" action="https://formspree.io/f/mljeldnn" method="POST">
+        <input type="hidden" name="_subject" value="New Swarm Hackathon application" />
+        <label class="form-honeypot" aria-hidden="true">
+          Leave this field empty
+          <input name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+        </label>
+
+        <section class="apply-form__section" aria-labelledby="about-heading">
+          <h2 class="apply-form__section-title" id="about-heading">About you</h2>
+
+          <div class="apply-form__grid">
+            <label class="field">
+              <span class="field__label">First name <b>*</b></span>
+              <input name="first_name" type="text" autocomplete="given-name" required />
+            </label>
+            <label class="field">
+              <span class="field__label">Last name <b>*</b></span>
+              <input name="last_name" type="text" autocomplete="family-name" required />
+            </label>
+            <label class="field">
+              <span class="field__label">Email <b>*</b></span>
+              <input name="email" type="email" autocomplete="email" required />
+            </label>
+            <label class="field">
+              <span class="field__label">Major or industry <b>*</b></span>
+              <input name="major_or_industry" type="text" required />
+            </label>
+          </div>
+
+          <fieldset class="question-group">
+            <legend class="field__label">Which institution are you from? <b>*</b></legend>
+            <div class="apply-form__choices">
+              <label class="chk"><input type="radio" name="institution" value="MIT" required /><span>MIT</span></label>
+              <label class="chk"><input type="radio" name="institution" value="Harvard" /><span>Harvard</span></label>
+              <label class="chk"><input type="radio" name="institution" value="RISD" /><span>RISD</span></label>
+              <label class="chk"><input id="institution-other-choice" type="radio" name="institution" value="Other" /><span>Other</span></label>
+            </div>
+            <label class="field field--other">
+              <span class="field__label">Other institution</span>
+              <input id="institution-other" name="institution_other" type="text" autocomplete="organization" />
+            </label>
+          </fieldset>
+
+          <div class="apply-form__grid">
+            <label class="field">
+              <span class="field__label">Graduation year <b>*</b></span>
+              <input name="graduation_year" type="text" inputmode="numeric" placeholder="e.g. 2028 or N/A" required />
+            </label>
+            <label class="field">
+              <span class="field__label">Companies you have worked for</span>
+              <textarea name="companies" rows="3"></textarea>
+            </label>
+          </div>
+        </section>
+
+        <section class="apply-form__section" aria-labelledby="problem-heading">
+          <h2 class="apply-form__section-title" id="problem-heading">Problem &amp; Experience</h2>
+
+          <label class="field field--full">
+            <span class="field__label">What is a difficult, meaningful problem you would like to solve at the hackathon, and why is it significant? What have you built, researched, or accomplished that demonstrates your ability to tackle this problem? <b>*</b></span>
+            <textarea name="problem_and_experience" rows="8" maxlength="2400" required></textarea>
+          </label>
+
+          <label class="field field--full">
+            <span class="field__label">Why would a decentralized agentic swarm be particularly well-suited to solving this problem? <b>*</b></span>
+            <textarea name="swarm_suitability" rows="6" maxlength="1800" required></textarea>
+          </label>
+        </section>
+
+        <section class="apply-form__section" aria-labelledby="expertise-heading">
+          <h2 class="apply-form__section-title" id="expertise-heading">Skills &amp; Expertise</h2>
+
+          <fieldset class="question-group">
+            <legend class="field__label">What expertise or capabilities would you bring to a team? <b>*</b></legend>
+            <span class="field__hint">Select all that apply.</span>
+            <div class="apply-form__checks apply-form__checks--expertise">
+              <label class="chk"><input type="checkbox" name="expertise" value="AI / Machine Learning" /><span>AI / Machine Learning</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Agentic Systems" /><span>Agentic Systems</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Software / Coding" /><span>Software / Coding</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Data Science" /><span>Data Science</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Biology" /><span>Biology</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Chemistry" /><span>Chemistry</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Materials Science" /><span>Materials Science</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Physics" /><span>Physics</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Mathematics" /><span>Mathematics</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Scientific Research / Experimentation" /><span>Scientific Research / Experimentation</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Robotics" /><span>Robotics</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Electronics / Embedded Systems" /><span>Electronics / Embedded Systems</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Mechanical Engineering" /><span>Mechanical Engineering</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Electrical Engineering" /><span>Electrical Engineering</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Manufacturing / Fabrication" /><span>Manufacturing / Fabrication</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Design / UX" /><span>Design / UX</span></label>
+              <label class="chk"><input type="checkbox" name="expertise" value="Product / Entrepreneurship" /><span>Product / Entrepreneurship</span></label>
+              <label class="chk"><input id="expertise-other-choice" type="checkbox" name="expertise" value="Other" /><span>Other</span></label>
+            </div>
+            <label class="field field--other">
+              <span class="field__label">Other expertise</span>
+              <input id="expertise-other" name="expertise_other" type="text" />
+            </label>
+          </fieldset>
+
+          <label class="field field--full">
+            <span class="field__label">What kind of collaborator or expertise would complement you?</span>
+            <input name="complementary_collaborator" type="text" />
+          </label>
+        </section>
+
+        <section class="apply-form__section" aria-labelledby="links-heading">
+          <h2 class="apply-form__section-title" id="links-heading">Links &amp; Consent</h2>
+
+          <div class="apply-form__grid">
+            <label class="field"><span class="field__label">Personal website</span><input name="personal_website" type="url" placeholder="https://" /></label>
+            <label class="field"><span class="field__label">GitHub</span><input name="github" type="url" placeholder="https://github.com/" /></label>
+            <label class="field"><span class="field__label">LinkedIn</span><input name="linkedin" type="url" placeholder="https://linkedin.com/in/" /></label>
+            <label class="field"><span class="field__label">Instagram</span><input name="instagram" type="url" placeholder="https://instagram.com/" /></label>
+          </div>
+
+          <div class="field field--full">
+            <span class="field__label">Resume/CV</span>
+            <a class="btn btn--ghost dropbox-upload" href="https://www.dropbox.com/request/4s23vn31qgdfonarumpf" target="_blank" rel="noopener noreferrer">Upload Resume/CV</a>
+          </div>
+
+          <fieldset class="question-group">
+            <legend class="field__label">May we share your information with attendees, sponsors, and recruiters? <b>*</b></legend>
+            <div class="apply-form__choices">
+              <label class="chk"><input type="radio" name="public_sharing_consent" value="Yes" required /><span>Yes</span></label>
+              <label class="chk"><input type="radio" name="public_sharing_consent" value="No" /><span>No</span></label>
+            </div>
+          </fieldset>
+        </section>
+
+        <div class="apply-form__row">
+          <button class="btn btn--solid btn--big" id="app-submit" type="submit">Send application</button>
+          <span class="apply-form__status" id="app-status" role="status" aria-live="polite"></span>
+        </div>
+      </form>
+
+      <div class="apply-done" id="app-done" tabindex="-1" hidden>
+        <p class="apply__kicker">Received</p>
+        <h2 class="apply-page__title">Application received</h2>
+        <p class="apply-page__sub">Your application was recorded successfully. Watch your email for updates.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Swarm · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
+    <span>The Internet of Agents</span>
+    <nav class="footer__compliance" aria-label="Site information">
+      <span>Contact: <a href="mailto:fw2@mit.edu">fw2@mit.edu</a></span>
+      <a href="https://accessibility.mit.edu/">Accessibility</a>
+    </nav>
+  </footer>
+
+  <script>
+    const form = document.getElementById("app-form");
+    const submit = document.getElementById("app-submit");
+    const status = document.getElementById("app-status");
+    const done = document.getElementById("app-done");
+    const institutionOtherChoice = document.getElementById("institution-other-choice");
+    const institutionOther = document.getElementById("institution-other");
+    const expertiseOtherChoice = document.getElementById("expertise-other-choice");
+    const expertiseOther = document.getElementById("expertise-other");
+    const expertiseChoices = [...form.querySelectorAll("input[name=expertise]")];
+
+    const updateOtherRequirements = () => {
+      institutionOther.required = institutionOtherChoice.checked;
+      expertiseOther.required = expertiseOtherChoice.checked;
+    };
+
+    const validateExpertise = () => {
+      const hasExpertise = expertiseChoices.some((choice) => choice.checked);
+      expertiseChoices[0].setCustomValidity(hasExpertise ? "" : "Choose at least one area of expertise.");
+    };
+
+
+    form.querySelectorAll("input[name=institution]").forEach((choice) => {
+      choice.addEventListener("change", updateOtherRequirements);
+    });
+    expertiseChoices.forEach((choice) => {
+      choice.addEventListener("change", () => {
+        updateOtherRequirements();
+        validateExpertise();
+      });
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      updateOtherRequirements();
+      validateExpertise();
+      if (!form.reportValidity()) return;
+
+      submit.disabled = true;
+      submit.textContent = "Sending…";
+      status.textContent = "Submitting your application…";
+      status.classList.remove("apply-form__status--error");
+
+      try {
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: new FormData(form),
+          headers: { Accept: "application/json" }
+        });
+
+        if (!response.ok) throw new Error("Submission failed");
+
+        form.reset();
+        form.hidden = true;
+        done.hidden = false;
+        done.focus();
+      } catch (error) {
+        status.textContent = "Unable to send your application. Please try again.";
+        status.classList.add("apply-form__status--error");
+        submit.disabled = false;
+        submit.textContent = "Send application";
+      }
+    });
+  </script>
+</body>
+</html>

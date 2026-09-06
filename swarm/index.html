@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Swarm — The Internet of Agents Hackathon</title>
+  <meta name="description" content="A hackathon on decentralized AI agent swarms solving real scientific and engineering problems. MIT Media Lab, Oct 30 – Nov 1, 2026." />
+  <link rel="icon" type="image/svg+xml" href="assets/logos/swarm-favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;1,6..12,300;1,6..12,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <!-- Fixed 3D scene: origami swarm over synthwave terrain -->
+  <canvas id="scene" aria-hidden="true"></canvas>
+  <div class="scene-veil" aria-hidden="true"></div>
+  <canvas id="tentacles" class="tentacle-layer" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Unified identity and navigation header -->
+  <header class="nav" id="nav">
+    <div class="nav__identity-row" aria-label="Hackathon organizers">
+      <a class="identity identity--swarm" href="#top" aria-label="Swarm Hackathon">
+        <img class="identity__swarm-crane" src="assets/logos/swarm-crane.svg" alt="" />
+        <span class="identity__swarm-word">SWARM</span>
+      </a>
+      <div class="identity__institutions">
+        <a class="identity identity--mit" href="https://www.mit.edu/" target="_blank"
+          rel="noopener noreferrer" aria-label="Visit the MIT website">
+          <img src="assets/logos/mit-lockup.svg" alt="Massachusetts Institute of Technology" />
+        </a>
+        <a class="identity identity--lamm" href="https://lamm.mit.edu/" target="_blank"
+          rel="noopener noreferrer" aria-label="Visit the LAMM website">
+          <video class="identity__lattice" autoplay muted loop playsinline preload="metadata"
+            poster="assets/logos/lamm-lattice-white-poster.png" aria-hidden="true">
+            <source src="assets/logos/lamm-lattice-white.webm" type="video/webm" />
+            <source src="assets/logos/lamm-lattice-white.mp4" type="video/mp4" />
+          </video>
+          <span class="identity__lamm-word" aria-label="Laboratory for Atomistic and Molecular Mechanics">
+            <span>Laboratory for Atomistic and</span>
+            <span>Molecular Mechanics</span>
+          </span>
+        </a>
+        <a class="identity identity--e14" href="https://www.e14.vc/" target="_blank"
+          rel="noopener noreferrer" aria-label="Visit the E14 Fund website">
+          <img src="assets/logos/e14-logo.svg" alt="E14 Fund" />
+        </a>
+      </div>
+      <a class="nav__mobile-action" href="apply.html">Apply</a>
+    </div>
+    <div class="nav__bar">
+      <span class="nav__date">Oct 30 – Nov 1, 2026</span>
+      <nav class="nav__links" aria-label="Main navigation">
+        <a href="#purpose">Purpose</a>
+        <a href="#challenge">Challenge</a>
+        <a href="#resources">Resources</a>
+        <a href="#areas">Areas</a>
+        <a href="#judging">Judging</a>
+      </nav>
+      <a class="nav__cta" href="apply.html">Apply</a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero__meta">
+        <span>Oct 30 – Nov 1, 2026</span>
+        <span class="hero__meta-dot"></span>
+        <span>MIT Media Lab</span>
+      </div>
+      <img class="hero__crane" src="assets/logos/swarm-crane.svg" alt="" aria-hidden="true" />
+      <h1 class="hero__title">
+        <span class="hero__line">The Internet of <em>Agents</em></span>
+        <span class="hero__line">Hackathon</span>
+      </h1>
+      <p class="hero__sub">
+        A hackathon on decentralized AI swarms — agents built by different labs,
+        startups, and companies discovering each other, sharing capabilities, and
+        coordinating on real scientific and engineering problems.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--solid" href="apply.html">Apply</a>
+        <a class="btn btn--ghost" href="#purpose">Read the brief</a>
+      </div>
+      <div class="hero__stats">
+        <div class="stat"><span class="stat__k">3 days</span><span class="stat__v">In-person</span></div>
+        <div class="stat"><span class="stat__k">2–5</span><span class="stat__v">Per team</span></div>
+        <div class="stat"><span class="stat__k">∞</span><span class="stat__v">Agent swarms</span></div>
+        <div class="stat"><span class="stat__k">4</span><span class="stat__v">Challenge Areas</span></div>
+      </div>
+      <div class="hero__scrollcue" aria-hidden="true"><span></span></div>
+    </section>
+
+    <!-- Ticker -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>Decentralized Infrastructure ✦ Real-World Applications ✦ Physical Agency ✦ Open Science ✦ Agent Swarms ✦ Collective Intelligence ✦&nbsp;</span>
+        <span>Decentralized Infrastructure ✦ Real-World Applications ✦ Physical Agency ✦ Open Science ✦ Agent Swarms ✦ Collective Intelligence ✦&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- PURPOSE -->
+    <section class="section" id="purpose">
+      <div class="section__head reveal">
+        <span class="section__index">01</span>
+        <h2 class="section__title">Purpose</h2>
+      </div>
+      <div class="section__body">
+        <p class="lede reveal">
+          Explore what becomes possible when collaborative, decentralized agentic systems are used to solve
+          difficult, consequential scientific and technical problems.
+        </p>
+        <p class="reveal">
+          The hackathon is itself an experiment in collective intelligence: agents collaborate within teams, teams
+          exchange capabilities across teams, and successful capabilities propagate through the ecosystem.
+        </p>
+      </div>
+    </section>
+
+    <!-- CHALLENGE -->
+    <section class="section" id="challenge">
+      <div class="section__head reveal">
+        <span class="section__index">02</span>
+        <h2 class="section__title">Challenge</h2>
+      </div>
+      <div class="section__body">
+        <p class="lede reveal">
+          Teams identify a difficult scientific or technical problem and build a functioning agentic system to
+          address it. Each project should demonstrate:
+        </p>
+        <div class="card-grid">
+          <div class="card reveal"><span class="card__num">→</span><h3>Problem</h3><p>Identify a difficult, open-ended, consequential scientific or technical challenge.</p></div>
+          <div class="card reveal"><span class="card__num">→</span><h3>Functioning System</h3><p>Build a working agentic system — not just a concept or architecture.</p></div>
+          <div class="card reveal"><span class="card__num">→</span><h3>Result</h3><p>Demonstrate what the system actually accomplishes.</p></div>
+          <div class="card reveal"><span class="card__num">→</span><h3>Validation</h3><p>Provide convincing evidence, benchmarks, or real-world validation.</p></div>
+        </div>
+        <p class="reveal">
+          The goal is not simply to propose an idea or agent architecture, but to demonstrate a working system
+          and what it can accomplish.
+        </p>
+      </div>
+    </section>
+
+    <!-- RESOURCES -->
+    <section class="section" id="resources">
+      <div class="section__head reveal">
+        <span class="section__index">03</span>
+        <h2 class="section__title">Resources & Technology</h2>
+      </div>
+      <div class="section__body">
+        <p class="lede reveal">
+          Teams have access to a common pool of resources to ground investigations from hour one.
+        </p>
+        <div class="card-grid">
+          <div class="card reveal"><span class="card__num">R1</span><h3>Scientific datasets</h3><p>Shared corpora and domain data for grounding investigations.</p></div>
+          <div class="card reveal"><span class="card__num">R2</span><h3>AI models & tools</h3><p>Foundation models, agent frameworks, and open tooling to compose into swarms.</p></div>
+          <div class="card reveal"><span class="card__num">R3</span><h3>Compute & tokens</h3><p>A common pool of credits so experimentation is never bottlenecked.</p></div>
+          <div class="card reveal"><span class="card__num">R4</span><h3>Hardware</h3><p>Robots, microcontrollers, and sensors for agents that act in the world.</p></div>
+          <div class="card reveal"><span class="card__num">R5</span><h3>Lab access</h3><p>Cloud labs and experimental infrastructure for closing the loop on real experiments.</p></div>
+          <div class="card reveal"><span class="card__num">R6</span><h3>Open problem space</h3><p>Sponsor-led challenges provide concrete inspiration — unexpected approaches welcome.</p></div>
+        </div>
+        <p class="reveal">
+          Teams are free to use, reuse, modify, combine, or build their own technology stack. They may use
+          existing frameworks, build on capabilities developed by other participants, integrate physical systems,
+          or develop entirely new architectures. The competition is not about a particular technology stack, but
+          about what teams can accomplish with agentic systems.
+        </p>
+      </div>
+    </section>
+
+    <!-- CHALLENGE AREAS -->
+    <section class="section" id="areas">
+      <div class="section__head reveal">
+        <span class="section__index">04</span>
+        <h2 class="section__title">Challenge Areas</h2>
+      </div>
+      <div class="section__body">
+        <p class="lede reveal">
+          Scientific domains are intentionally open. We provide challenge seeds, problems, datasets, resources,
+          or sponsor-led challenges to provide entry points without constraining what teams build.
+        </p>
+        <div class="tracks">
+          <div class="track reveal">
+            <span class="track__num">A·01</span>
+            <h3>Biology & Protein Design</h3>
+            <p>Swarms that hypothesize, design, and iterate across sequence, structure, and function.</p>
+          </div>
+          <div class="track reveal">
+            <span class="track__num">A·02</span>
+            <h3>Robotics & Physical Agency</h3>
+            <p>Agents that reach beyond the browser into robots, sensors, and cloud laboratories.</p>
+          </div>
+          <div class="track reveal">
+            <span class="track__num">A·03</span>
+            <h3>Manufacturing & Materials</h3>
+            <p>From candidate discovery to fabrication — closing the loop between simulation and matter.</p>
+          </div>
+          <div class="track reveal">
+            <span class="track__num">A·04</span>
+            <h3>Open Scientific Challenge</h3>
+            <p>Participant-defined problems. Bring the question you can't stop thinking about.</p>
+          </div>
+        </div>
+        <p class="note reveal">
+          Teams can formulate their own problems and work across challenge areas. There is one overall
+          competition, rather than separate tracks.
+        </p>
+      </div>
+    </section>
+
+    <!-- JUDGING -->
+    <section class="section" id="judging">
+      <div class="section__head reveal">
+        <span class="section__index">05</span>
+        <h2 class="section__title">Judging</h2>
+      </div>
+      <div class="section__body">
+        <p class="lede reveal">
+          The rubric rewards systems where collective organization itself contributes capability, rather than
+          systems that simply place multiple agents around a task.
+        </p>
+
+        <div class="rubric">
+          <div class="rubric__row reveal">
+            <div class="rubric__info">
+              <h3>Problem Significance & Complexity</h3>
+              <p>How difficult, open-ended, consequential, and scientifically meaningful is the problem? Does solving it meaningfully advance a scientific or technical goal?</p>
+            </div>
+            <div class="rubric__weight"><div class="rubric__bar" data-w="20"></div><span>20%</span></div>
+          </div>
+          <div class="rubric__row reveal">
+            <div class="rubric__info">
+              <h3>Scientific/Technical Impact</h3>
+              <p>What was actually achieved? Is the result novel, meaningful, rigorous, and potentially useful?</p>
+            </div>
+            <div class="rubric__weight"><div class="rubric__bar" data-w="25"></div><span>25%</span></div>
+          </div>
+          <div class="rubric__row reveal">
+            <div class="rubric__info">
+              <h3>Decentralized Agency</h3>
+              <p>Are decision-making and capabilities meaningfully distributed across agents? Do agents have distinct information, resources, or capabilities? Can they coordinate and adapt without a central planner prescribing the entire trajectory?</p>
+            </div>
+            <div class="rubric__weight"><div class="rubric__bar" data-w="20"></div><span>20%</span></div>
+          </div>
+          <div class="rubric__row reveal">
+            <div class="rubric__info">
+              <h3>Collective Capability</h3>
+              <p>Does organizing agents collectively add measurable capability? Where possible, demonstrate this through a simple comparison such as multi-agent vs. single-agent, collaborative vs. isolated, or decentralized vs. centralized.</p>
+            </div>
+            <div class="rubric__weight"><div class="rubric__bar" data-w="25"></div><span>25%</span></div>
+          </div>
+          <div class="rubric__row reveal">
+            <div class="rubric__info">
+              <h3>Execution and Validation</h3>
+              <p>Is there a functioning system rather than just a concept? Is its performance demonstrated with convincing evidence, benchmarks, or real-world validation?</p>
+            </div>
+            <div class="rubric__weight"><div class="rubric__bar" data-w="10"></div><span>10%</span></div>
+          </div>
+        </div>
+
+        <div class="callout reveal">
+          <p>
+            <strong>Collaboration Bonus: +10</strong> — Collaboration is not part of the core judging score. Teams can earn up to +10 points by creating
+            capabilities that materially strengthen other teams, such as:
+          </p>
+          <ul style="margin-top: 0.8rem; padding-left: 1.2rem;">
+            <li>A tool or agent successfully reused by another team</li>
+            <li>Data, discoveries, or experiments that enable another team's result</li>
+            <li>Infrastructure that improves multiple systems</li>
+            <li>Capabilities that propagate through the ecosystem</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- MULTI-AGENT SYSTEM -->
+    <section class="section" id="system">
+      <div class="section__head reveal">
+        <span class="section__index">06</span>
+        <h2 class="section__title">The Hackathon as a Multi-Agent System</h2>
+      </div>
+      <div class="section__body">
+        <p class="lede reveal">
+          The hackathon operates across multiple levels:
+        </p>
+        <div class="card-grid">
+          <div class="card reveal"><span class="card__num">→</span><h3>Agents</h3><p>Collaborate within teams to solve problems.</p></div>
+          <div class="card reveal"><span class="card__num">→</span><h3>Teams</h3><p>Exchange capabilities across teams.</p></div>
+          <div class="card reveal"><span class="card__num">→</span><h3>Ecosystem</h3><p>Successful capabilities propagate because they increase the effectiveness of other systems.</p></div>
+        </div>
+        <p class="reveal">
+          The competition therefore becomes a live experiment in decentralized collective intelligence: teams
+          compete to build strong systems while also having an incentive to make the broader ecosystem
+          stronger.
+        </p>
+      </div>
+    </section>
+
+    <!-- APPLY TEASER -->
+    <section class="apply" id="apply">
+      <div class="apply__inner reveal">
+        <span class="apply__kicker">Swarm · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
+        <h2 class="apply__title">Join the swarm.</h2>
+        <p>October 30 – November 1, 2026. Bring a problem — or come find one.</p>
+        <a class="btn btn--solid btn--big" href="apply.html">Apply now</a>
+      </div>
+    </section>
+    <footer class="footer">
+      <span>Swarm · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
+      <span>The Internet of Agents</span>
+      <nav class="footer__compliance" aria-label="Site information">
+        <span>Contact: <a href="mailto:fw2@mit.edu">fw2@mit.edu</a></span>
+        <a href="https://accessibility.mit.edu/">Accessibility</a>
+      </nav>
+    </footer>
+
+  </main>
+
+  <script type="module" src="js/scene.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script src="js/tentacles.js" defer></script>
+  <script>
+    // Handle fragment navigation after content is ready
+    if (location.hash) {
+      const scrollToHash = () => {
+        const el = document.querySelector(location.hash);
+        if (el) {
+          el.scrollIntoView({ behavior: "instant", block: "start" });
+        }
+      };
+      // Try immediately, then after fonts/layout settle
+      scrollToHash();
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => setTimeout(scrollToHash, 100));
+      }
+      window.addEventListener("load", () => setTimeout(scrollToHash, 200));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 72" role="img" aria-labelledby="title desc">
+  <title id="title">Origami crane</title>
+  <desc id="desc">A small gold origami crane representing the Swarm Hackathon.</desc>
+  <defs>
+    <style>
+      .wing {
+        transform-box: view-box;
+        transform-origin: 54px 37px;
+        will-change: transform;
+      }
+      .wing--left { animation: wing-flap-left 1.6s ease-in-out infinite; }
+      .wing--right { animation: wing-flap-right 1.6s ease-in-out infinite; }
+      @keyframes wing-flap-left {
+        0%, 100% { transform: rotate(0deg) scaleY(1); }
+        35% { transform: rotate(4deg) scaleY(0.76); }
+        70% { transform: rotate(-2deg) scaleY(1.04); }
+      }
+      @keyframes wing-flap-right {
+        0%, 100% { transform: rotate(0deg) scaleY(1); }
+        35% { transform: rotate(-4deg) scaleY(0.76); }
+        70% { transform: rotate(2deg) scaleY(1.04); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .wing { animation: none; }
+      }
+    </style>
+    <linearGradient id="wing-left" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffdf8a"/>
+      <stop offset="1" stop-color="#d9a038"/>
+    </linearGradient>
+    <linearGradient id="wing-right" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2c15a"/>
+      <stop offset="1" stop-color="#b97916"/>
+    </linearGradient>
+  </defs>
+  <g class="wing wing--left" stroke-linejoin="round">
+    <path d="M54 37 5 8 40 34Z" fill="url(#wing-left)" stroke="#ffdf8a" stroke-width="0.9"/>
+    <path d="M5 8 40 34 28 23" fill="none" stroke="#fff0bd" stroke-width="0.75" opacity="0.55"/>
+  </g>
+  <g class="wing wing--right" stroke-linejoin="round">
+    <path d="M54 37 105 7 68 34Z" fill="url(#wing-right)" stroke="#ffdf8a" stroke-width="0.9"/>
+    <path d="M105 7 68 34 82 22" fill="none" stroke="#fff0bd" stroke-width="0.75" opacity="0.55"/>
+  </g>
+  <g stroke="#ffdf8a" stroke-width="0.9" stroke-linejoin="round">
+    <path d="m40 34 14 3 14-3-11 18-23-5Z" fill="#d9a038"/>
+    <path d="m40 38-31 19 25-10Z" fill="#b97916"/>
+    <path d="m61 43 15-22 16-3-10 8-10 19Z" fill="#f2c15a"/>
+    <path d="m91 18 16 5-17 4-8-1Z" fill="#ffdf8a"/>
+    <path d="m54 37 3 15-10 12-7-17Z" fill="#c88b25"/>
+  </g>
+  <g fill="none" stroke="#fff0bd" stroke-width="0.75" opacity="0.55">
+    <path d="M40 34l14 3 14-3M34 47l20-10 3 15"/>
+  </g>
+</svg>

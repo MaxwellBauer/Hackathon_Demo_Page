@@ -2,7 +2,11 @@
 
 Static site for the **INFINITE: The Internet of Agents Hackathon**, MIT Media Lab, Oct 30 – Nov 1, 2026.
 
-Two visual themes of the same hackathon page — pick the one you like, or use them side-by-side to A/B test the look.
+Three visual themes of the same hackathon page — pick the one you like, or use them side-by-side to A/B test the look.
+
+## swarm — Black & gold (live)
+
+The deployed build at [infinite-hackathon.vercel.app](https://infinite-hackathon.vercel.app). Features the improved origami crane model: puffed diamond torso, folded neck with beak, raised tail, and gap-free swept wings.
 
 ## v1 — Blue (synthwave)
 
@@ -21,7 +25,7 @@ Re-themed fork: glowing infinity logo, partner logos, layered tentacles/anemone 
 No build step. Any static file server works:
 
 ```bash
-cd v1    # or v2
+cd swarm   # or v1, v2
 python3 -m http.server 8000
 ```
 
@@ -31,12 +35,13 @@ The 3D scene pulls Three.js from jsDelivr CDN (`three@0.160.0`), so an internet 
 
 ## Structure
 
+- `swarm/` — live black & gold build (deployed at infinite-hackathon.vercel.app), improved crane model
 - `v1/` — blue synthwave theme (original)
 - `v2/` — black & gold theme (variant)
 
-Both themes share the same nav/sections/apply page and the same `js/main.js` interactions. Only the palette, hero logo treatment, and the canvas overlay effects differ.
+All themes share the same nav/sections/apply page and the same `js/main.js` interactions. Only the palette, hero logo treatment, and the canvas overlay effects differ.
 
 ## Notes
 
-- Relative asset paths throughout, so either theme runs standalone at any static host.
+- Relative asset paths throughout, so each theme runs standalone at any static host.
 - `prefers-reduced-motion` is respected: animations render one static frame only when the user requests reduced motion.
