@@ -13,6 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MODEL = ROOT / "swarm" / "js" / "scene.js"
 INDEX = ROOT / "swarm" / "index.html"
+APPLY = ROOT / "swarm" / "apply.html"
 STYLES = ROOT / "swarm" / "css" / "styles.css"
 LOGO = ROOT / "swarm" / "assets" / "logos" / "LOGO_LAMM_full_black.svg"
 EXPECTED_MODEL_SHA256 = (
@@ -107,6 +108,27 @@ def verify_logo(source: Path) -> None:
         raise AssertionError("LAMM logo must override generic flex-image max-width sizing")
 
 
+def institution_block(path: Path) -> str:
+    html = path.read_text(encoding="utf-8")
+    match = re.search(
+        r'<div class="identity__institutions">(.*?)</div>', html, re.DOTALL
+    )
+    if not match:
+        raise AssertionError(f"missing organizer institution block: {path.relative_to(ROOT)}")
+    return re.sub(r"\s+", " ", match.group(1)).strip()
+
+
+def verify_application_header() -> None:
+    if institution_block(APPLY) != institution_block(INDEX):
+        raise AssertionError("application organizer logos do not match the homepage")
+
+    application_block = institution_block(APPLY)
+    forbidden = ("<video", "identity__lattice", "identity__lamm-word", ".webm", ".mp4")
+    found = [token for token in forbidden if token in application_block]
+    if found:
+        raise AssertionError(f"legacy LAMM application header remains: {', '.join(found)}")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--model-only", action="store_true")
@@ -119,6 +141,7 @@ def main() -> int:
             if args.logo_source is None:
                 parser.error("--logo-source is required unless --model-only is used")
             verify_logo(args.logo_source)
+            verify_application_header()
     except AssertionError as error:
         print(f"FAIL: {error}")
         return 1
