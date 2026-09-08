@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import shutil
 from pathlib import Path
 
 import cv2
@@ -15,6 +16,8 @@ QR_PATH = OUTPUT_DIR / "swarm-apply-qr.svg"
 PNG_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.png"
 PDF_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.pdf"
 CAPTIONS_PATH = OUTPUT_DIR / "social-captions.md"
+PUBLIC_DIR = ROOT / "swarm"
+PUBLIC_SOCIAL_DIR = PUBLIC_DIR / "assets" / "social"
 APPLICATION_URL = "https://swarmhack.ai/apply.html"
 
 
@@ -141,7 +144,10 @@ def export_flyer() -> None:
                 flyerOverflow: document.querySelector('.flyer').scrollWidth > document.querySelector('.flyer').clientWidth || document.querySelector('.flyer').scrollHeight > document.querySelector('.flyer').clientHeight,
                 titleLines: document.querySelectorAll('.flyer__title-line').length,
                 detailMarker: getComputedStyle(document.querySelector('.flyer__details'), '::before').content,
-                visibleText: document.querySelector('.flyer').innerText
+                visibleText: document.querySelector('.flyer').innerText,
+                lammLogoCount: document.querySelectorAll('.organizer__lamm-logo').length,
+                lammLogoNaturalWidth: document.querySelector('.organizer__lamm-logo')?.naturalWidth ?? 0,
+                lammLogoFilter: getComputedStyle(document.querySelector('.organizer__lamm-logo')).filter
               };
             }"""
         )
@@ -153,6 +159,10 @@ def export_flyer() -> None:
             raise RuntimeError("Headline must use the approved two-line treatment")
         if geometry["detailMarker"] not in ("none", "normal"):
             raise RuntimeError("The event line must not have a leading marker")
+        if geometry["lammLogoCount"] != 1 or geometry["lammLogoNaturalWidth"] <= 0:
+            raise RuntimeError(f"Official LAMM logo did not load: {geometry}")
+        if geometry["lammLogoFilter"] in ("none", ""):
+            raise RuntimeError("Official black LAMM logo must be rendered white")
         # The MIT and LAMM artwork have different internal transparent edges.
         # A four-pixel box-gap correction produces equal visible whitespace.
         if abs((geometry["lammE14Gap"] - geometry["mitLammGap"]) - 4) > 0.5:
@@ -175,11 +185,20 @@ def export_flyer() -> None:
         browser.close()
 
 
+def publish_flyer() -> None:
+    """Synchronize browser and download artifacts into the deployable site."""
+    PUBLIC_SOCIAL_DIR.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(HTML_PATH, PUBLIC_DIR / "flyer.html")
+    for source in (QR_PATH, PNG_PATH, PDF_PATH):
+        shutil.copy2(source, PUBLIC_SOCIAL_DIR / source.name)
+
+
 def main() -> None:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     QR_PATH.write_text(build_qr_svg(), encoding="utf-8")
     CAPTIONS_PATH.write_text(build_captions(), encoding="utf-8")
     export_flyer()
+    publish_flyer()
 
 
 if __name__ == "__main__":
