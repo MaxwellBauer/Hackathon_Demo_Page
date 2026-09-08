@@ -15,7 +15,7 @@ QR_PATH = OUTPUT_DIR / "swarm-apply-qr.svg"
 PNG_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.png"
 PDF_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.pdf"
 CAPTIONS_PATH = OUTPUT_DIR / "social-captions.md"
-APPLICATION_URL = "https://infinite-hackathon.vercel.app/apply.html"
+APPLICATION_URL = "https://swarmhack.ai/apply.html"
 
 
 def qr_row_runs(matrix) -> str:

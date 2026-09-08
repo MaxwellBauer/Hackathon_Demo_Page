@@ -6,7 +6,7 @@ Applications are open for Swarm: The Internet of Agents Hackathon.
 
 Join us at the MIT Media Lab from October 30–November 1, 2026 to build decentralized agent swarms that tackle meaningful scientific and engineering problems.
 
-Apply directly: https://infinite-hackathon.vercel.app/apply.html
+Apply directly: https://swarmhack.ai/apply.html
 
 #AI #AgenticSystems #Hackathon #MITMediaLab #MultiAgentSystems
 
@@ -18,4 +18,4 @@ Oct 30–Nov 1, 2026 · MIT Media Lab 6th floor
 
 Build decentralized agent swarms for meaningful scientific and engineering problems.
 
-Apply: https://infinite-hackathon.vercel.app/apply.html
+Apply: https://swarmhack.ai/apply.html
