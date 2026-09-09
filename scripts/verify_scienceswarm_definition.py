@@ -68,6 +68,12 @@ EXPECTED_SECTION_06_SHA256 = (
 )
 SECTION_06_START = "<!-- MULTI-AGENT SYSTEM -->"
 SECTION_06_END = "<!-- APPLY TEASER -->"
+REQUIRED_SECTION_TITLES = (
+    "Purpose",
+    "Resources & Technology",
+    "Judging",
+    "The Hackathon as a Multi-Agent System",
+)
 VIEWPORTS = (("desktop", 1440, 900), ("mobile", 390, 844))
 
 
@@ -144,9 +150,9 @@ def verify_preserved_content(source: str) -> None:
     assert "Collaboration Bonus: +10" in source, "collaboration bonus is missing"
     assert "Oct 30 – Nov 1, 2026" in source, "event date is missing"
     assert 'href="apply.html"' in source, "application link is missing"
-    assert "The Hackathon as a Multi-Agent System" in source, (
-        "Section 06 title is missing"
-    )
+    for title in REQUIRED_SECTION_TITLES:
+        marker = f'<h2 class="section__title">{title}</h2>'
+        assert marker in source, f"{title} section title is missing"
 
     try:
         start = source.index(SECTION_06_START)
