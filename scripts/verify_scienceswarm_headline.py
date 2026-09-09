@@ -70,13 +70,19 @@ def verify_headlines() -> None:
             f"{class_name} text mismatch: {flyer_parser.text_by_class[class_name]}"
         )
 
-    assert "<title>ScienceSwarm — Internet of Agents Hackathon</title>" in homepage
+    assert (
+        "<title>ScienceSwarm — Internet of Agents Hackathon</title>" in homepage
+    ), "homepage title mismatch"
     assert (
         "<title>ScienceSwarm — Internet of Agents Hackathon Flyer</title>" in flyer
+    ), "flyer title mismatch"
+    assert ".hero__line--subtitle" in stylesheet, (
+        "stylesheet missing .hero__line--subtitle selector"
     )
-    assert ".hero__line--subtitle" in stylesheet
-    assert ".flyer__title-subtitle" in flyer
-    assert flyer == public_flyer
+    assert ".flyer__title-subtitle" in flyer, (
+        "flyer missing .flyer__title-subtitle marker"
+    )
+    assert flyer == public_flyer, "public flyer differs from v2 flyer"
 
 
 def main() -> int:
