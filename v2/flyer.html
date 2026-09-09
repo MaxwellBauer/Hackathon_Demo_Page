@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Swarm — The Internet of Agents Hackathon Flyer</title>
+  <title>ScienceSwarm — Internet of Agents Hackathon Flyer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;1,6..12,300;1,6..12,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -164,6 +164,17 @@
     .flyer__title-line {
       display: block;
       white-space: nowrap;
+    }
+
+    .flyer__title-subtitle {
+      margin-top: 28px;
+      color: var(--ink-dim);
+      font-family: var(--sans);
+      font-size: 38px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      line-height: 1.25;
+      text-transform: uppercase;
     }
 
     .flyer__title em {
@@ -332,7 +343,7 @@
 </head>
 <body>
   <div class="flyer-stage">
-  <main class="flyer" aria-label="Swarm — The Internet of Agents Hackathon promotional flyer">
+  <main class="flyer" aria-label="ScienceSwarm — Internet of Agents Hackathon promotional flyer">
     <svg class="terrain" viewBox="0 0 1600 900" aria-hidden="true" preserveAspectRatio="none">
       <defs>
         <linearGradient id="terrain-stroke" x1="0" y1="0" x2="0" y2="1">
@@ -384,8 +395,8 @@
 
     <section class="copy" aria-labelledby="flyer-title">
       <h1 class="flyer__title" id="flyer-title">
-        <span class="flyer__title-line">The Internet of <em>Agents</em></span>
-        <span class="flyer__title-line">Hackathon</span>
+        <span class="flyer__title-line flyer__title-primary">Science<em>Swarm</em></span>
+        <span class="flyer__title-line flyer__title-subtitle">Internet of Agents Hackathon</span>
       </h1>
       <div class="flyer__rule" aria-hidden="true"></div>
       <p class="flyer__blurb">A hackathon on decentralized AI swarms — agents built by different labs, startups, and companies discovering each other, sharing capabilities, and coordinating on real scientific and engineering problems.</p>

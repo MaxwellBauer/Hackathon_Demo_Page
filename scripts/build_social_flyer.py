@@ -54,7 +54,7 @@ def build_captions() -> str:
 
 ## LinkedIn
 
-Applications are open for Swarm: The Internet of Agents Hackathon.
+Applications are open for ScienceSwarm: Internet of Agents Hackathon.
 
 Join us at the MIT Media Lab from October 30–November 1, 2026 to build decentralized agent swarms that tackle meaningful scientific and engineering problems.
 
@@ -64,7 +64,7 @@ Apply directly: {APPLICATION_URL}
 
 ## X
 
-Applications are open for Swarm: The Internet of Agents Hackathon.
+Applications are open for ScienceSwarm: Internet of Agents Hackathon.
 
 Oct 30–Nov 1, 2026 · MIT Media Lab 6th floor
 
@@ -106,7 +106,7 @@ def export_flyer() -> None:
         if not all(checks.values()):
             raise RuntimeError(f"Website fonts were not ready for export: {checks}")
 
-        styles = page.locator(".flyer__title").evaluate(
+        primary = page.locator(".flyer__title-primary").evaluate(
             """element => {
               const style = getComputedStyle(element);
               return {
@@ -114,7 +114,21 @@ def export_flyer() -> None:
                 size: style.fontSize,
                 weight: style.fontWeight,
                 lineHeight: style.lineHeight,
-                tracking: style.letterSpacing
+                tracking: style.letterSpacing,
+                text: element.textContent.trim()
+              };
+            }"""
+        )
+        subtitle = page.locator(".flyer__title-subtitle").evaluate(
+            """element => {
+              const style = getComputedStyle(element);
+              return {
+                family: style.fontFamily,
+                size: style.fontSize,
+                weight: style.fontWeight,
+                lineHeight: style.lineHeight,
+                tracking: style.letterSpacing,
+                text: element.textContent.trim()
               };
             }"""
         )
@@ -124,8 +138,12 @@ def export_flyer() -> None:
             "lineHeight": "121.856px",
             "tracking": "-2.176px",
         }
-        if "Bitter" not in styles["family"] or any(styles[key] != value for key, value in expected.items()):
-            raise RuntimeError(f"Headline styles do not match the website: {styles}")
+        if "Bitter" not in primary["family"] or any(primary[key] != value for key, value in expected.items()):
+            raise RuntimeError(f"Headline styles do not match the website: {primary}")
+        if float(primary["size"].removesuffix("px")) <= float(subtitle["size"].removesuffix("px")):
+            raise RuntimeError("ScienceSwarm must be visually dominant")
+        if primary["text"] != "ScienceSwarm" or subtitle["text"] != "Internet of Agents Hackathon":
+            raise RuntimeError("Flyer headline copy differs from the approved hierarchy")
 
         geometry = page.evaluate(
             """() => {
