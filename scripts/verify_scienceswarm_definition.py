@@ -16,11 +16,15 @@ ROOT = Path(__file__).resolve().parents[1]
 HOMEPAGE = ROOT / "swarm" / "index.html"
 
 HERO_DEFINITION = (
+    "A hackathon for building decentralized AI swarms that solve real scientific "
+    "and technical problems."
+)
+META_DESCRIPTION_DEFINITION = (
     "ScienceSwarm is a hackathon for building decentralized AI swarms that solve "
     "real scientific and technical problems."
 )
 EXPECTED_META_DESCRIPTION = (
-    f"{HERO_DEFINITION} MIT Media Lab, Oct 30 – Nov 1, 2026."
+    f"{META_DESCRIPTION_DEFINITION} MIT Media Lab, Oct 30 – Nov 1, 2026."
 )
 REQUIRED_COPY = {
     "Purpose introduction": (
@@ -83,14 +87,14 @@ def normalize_whitespace(text: str) -> str:
 
 
 class HomepageParser(HTMLParser):
-    """Collect the meta description and text of visible hero description elements."""
+    """Collect the meta description and text of the hero headline subtitle."""
 
     def __init__(self) -> None:
         super().__init__()
         self.meta_descriptions: list[str] = []
-        self.hero_subs: list[str] = []
-        self._hero_sub_depth = 0
-        self._hero_sub_chunks: list[str] = []
+        self.hero_subtitles: list[str] = []
+        self._hero_subtitle_depth = 0
+        self._hero_subtitle_chunks: list[str] = []
 
     def handle_starttag(
         self, tag: str, attrs: list[tuple[str, str | None]]
@@ -98,22 +102,26 @@ class HomepageParser(HTMLParser):
         attributes = dict(attrs)
         if tag == "meta" and attributes.get("name") == "description":
             self.meta_descriptions.append(attributes.get("content") or "")
-        if self._hero_sub_depth:
-            self._hero_sub_depth += 1
-        elif tag == "p" and "hero__sub" in (attributes.get("class") or "").split():
-            self._hero_sub_depth = 1
-            self._hero_sub_chunks = []
+        if self._hero_subtitle_depth:
+            self._hero_subtitle_depth += 1
+        elif tag == "span" and "hero__line--subtitle" in (
+            attributes.get("class") or ""
+        ).split():
+            self._hero_subtitle_depth = 1
+            self._hero_subtitle_chunks = []
 
     def handle_data(self, data: str) -> None:
-        if self._hero_sub_depth:
-            self._hero_sub_chunks.append(data)
+        if self._hero_subtitle_depth:
+            self._hero_subtitle_chunks.append(data)
 
     def handle_endtag(self, tag: str) -> None:
-        if not self._hero_sub_depth:
+        if not self._hero_subtitle_depth:
             return
-        self._hero_sub_depth -= 1
-        if self._hero_sub_depth == 0:
-            self.hero_subs.append(normalize_whitespace("".join(self._hero_sub_chunks)))
+        self._hero_subtitle_depth -= 1
+        if self._hero_subtitle_depth == 0:
+            self.hero_subtitles.append(
+                normalize_whitespace("".join(self._hero_subtitle_chunks))
+            )
 
 
 def verify_copy(source: str) -> None:
@@ -124,8 +132,11 @@ def verify_copy(source: str) -> None:
     assert parser.meta_descriptions == [EXPECTED_META_DESCRIPTION], (
         "meta description must contain the approved ScienceSwarm definition and date"
     )
-    assert parser.hero_subs == [HERO_DEFINITION], (
-        "visible hero paragraph must contain exactly the approved ScienceSwarm definition"
+    assert parser.hero_subtitles == [HERO_DEFINITION], (
+        "hero headline subtitle must contain exactly the approved ScienceSwarm definition"
+    )
+    assert 'class="hero__sub"' not in source, (
+        "duplicate hero description paragraph must be removed"
     )
 
     normalized_source = normalize_whitespace(source)
@@ -192,6 +203,30 @@ def verify_layout() -> None:
                     assert scroll_width <= client_width, (
                         f"horizontal overflow at {label} viewport {width}x{height}: "
                         f"scrollWidth {scroll_width} exceeds clientWidth {client_width}"
+                    )
+                    primary_font_size, subtitle_font_size, subtitle_transform = page.evaluate(
+                        """() => {
+                            const primary = getComputedStyle(
+                                document.querySelector(".hero__line--primary")
+                            );
+                            const subtitle = getComputedStyle(
+                                document.querySelector(".hero__line--subtitle")
+                            );
+                            return [
+                                parseFloat(primary.fontSize),
+                                parseFloat(subtitle.fontSize),
+                                subtitle.textTransform,
+                            ];
+                        }"""
+                    )
+                    assert primary_font_size > subtitle_font_size, (
+                        f"hero primary font must exceed subtitle font at {label} "
+                        f"viewport {width}x{height}: {primary_font_size}px <= "
+                        f"{subtitle_font_size}px"
+                    )
+                    assert subtitle_transform == "none", (
+                        f"hero subtitle must use sentence case at {label} viewport "
+                        f"{width}x{height}; got text-transform {subtitle_transform!r}"
                     )
                 finally:
                     page.close()

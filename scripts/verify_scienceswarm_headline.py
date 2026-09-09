@@ -10,7 +10,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED = {
     "hero__line--primary": "ScienceSwarm",
-    "hero__line--subtitle": "Internet of Agents Hackathon",
+    "hero__line--subtitle": (
+        "A hackathon for building decentralized AI swarms that solve real scientific "
+        "and technical problems."
+    ),
     "flyer__title-primary": "ScienceSwarm",
     "flyer__title-subtitle": "Internet of Agents Hackathon",
 }
@@ -101,6 +104,9 @@ def verify_headlines() -> None:
     ), "flyer title mismatch"
     assert ".hero__line--subtitle" in stylesheet, (
         "stylesheet missing .hero__line--subtitle selector"
+    )
+    assert ".hero__sub" not in stylesheet, (
+        "stylesheet retains unused .hero__sub selector"
     )
     assert ".flyer__title-subtitle" in flyer, (
         "flyer missing .flyer__title-subtitle marker"

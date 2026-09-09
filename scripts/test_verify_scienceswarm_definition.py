@@ -15,6 +15,24 @@ SPEC.loader.exec_module(MODULE)
 
 
 class DefinitionVerifierTests(unittest.TestCase):
+    def homepage_with_definition_in_subtitle(self) -> str:
+        source = MODULE.HOMEPAGE.read_text(encoding="utf-8")
+        source = source.replace(
+            '<span class="hero__line hero__line--subtitle">Internet of Agents Hackathon</span>',
+            f'<span class="hero__line hero__line--subtitle">{MODULE.HERO_DEFINITION}</span>',
+            1,
+        )
+        return source.replace(
+            '      <p class="hero__sub">\n'
+            f"        {MODULE.HERO_DEFINITION}\n"
+            "      </p>\n",
+            "",
+            1,
+        )
+
+    def test_accepts_definition_in_heading_without_duplicate_paragraph(self) -> None:
+        MODULE.verify_copy(self.homepage_with_definition_in_subtitle())
+
     def test_rejects_a_missing_required_section_title(self) -> None:
         source = MODULE.HOMEPAGE.read_text(encoding="utf-8")
         source_without_purpose_title = source.replace(
