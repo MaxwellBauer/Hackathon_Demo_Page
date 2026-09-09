@@ -33,6 +33,19 @@ class DefinitionVerifierTests(unittest.TestCase):
     def test_accepts_definition_in_heading_without_duplicate_paragraph(self) -> None:
         MODULE.verify_copy(self.homepage_with_definition_in_subtitle())
 
+    def test_rejects_subtitle_moved_outside_hero_heading(self) -> None:
+        source = MODULE.HOMEPAGE.read_text(encoding="utf-8")
+        subtitle = (
+            '        <span class="hero__line hero__line--subtitle">'
+            f"{MODULE.HERO_DEFINITION}</span>\n"
+        )
+        source_with_subtitle_outside_heading = source.replace(subtitle, "", 1).replace(
+            "      </h1>\n", f"      </h1>\n{subtitle}", 1
+        )
+
+        with self.assertRaisesRegex(AssertionError, "must be part of the hero heading"):
+            MODULE.verify_copy(source_with_subtitle_outside_heading)
+
     def test_rejects_a_missing_required_section_title(self) -> None:
         source = MODULE.HOMEPAGE.read_text(encoding="utf-8")
         source_without_purpose_title = source.replace(

@@ -93,6 +93,7 @@ class HomepageParser(HTMLParser):
         super().__init__()
         self.meta_descriptions: list[str] = []
         self.hero_subtitles: list[str] = []
+        self._heading_depth = 0
         self._hero_subtitle_depth = 0
         self._hero_subtitle_chunks: list[str] = []
 
@@ -102,9 +103,11 @@ class HomepageParser(HTMLParser):
         attributes = dict(attrs)
         if tag == "meta" and attributes.get("name") == "description":
             self.meta_descriptions.append(attributes.get("content") or "")
+        if tag == "h1":
+            self._heading_depth += 1
         if self._hero_subtitle_depth:
             self._hero_subtitle_depth += 1
-        elif tag == "span" and "hero__line--subtitle" in (
+        elif self._heading_depth and tag == "span" and "hero__line--subtitle" in (
             attributes.get("class") or ""
         ).split():
             self._hero_subtitle_depth = 1
@@ -115,13 +118,14 @@ class HomepageParser(HTMLParser):
             self._hero_subtitle_chunks.append(data)
 
     def handle_endtag(self, tag: str) -> None:
-        if not self._hero_subtitle_depth:
-            return
-        self._hero_subtitle_depth -= 1
-        if self._hero_subtitle_depth == 0:
-            self.hero_subtitles.append(
-                normalize_whitespace("".join(self._hero_subtitle_chunks))
-            )
+        if self._hero_subtitle_depth:
+            self._hero_subtitle_depth -= 1
+            if self._hero_subtitle_depth == 0:
+                self.hero_subtitles.append(
+                    normalize_whitespace("".join(self._hero_subtitle_chunks))
+                )
+        if tag == "h1":
+            self._heading_depth -= 1
 
 
 def verify_copy(source: str) -> None:
@@ -133,7 +137,8 @@ def verify_copy(source: str) -> None:
         "meta description must contain the approved ScienceSwarm definition and date"
     )
     assert parser.hero_subtitles == [HERO_DEFINITION], (
-        "hero headline subtitle must contain exactly the approved ScienceSwarm definition"
+        "hero headline subtitle must be part of the hero heading and contain exactly "
+        "the approved ScienceSwarm definition"
     )
     assert 'class="hero__sub"' not in source, (
         "duplicate hero description paragraph must be removed"
