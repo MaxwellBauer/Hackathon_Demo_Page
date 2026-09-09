@@ -14,6 +14,22 @@ EXPECTED = {
     "flyer__title-primary": "ScienceSwarm",
     "flyer__title-subtitle": "Internet of Agents Hackathon",
 }
+VOID_ELEMENTS = {
+    "area",
+    "base",
+    "br",
+    "col",
+    "embed",
+    "hr",
+    "img",
+    "input",
+    "link",
+    "meta",
+    "param",
+    "source",
+    "track",
+    "wbr",
+}
 
 
 class HeadlineParser(HTMLParser):
@@ -24,24 +40,31 @@ class HeadlineParser(HTMLParser):
         self.text_by_class: dict[str, list[str]] = {
             class_name: [] for class_name in EXPECTED
         }
-        self._active: list[tuple[str, list[str], list[str]]] = []
+        self._active: list[tuple[object, list[str], list[str]]] = []
+        self._open_elements: list[tuple[str, object]] = []
 
     def handle_starttag(
         self, tag: str, attrs: list[tuple[str, str | None]]
     ) -> None:
+        element = object()
+        if tag not in VOID_ELEMENTS:
+            self._open_elements.append((tag, element))
         classes = set((dict(attrs).get("class") or "").split())
         expected_classes = list(classes.intersection(EXPECTED))
         if expected_classes:
-            self._active.append((tag, expected_classes, []))
+            self._active.append((element, expected_classes, []))
 
     def handle_data(self, data: str) -> None:
         for _, _, chunks in self._active:
             chunks.append(data)
 
     def handle_endtag(self, tag: str) -> None:
+        if not self._open_elements or self._open_elements[-1][0] != tag:
+            return
+        _, element = self._open_elements.pop()
         for index in range(len(self._active) - 1, -1, -1):
-            active_tag, class_names, chunks = self._active[index]
-            if active_tag == tag:
+            active_element, class_names, chunks = self._active[index]
+            if active_element is element:
                 self._active.pop(index)
                 text = " ".join("".join(chunks).split())
                 for class_name in class_names:
