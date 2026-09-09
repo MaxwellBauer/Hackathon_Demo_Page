@@ -12,9 +12,9 @@ Revise copy within existing homepage sections only:
 - Purpose
 - Resources & Technology introduction and closing
 - Judging introduction
-- Section 06 title, introduction, cards, and closing
 
 Do not add a new section. Do not change the flyer, dates, venue, application flow, challenge areas, resource cards, detailed judging rubric, collaboration bonus, navigation, organizer branding, or visual system.
+Keep Section 06, `The Hackathon as a Multi-Agent System`, exactly as it is.
 
 ## Message hierarchy
 
@@ -43,7 +43,7 @@ Replace the two existing Purpose paragraphs with:
 
 > ScienceSwarm explores when decentralized collective intelligence can produce capabilities beyond a single agent or conventional workflow.
 
-> Teams build working swarms of specialized agents, models, simulations, robots, sensors, and laboratory tools. Different parts of the swarm can hold distinct knowledge and capabilities, coordinate and adapt, and leave traceable scientific artifacts—without requiring one central planner to prescribe the entire process.
+> Teams build working swarms of specialized agents, models, simulations, robots, sensors, and laboratory tools. Different parts of the swarm can hold distinct knowledge and capabilities, coordinate and adapt, and leave traceable scientific artifacts, provenance, findings, and unmet needs that the swarm can build upon—without requiring one central planner to prescribe the entire process.
 
 ### Resources & Technology
 
@@ -67,25 +67,7 @@ Retain the complete existing rubric and collaboration bonus unchanged.
 
 ### Section 06
 
-Rename `The Hackathon as a Multi-Agent System` to `How a ScienceSwarm Works`.
-
-Use this introduction:
-
-> A ScienceSwarm brings together diverse capabilities as a decentralized scientific system.
-
-Replace the existing three cards with:
-
-1. **Specialized agents** — Distinct agents contribute different knowledge, models, tools, data, and physical capabilities.
-2. **Decentralized coordination** — Decisions happen across the system as agents communicate, respond to results, and adapt—without one planner prescribing every step.
-3. **Scientific memory** — Agents produce traceable artifacts, provenance, findings, and unmet needs that the swarm can discover and build upon.
-
-Use this primary closing paragraph:
-
-> A ScienceSwarm can span software agents, simulations, robots, sensors, cloud laboratories, and experimental facilities—forming a working network of scientific capabilities rather than another agent benchmark.
-
-Follow it with a lower-emphasis continuity sentence that preserves the original ecosystem meaning:
-
-> Agents collaborate within teams, teams may reuse capabilities developed across the event, and successful tools and findings can strengthen the wider ecosystem.
+Keep the complete existing `The Hackathon as a Multi-Agent System` section unchanged, including its title, introduction, three cards, and closing paragraph. It continues to carry the original agents → teams → ecosystem progression and the cross-team capability-exchange message without making that message the primary event definition.
 
 ## Original-meaning preservation
 
@@ -108,6 +90,7 @@ Update the homepage meta description so it uses the approved hero definition. Pr
 
 - Add a source-level verifier for the exact hero sentence, required section titles, key swarm concepts, and preserved original propositions.
 - Confirm the old superseded paragraphs are removed.
+- Confirm Section 06 remains textually unchanged.
 - Confirm the resource cards, detailed rubric, collaboration bonus, challenge areas, dates, application links, and organizer assets remain present.
 - Verify responsive layout at desktop and mobile widths with no headline or section overflow.
 - Run the complete existing site and flyer verification suite.
