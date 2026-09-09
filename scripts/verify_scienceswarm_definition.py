@@ -64,7 +64,7 @@ FORBIDDEN_OLD_COPY = (
     "The rubric rewards systems where collective organization itself contributes capability",
 )
 EXPECTED_SECTION_06_SHA256 = (
-    "2c929a5ed7b340f45d02684dd5ad22b228c3fbcc6e439b544514508b0335cd70"
+    "7fb21fdbaa7d152847561b3dee9cbe15da4247da8b3e518c769090fb26794bb4"
 )
 SECTION_06_START = "<!-- MULTI-AGENT SYSTEM -->"
 SECTION_06_END = "<!-- APPLY TEASER -->"
