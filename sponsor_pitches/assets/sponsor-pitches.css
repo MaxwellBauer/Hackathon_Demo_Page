@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Bitter:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;1,6..12,300;1,6..12,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bitter:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap");
 
 :root {
   --bg: #050505;
@@ -303,18 +303,19 @@ blockquote { align-self: flex-end; margin: 34px 0 0; color: var(--gold-warm); fo
 .sheet-ecosystem span { color: var(--gold-warm); font: 600 9px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
 .sheet-ecosystem small { margin-top: 7px; color: var(--ink-dim); font-size: 9px; line-height: 1.3; }
 .sheet-ecosystem b { align-self: center; color: var(--gold); font-weight: 300; text-align: center; }
-.sheet-tiers { padding-top: 25px; }
+.sheet-tiers { padding-top: 17px; }
 .sheet-section-heading { display: flex; align-items: baseline; justify-content: space-between; }
-.sheet-section-heading > span { color: var(--ink-faint); font: 500 8px/1 var(--mono); text-transform: uppercase; }
+.sheet-section-heading > span { color: var(--ink-dim); font: 500 9px/1 var(--mono); text-transform: uppercase; }
 .sheet-tier-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
 .sheet-tier-grid article { position: relative; min-height: 158px; padding: 16px 14px; border: 1px solid var(--line); background: linear-gradient(145deg, rgba(217,160,56,.08), rgba(0,0,0,.45)); }
 .sheet-tier-grid article > span { display: block; color: var(--gold); font: 600 9px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
 .sheet-tier-grid article > strong { display: block; margin-top: 10px; color: var(--gold-warm); font: 300 31px/1 var(--serif); }
 .sheet-tier-grid article p { margin: 11px 0 0; color: var(--ink-dim); font-size: 9.5px; line-height: 1.4; }
-.sheet-tier-grid article small { position: absolute; left: 14px; bottom: 10px; color: var(--gold); font: 600 7px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.sheet-tier-grid article small { position: absolute; left: 14px; bottom: 10px; color: var(--gold); font: 600 8px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
 .sheet-tiers aside { display: grid; grid-template-columns: 190px 1fr; gap: 16px; align-items: center; margin-top: 9px; padding: 13px 14px; border-left: 2px solid var(--gold); background: rgba(217,160,56,.09); }
 .sheet-tiers aside strong { color: var(--gold-warm); font: 600 9px/1.3 var(--mono); letter-spacing: .05em; text-transform: uppercase; }
 .sheet-tiers aside span { color: var(--ink-dim); font-size: 9px; line-height: 1.4; }
+.sheet-guardrails { margin: 5px 0 0; color: var(--ink-dim); font-size: 8.5px; line-height: 1.35; }
 .sheet-footer { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
 .sheet-footer p { max-width: 500px; margin: 0; color: var(--ink-dim); font-size: 9px; line-height: 1.35; }
 .sheet-footer div { display: flex; gap: 13px; }

@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 
 from playwright.sync_api import Page, sync_playwright
@@ -10,7 +11,7 @@ from playwright.sync_api import Page, sync_playwright
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_DIR = ROOT / "sponsor_pitches"
-OUTPUT_DIR = SOURCE_DIR / "exports"
+DEFAULT_OUTPUT_DIR = SOURCE_DIR / "exports"
 
 
 def wait_for_assets(page: Page) -> None:
@@ -26,16 +27,18 @@ def wait_for_assets(page: Page) -> None:
           }));
         }"""
     )
-    fonts = page.evaluate(
-        """() => ({
-          bitter: document.fonts.check('300 32px Bitter'),
-          bitterItalic: document.fonts.check('italic 300 32px Bitter'),
-          inter: document.fonts.check('300 16px Inter'),
-          plex: document.fonts.check('600 12px "IBM Plex Mono"')
-        })"""
+    loaded_fonts = page.evaluate(
+        """() => Array.from(document.fonts)
+          .filter((font) => font.status === 'loaded')
+          .map((font) => font.family.replaceAll('"', '').replaceAll("'", ''))"""
     )
-    if not all(fonts.values()):
-        raise RuntimeError(f"Sponsor-pitch fonts were not ready for export: {fonts}")
+    required_fonts = {"Bitter", "Inter", "IBM Plex Mono"}
+    missing_fonts = required_fonts.difference(loaded_fonts)
+    if missing_fonts:
+        raise RuntimeError(
+            "Sponsor-pitch fonts were not actually loaded for export: "
+            f"missing {sorted(missing_fonts)}; loaded {sorted(set(loaded_fonts))}"
+        )
     missing = page.locator("img").evaluate_all(
         "images => images.filter(image => !image.complete || image.naturalWidth === 0).map(image => image.src)"
     )
@@ -58,15 +61,28 @@ def export_pdf(page: Page, source: Path, output: Path, width: str, height: str, 
     )
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=DEFAULT_OUTPUT_DIR,
+        help="Directory for generated PDFs (defaults to sponsor_pitches/exports).",
+    )
+    return parser.parse_args()
+
+
 def main() -> None:
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    args = parse_args()
+    output_dir = args.output_dir.resolve()
+    output_dir.mkdir(parents=True, exist_ok=True)
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(args=["--font-render-hinting=none"])
         page = browser.new_page(viewport={"width": 1600, "height": 900}, device_scale_factor=1)
         export_pdf(
             page,
             SOURCE_DIR / "deck.html",
-            OUTPUT_DIR / "scienceswarm-founding-partnership-deck.pdf",
+            output_dir / "scienceswarm-founding-partnership-deck.pdf",
             "16in",
             "9in",
             0.96,
@@ -75,13 +91,13 @@ def main() -> None:
         export_pdf(
             page,
             SOURCE_DIR / "one-pager.html",
-            OUTPUT_DIR / "scienceswarm-sponsorship-opportunity.pdf",
+            output_dir / "scienceswarm-sponsorship-opportunity.pdf",
             "8.5in",
             "11in",
             1,
         )
         browser.close()
-    print(f"Exported sponsor PDFs to {OUTPUT_DIR}")
+    print(f"Exported sponsor PDFs to {output_dir}")
 
 
 if __name__ == "__main__":

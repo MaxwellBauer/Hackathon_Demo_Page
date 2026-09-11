@@ -8,6 +8,7 @@ import http.server
 import re
 import subprocess
 import sys
+import tempfile
 import threading
 import unittest
 from pathlib import Path
@@ -99,10 +100,10 @@ class SponsorPitchBrowserTests(unittest.TestCase):
 
     def test_both_assets_expose_and_render_the_same_sponsorship_contract(self) -> None:
         expected_tiers = [
-            {"key": "supporter", "name": "Supporter", "amount": "$5K", "representatives": 2},
-            {"key": "builder", "name": "Builder", "amount": "$15K", "representatives": 4},
-            {"key": "platform", "name": "Platform", "amount": "$30K", "representatives": 6},
-            {"key": "presenting", "name": "Presenting", "amount": "$50K", "representatives": 8},
+            {"key": "supporter", "name": "Supporter", "amount": "$5K", "representatives": 2, "summary": "Visibility, two passes, mentors, and showcase access."},
+            {"key": "builder", "name": "Builder", "amount": "$15K", "representatives": 4, "summary": "Adds a workshop, toolkit placement, demo table, and opt-in directory."},
+            {"key": "platform", "name": "Platform", "amount": "$30K", "representatives": 6, "summary": "Adds a challenge, judging, prominent branding, and curated introductions."},
+            {"key": "presenting", "name": "Presenting", "amount": "$50K", "representatives": 8, "summary": "Adds premier attribution, stage time, private preview, and an outcomes report."},
         ]
         page = self.browser.new_page()
         try:
@@ -116,13 +117,43 @@ class SponsorPitchBrowserTests(unittest.TestCase):
                     self.assertEqual(contract["event"]["contact"], "fw2@mit.edu")
                     self.assertEqual(contract["event"]["url"], "https://swarmhack.ai")
                     self.assertEqual(contract["tiers"], expected_tiers)
+                    self.assertEqual(
+                        contract["capabilityPartner"]["terms"],
+                        "Compute, APIs, models, datasets, robots, sensors, fabrication, or laboratory access. Recognition is based on usable event value and support—not list price.",
+                    )
+                    self.assertEqual(len(contract["benefitRows"]), 10)
+                    self.assertEqual(
+                        contract["guardrails"],
+                        {
+                            "judging": "Sponsorship supports access and participation—not guaranteed outcomes or favorable judging.",
+                            "privacy": "Participant information is shared only with explicit consent.",
+                        },
+                    )
                     rendered_tiers = page.locator("[data-tier]").evaluate_all(
-                        "els => els.map(el => ({key: el.dataset.tier, name: el.querySelector('span').textContent.trim(), amount: el.querySelector('strong').textContent.trim()}))"
+                        "els => els.map(el => ({key: el.dataset.tier, name: el.querySelector('span').textContent.trim(), amount: el.querySelector('strong').textContent.trim(), summary: el.querySelector('p').textContent.trim()}))"
                     )
                     self.assertEqual(
                         rendered_tiers,
-                        [{"key": tier["key"], "name": tier["name"], "amount": tier["amount"]} for tier in expected_tiers],
+                        [
+                            {key: value for key, value in tier.items() if key != "representatives"}
+                            for tier in expected_tiers
+                        ],
                     )
+                    rendered_guardrails = page.locator("[data-shared-guardrails]").all_text_contents()
+                    self.assertTrue(rendered_guardrails)
+                    self.assertTrue(all(contract["guardrails"]["judging"] in text for text in rendered_guardrails))
+                    self.assertTrue(all(contract["guardrails"]["privacy"] in text for text in rendered_guardrails))
+                    if path.endswith("deck.html"):
+                        matrix = page.locator("[data-shared-benefits-matrix] tr").evaluate_all(
+                            "rows => rows.map(row => Array.from(row.children).map(cell => cell.textContent.trim()))"
+                        )
+                        self.assertEqual(
+                            matrix,
+                            [
+                                [row["label"], *(row[tier["key"]] for tier in expected_tiers)]
+                                for row in contract["benefitRows"]
+                            ],
+                        )
         finally:
             page.close()
 
@@ -158,6 +189,15 @@ class SponsorPitchBrowserTests(unittest.TestCase):
                     )
                     self.assertTrue(image_states)
                     self.assertTrue(all(item["complete"] and item["width"] > 0 for item in image_states))
+                    loaded_font_families = set(page.evaluate(
+                        """() => Array.from(document.fonts)
+                          .filter(font => font.status === 'loaded')
+                          .map(font => font.family.replaceAll('"', '').replaceAll("'", ''))"""
+                    ))
+                    self.assertTrue(
+                        {"Bitter", "Inter", "IBM Plex Mono"}.issubset(loaded_font_families),
+                        loaded_font_families,
+                    )
                 finally:
                     page.close()
 
@@ -180,39 +220,65 @@ class SponsorPitchBrowserTests(unittest.TestCase):
             page.close()
 
     def test_exporter_builds_selectable_thirteen_page_and_letter_pdfs(self) -> None:
-        result = subprocess.run(
-            [sys.executable, str(ROOT / "scripts" / "build_sponsor_pitches.py")],
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         exports = ROOT / "sponsor_pitches" / "exports"
-        cases = (
-            (exports / "scienceswarm-founding-partnership-deck.pdf", 13, (1152, 648)),
-            (exports / "scienceswarm-sponsorship-opportunity.pdf", 1, (612, 792)),
-        )
-        for path, expected_pages, expected_points in cases:
-            with self.subTest(path=path.name):
-                self.assertTrue(path.is_file())
-                info = subprocess.run(
-                    ["pdfinfo", str(path)], capture_output=True, text=True, check=True
+        tracked_mtimes = {path: path.stat().st_mtime_ns for path in exports.glob("*.pdf")}
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            temporary_exports = Path(temporary_directory)
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts" / "build_sponsor_pitches.py"),
+                    "--output-dir",
+                    str(temporary_exports),
+                ],
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertEqual(
+                {path: path.stat().st_mtime_ns for path in exports.glob("*.pdf")},
+                tracked_mtimes,
+            )
+            cases = (
+                ("scienceswarm-founding-partnership-deck.pdf", 13, (1152, 648)),
+                ("scienceswarm-sponsorship-opportunity.pdf", 1, (612, 792)),
+            )
+            for filename, expected_pages, expected_points in cases:
+                for path in (temporary_exports / filename, exports / filename):
+                    with self.subTest(path=str(path)):
+                        self.assertTrue(path.is_file())
+                        info = subprocess.run(
+                            ["pdfinfo", str(path)], capture_output=True, text=True, check=True
+                        ).stdout
+                        pages = re.search(r"^Pages:\s+(\d+)$", info, re.MULTILINE)
+                        size = re.search(r"^Page size:\s+([\d.]+) x ([\d.]+) pts", info, re.MULTILINE)
+                        self.assertIsNotNone(pages)
+                        self.assertIsNotNone(size)
+                        self.assertEqual(int(pages.group(1)), expected_pages)
+                        self.assertEqual(
+                            (round(float(size.group(1))), round(float(size.group(2)))),
+                            expected_points,
+                        )
+                        text = subprocess.run(
+                            ["pdftotext", str(path), "-"], capture_output=True, text=True, check=True
+                        ).stdout
+                        self.assertIn("Build the swarm", text)
+                        self.assertIn("$50K", text)
+                generated_text = subprocess.run(
+                    ["pdftotext", str(temporary_exports / filename), "-"],
+                    capture_output=True,
+                    text=True,
+                    check=True,
                 ).stdout
-                pages = re.search(r"^Pages:\s+(\d+)$", info, re.MULTILINE)
-                size = re.search(r"^Page size:\s+([\d.]+) x ([\d.]+) pts", info, re.MULTILINE)
-                self.assertIsNotNone(pages)
-                self.assertIsNotNone(size)
-                self.assertEqual(int(pages.group(1)), expected_pages)
-                self.assertEqual(
-                    (round(float(size.group(1))), round(float(size.group(2)))),
-                    expected_points,
-                )
-                text = subprocess.run(
-                    ["pdftotext", str(path), "-"], capture_output=True, text=True, check=True
+                committed_text = subprocess.run(
+                    ["pdftotext", str(exports / filename), "-"],
+                    capture_output=True,
+                    text=True,
+                    check=True,
                 ).stdout
-                self.assertIn("Build the swarm", text)
-                self.assertIn("$50K", text)
+                self.assertEqual(" ".join(generated_text.split()), " ".join(committed_text.split()))
 
     def test_one_pager_uses_the_full_page_without_a_large_dead_zone(self) -> None:
         page = self.browser.new_page(viewport={"width": 816, "height": 1056})

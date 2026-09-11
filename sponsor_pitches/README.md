@@ -5,7 +5,7 @@ This directory contains two editable, static web sources and their PDF exports:
 - `deck.html` — 13-slide founding partnership prospectus. Use the arrow keys, Page Up/Down, Space, Home, or End to navigate.
 - `one-pager.html` — US Letter sponsorship opportunity sheet modeled on the compact technical-poster structure of the HARD MODE reference.
 
-Serve the repository root with any static server and open the pages under `/sponsor_pitches/`. Both sources reuse the approved ScienceSwarm identity assets from `swarm/assets/logos/`.
+Serve the repository root with any static server and open the pages under `/sponsor_pitches/`. Both sources reuse the approved ScienceSwarm identity assets from `swarm/assets/logos/`. Shared event facts, partnership tiers, benefits, and sponsor guardrails live in `assets/content.js`.
 
 To rebuild the PDFs:
 
@@ -13,7 +13,9 @@ To rebuild the PDFs:
 python3 scripts/build_sponsor_pitches.py
 ```
 
-The exporter waits for fonts and images before writing:
+Use `--output-dir PATH` to create verification or draft exports without replacing the committed PDFs.
+
+The exporter verifies that the Bitter, Inter, and IBM Plex Mono web fonts and all images actually loaded before writing:
 
 - `exports/scienceswarm-founding-partnership-deck.pdf`
 - `exports/scienceswarm-sponsorship-opportunity.pdf`
