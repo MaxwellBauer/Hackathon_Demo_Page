@@ -48,8 +48,8 @@ def wait_for_assets(page: Page) -> None:
 
 def export_pdf(page: Page, source: Path, output: Path, width: str, height: str, scale: float) -> None:
     page.goto(source.as_uri(), wait_until="networkidle")
-    wait_for_assets(page)
     page.emulate_media(media="print")
+    wait_for_assets(page)
     page.pdf(
         path=str(output),
         print_background=True,

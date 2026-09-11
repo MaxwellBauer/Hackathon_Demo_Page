@@ -19,6 +19,22 @@ from playwright.sync_api import sync_playwright
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def raster_pages(pdf_path: Path, output_directory: Path) -> list[tuple[list[bytes], bytes]]:
+    prefix = output_directory / pdf_path.stem
+    subprocess.run(
+        ["pdftoppm", "-r", "36", str(pdf_path), str(prefix)],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    rasters = sorted(output_directory.glob(f"{pdf_path.stem}-*.ppm"))
+    pages = []
+    for raster in rasters:
+        header_and_pixels = raster.read_bytes().split(b"\n", 3)
+        pages.append((header_and_pixels[:3], header_and_pixels[3]))
+    return pages
+
+
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
     def log_message(self, format: str, *args: object) -> None:
         pass
@@ -53,6 +69,12 @@ class SponsorPitchBrowserTests(unittest.TestCase):
                     self.assertEqual(response.status, 200)
         finally:
             page.close()
+
+    def test_required_fonts_are_vendored_for_offline_rendering(self) -> None:
+        stylesheet = (ROOT / "sponsor_pitches" / "assets" / "sponsor-pitches.css").read_text()
+        self.assertNotIn("fonts.googleapis.com", stylesheet)
+        font_directory = ROOT / "sponsor_pitches" / "assets" / "fonts"
+        self.assertEqual(len(list(font_directory.glob("*.ttf"))), 13)
 
     def test_deck_renders_thirteen_approved_slides_in_order(self) -> None:
         expected_titles = [
@@ -279,6 +301,28 @@ class SponsorPitchBrowserTests(unittest.TestCase):
                     check=True,
                 ).stdout
                 self.assertEqual(" ".join(generated_text.split()), " ".join(committed_text.split()))
+                generated_rasters = temporary_exports / "generated-rasters"
+                committed_rasters = temporary_exports / "committed-rasters"
+                generated_rasters.mkdir(exist_ok=True)
+                committed_rasters.mkdir(exist_ok=True)
+                generated_pages = raster_pages(temporary_exports / filename, generated_rasters)
+                committed_pages = raster_pages(exports / filename, committed_rasters)
+                self.assertEqual(len(generated_pages), len(committed_pages))
+                for page_number, (generated, committed) in enumerate(
+                    zip(generated_pages, committed_pages, strict=True), start=1
+                ):
+                    self.assertEqual(generated[0], committed[0])
+                    self.assertEqual(len(generated[1]), len(committed[1]))
+                    deltas = [abs(left - right) for left, right in zip(generated[1], committed[1], strict=True)]
+                    changed_fraction = sum(delta > 0 for delta in deltas) / len(deltas)
+                    mean_delta = sum(deltas) / len(deltas)
+                    message = (
+                        f"Committed {filename} page {page_number} is visually stale "
+                        f"(changed={changed_fraction:.4%}, mean delta={mean_delta:.4f}); "
+                        "rebuild sponsor exports."
+                    )
+                    self.assertLess(changed_fraction, 0.01, message)
+                    self.assertLess(mean_delta, 0.05, message)
 
     def test_one_pager_uses_the_full_page_without_a_large_dead_zone(self) -> None:
         page = self.browser.new_page(viewport={"width": 816, "height": 1056})

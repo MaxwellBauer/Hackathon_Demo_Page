@@ -15,7 +15,7 @@ python3 scripts/build_sponsor_pitches.py
 
 Use `--output-dir PATH` to create verification or draft exports without replacing the committed PDFs.
 
-The exporter verifies that the Bitter, Inter, and IBM Plex Mono web fonts and all images actually loaded before writing:
+The exporter verifies that the vendored Bitter, Inter, and IBM Plex Mono fonts and all images actually loaded before writing:
 
 - `exports/scienceswarm-founding-partnership-deck.pdf`
 - `exports/scienceswarm-sponsorship-opportunity.pdf`
