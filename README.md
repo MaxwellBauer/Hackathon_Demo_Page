@@ -1,12 +1,12 @@
-# INFINITE — Hackathon Demo
+# ScienceClaw — Hackathon Website
 
-Static site for the **INFINITE: The Internet of Agents Hackathon**, MIT Media Lab, Oct 30 – Nov 1, 2026.
+Static site for the **ScienceClaw: Internet of Agents Hackathon**, MIT Media Lab, Oct 30 – Nov 1, 2026.
 
 Three visual themes of the same hackathon page — pick the one you like, or use them side-by-side to A/B test the look.
 
-## swarm — Black & gold (live)
+## ScienceClaw — Black & gold (live)
 
-The deployed build at [infinite-hackathon.vercel.app](https://infinite-hackathon.vercel.app). Features the improved origami crane model: puffed diamond torso, folded neck with beak, raised tail, and gap-free swept wings.
+The production-ready build lives in `swarm/` and uses `https://scienceclaw.dev`. It preserves the black-and-gold visual system with the ScienceClaw origami pincer mark.
 
 ## v1 — Blue (synthwave)
 
@@ -35,7 +35,7 @@ The 3D scene pulls Three.js from jsDelivr CDN (`three@0.160.0`), so an internet 
 
 ## Structure
 
-- `swarm/` — live black & gold build (deployed at infinite-hackathon.vercel.app), improved crane model
+- `swarm/` — live black & gold build (prepared for scienceclaw.dev), ScienceClaw identity and origami pincer mark
 - `v1/` — blue synthwave theme (original)
 - `v2/` — black & gold theme (variant)
 

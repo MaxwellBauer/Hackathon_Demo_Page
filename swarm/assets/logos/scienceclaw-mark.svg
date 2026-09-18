@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 72" role="img" aria-labelledby="title desc">
+  <title id="title">ScienceClaw origami pincer</title>
+  <desc id="desc">A gold folded-paper crab or lobster pincer, open toward the right.</desc>
+  <defs>
+    <style>
+      .jaw {
+        transform-box: view-box;
+        transform-origin: 45px 36px;
+        will-change: transform;
+      }
+      .jaw--upper { animation: pincer-flex-upper 1.8s ease-in-out infinite; }
+      .jaw--lower { animation: pincer-flex-lower 1.8s ease-in-out infinite; }
+      @keyframes pincer-flex-upper {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(2.5deg); }
+      }
+      @keyframes pincer-flex-lower {
+        0%, 100% { transform: rotate(0deg); }
+        50% { transform: rotate(-2.5deg); }
+      }
+      @media print, (prefers-reduced-motion: reduce) {
+        .jaw { animation: none; }
+      }
+    </style>
+    <linearGradient id="palm-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffdf8a"/>
+      <stop offset="1" stop-color="#c88b25"/>
+    </linearGradient>
+    <linearGradient id="upper-gold" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#d9a038"/>
+      <stop offset="1" stop-color="#ffdf8a"/>
+    </linearGradient>
+    <linearGradient id="lower-gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9a038"/>
+      <stop offset="1" stop-color="#b97916"/>
+    </linearGradient>
+  </defs>
+  <g stroke="#ffdf8a" stroke-width="0.9" stroke-linejoin="round">
+    <path d="M5 43 18 22 42 17 59 31 55 50 31 61Z" fill="url(#palm-gold)"/>
+    <path d="m5 43 37-26 13 33Z" fill="#b97916"/>
+    <path d="M18 22 42 17 37 39Z" fill="#f2c15a"/>
+  </g>
+  <g class="jaw jaw--upper" stroke="#ffdf8a" stroke-width="0.9" stroke-linejoin="round">
+    <path d="M37 32 58 10 106 5 94 25 70 25 57 38 48 39Z" fill="url(#upper-gold)"/>
+    <path d="M58 10 70 25 94 25" fill="none" stroke="#fff0bd" stroke-width="0.75" opacity="0.62"/>
+    <path d="M70 25 57 38 48 39 55 29Z" fill="#c88b25"/>
+  </g>
+  <g class="jaw jaw--lower" stroke="#ffdf8a" stroke-width="0.9" stroke-linejoin="round">
+    <path d="M40 39 62 43 98 60 107 45 77 34 57 34 48 37Z" fill="url(#lower-gold)"/>
+    <path d="M62 43 77 34 107 45" fill="none" stroke="#fff0bd" stroke-width="0.75" opacity="0.55"/>
+    <path d="M77 34 57 34 48 37 62 43Z" fill="#d9a038"/>
+  </g>
+  <g fill="none" stroke="#fff0bd" stroke-width="0.75" opacity="0.5">
+    <path d="M5 43l37-26 13 33M18 22l19 17 18 11"/>
+  </g>
+</svg>
