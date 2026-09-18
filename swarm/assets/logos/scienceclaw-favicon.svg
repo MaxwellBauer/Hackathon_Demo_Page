@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -20 112 112" role="img" aria-labelledby="title">
+  <title id="title">ScienceClaw origami pincer</title>
+  <defs>
+    <linearGradient id="palm-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffdf8a"/><stop offset="1" stop-color="#c88b25"/></linearGradient>
+    <linearGradient id="upper-gold" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#d9a038"/><stop offset="1" stop-color="#ffdf8a"/></linearGradient>
+    <linearGradient id="lower-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9a038"/><stop offset="1" stop-color="#b97916"/></linearGradient>
+  </defs>
+  <g stroke="#ffdf8a" stroke-width="0.9" stroke-linejoin="round">
+    <path d="M5 43 18 22 42 17 59 31 55 50 31 61Z" fill="url(#palm-gold)"/>
+    <path d="m5 43 37-26 13 33Z" fill="#b97916"/>
+    <path d="M37 32 58 10 106 5 94 25 70 25 57 38 48 39Z" fill="url(#upper-gold)"/>
+    <path d="M40 39 62 43 98 60 107 45 77 34 57 34 48 37Z" fill="url(#lower-gold)"/>
+  </g>
+  <g fill="none" stroke="#fff0bd" stroke-width="0.75" opacity="0.55">
+    <path d="M5 43l37-26 13 33M18 22l19 17 18 11M58 10l12 15h24M62 43l15-9 30 11"/>
+  </g>
+</svg>

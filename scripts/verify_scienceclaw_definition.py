@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify the approved ScienceSwarm homepage definition and preserved content."""
+"""Verify the approved ScienceClaw homepage definition and preserved content."""
 
 from __future__ import annotations
 
@@ -16,11 +16,11 @@ ROOT = Path(__file__).resolve().parents[1]
 HOMEPAGE = ROOT / "swarm" / "index.html"
 
 HERO_DEFINITION = (
-    "A hackathon for building decentralized AI swarms that solve real scientific "
+    "A hackathon for building decentralized collectives of AI agents that solve real scientific "
     "and technical problems."
 )
 META_DESCRIPTION_DEFINITION = (
-    "ScienceSwarm is a hackathon for building decentralized AI swarms that solve "
+    "ScienceClaw is a hackathon for building decentralized collectives of AI agents that solve "
     "real scientific and technical problems."
 )
 EXPECTED_META_DESCRIPTION = (
@@ -28,19 +28,19 @@ EXPECTED_META_DESCRIPTION = (
 )
 REQUIRED_COPY = {
     "Purpose introduction": (
-        "ScienceSwarm explores when decentralized collective intelligence can "
+        "ScienceClaw explores when decentralized collective intelligence can "
         "produce capabilities beyond a single agent or conventional workflow."
     ),
     "Purpose closing": (
-        "Teams build working swarms of specialized agents, models, simulations, "
-        "robots, sensors, and laboratory tools. Different parts of the swarm can "
+        "Teams build working collectives of specialized agents, models, simulations, "
+        "robots, sensors, and laboratory tools. Different members of the collective can "
         "hold distinct knowledge and capabilities, coordinate and adapt, and leave "
         "traceable scientific artifacts, provenance, findings, and unmet needs that "
-        "the swarm can build upon—without requiring one central planner to prescribe "
+        "the collective can build upon—without requiring one central planner to prescribe "
         "the entire process."
     ),
     "Resources introduction": (
-        "ScienceSwarm is model- and framework-agnostic. Teams can combine frontier "
+        "ScienceClaw is model- and framework-agnostic. Teams can combine frontier "
         "models, open models, their own models, existing agent frameworks, scientific "
         "datasets, compute, robots, sensors, and laboratory infrastructure."
     ),
@@ -134,11 +134,11 @@ def verify_copy(source: str) -> None:
     parser.feed(source)
 
     assert parser.meta_descriptions == [EXPECTED_META_DESCRIPTION], (
-        "meta description must contain the approved ScienceSwarm definition and date"
+        "meta description must contain the approved ScienceClaw definition and date"
     )
     assert parser.hero_subtitles == [HERO_DEFINITION], (
         "hero headline subtitle must be part of the hero heading and contain exactly "
-        "the approved ScienceSwarm definition"
+        "the approved ScienceClaw definition"
     )
     assert 'class="hero__sub"' not in source, (
         "duplicate hero description paragraph must be removed"
@@ -255,7 +255,7 @@ def main() -> int:
         print(f"FAIL: browser layout verification failed: {error}")
         return 1
 
-    print("PASS ScienceSwarm homepage definition")
+    print("PASS ScienceClaw homepage definition")
     return 0
 
 

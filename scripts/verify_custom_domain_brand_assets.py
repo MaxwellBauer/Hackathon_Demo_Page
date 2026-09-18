@@ -14,10 +14,10 @@ SWARM_DIR = ROOT / "swarm"
 LOGO_DIR = SWARM_DIR / "assets" / "logos"
 PUBLIC_PAGES = (SWARM_DIR / "index.html", SWARM_DIR / "apply.html")
 EXPECTED_ICON_HREFS = {
-    "assets/logos/swarm-favicon.svg?v=2",
-    "assets/logos/swarm-favicon-32.png?v=2",
-    "assets/logos/favicon.ico?v=2",
-    "assets/logos/apple-touch-icon.png?v=2",
+    "assets/logos/scienceclaw-favicon.svg?v=3",
+    "assets/logos/scienceclaw-favicon-32.png?v=3",
+    "assets/logos/favicon.ico?v=3",
+    "assets/logos/apple-touch-icon.png?v=3",
 }
 
 
@@ -43,7 +43,7 @@ class IconLinkParser(HTMLParser):
 def verify_nonempty_alpha(image: Image.Image, name: str) -> None:
     alpha = image.convert("RGBA").getchannel("A")
     if alpha.getbbox() is None:
-        raise AssertionError(f"{name} contains no visible crane artwork")
+        raise AssertionError(f"{name} contains no visible pincer artwork")
 
 
 def verify_favicons() -> None:
@@ -56,7 +56,7 @@ def verify_favicons() -> None:
             )
 
     png_targets = {
-        LOGO_DIR / "swarm-favicon-32.png": (32, 32),
+        LOGO_DIR / "scienceclaw-favicon-32.png": (32, 32),
         LOGO_DIR / "apple-touch-icon.png": (180, 180),
     }
     for path, expected_size in png_targets.items():

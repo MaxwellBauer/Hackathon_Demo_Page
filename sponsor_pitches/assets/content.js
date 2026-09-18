@@ -9,9 +9,9 @@
   };
 
   const content = deepFreeze({
-    headline: "Build the swarm that builds the future of science.",
+    headline: "Build the collective that builds the future of science.",
     event: {
-      name: "ScienceSwarm",
+      name: "ScienceClaw",
       targetParticipants: 150,
       duration: "3 days",
       teamSize: "2–5",
@@ -19,7 +19,7 @@
       dates: "Oct 30 – Nov 1, 2026",
       venue: "MIT Media Lab",
       contact: "fw2@mit.edu",
-      url: "https://swarmhack.ai",
+      url: "https://scienceclaw.dev",
     },
     tiers: [
       { key: "supporter", name: "Supporter", amount: "$5K", representatives: 2, summary: "Visibility, two passes, mentors, and showcase access." },
@@ -85,7 +85,7 @@
     }));
   });
 
-  window.SWARM_SPONSOR_CONTENT = content;
+  window.SCIENCECLAW_SPONSOR_CONTENT = content;
 
   document.querySelectorAll("[data-shared-headline]").forEach((element) => {
     element.textContent = content.headline;

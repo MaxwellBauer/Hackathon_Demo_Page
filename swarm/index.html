@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ScienceSwarm — Internet of Agents Hackathon</title>
-  <meta name="description" content="ScienceSwarm is a hackathon for building decentralized AI swarms that solve real scientific and technical problems. MIT Media Lab, Oct 30 – Nov 1, 2026." />
-  <link rel="icon" type="image/svg+xml" href="assets/logos/swarm-favicon.svg?v=2" />
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/logos/swarm-favicon-32.png?v=2" />
-  <link rel="icon" type="image/x-icon" href="assets/logos/favicon.ico?v=2" />
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/logos/apple-touch-icon.png?v=2" />
+  <title>ScienceClaw — Internet of Agents Hackathon</title>
+  <meta name="description" content="ScienceClaw is a hackathon for building decentralized collectives of AI agents that solve real scientific and technical problems. MIT Media Lab, Oct 30 – Nov 1, 2026." />
+  <link rel="icon" type="image/svg+xml" href="assets/logos/scienceclaw-favicon.svg?v=3" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logos/scienceclaw-favicon-32.png?v=3" />
+  <link rel="icon" type="image/x-icon" href="assets/logos/favicon.ico?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/logos/apple-touch-icon.png?v=3" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;1,6..12,300;1,6..12,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -23,7 +23,7 @@
 </head>
 <body>
 
-  <!-- Fixed 3D scene: origami swarm over synthwave terrain -->
+  <!-- Fixed 3D scene: origami collective over synthwave terrain -->
   <canvas id="scene" aria-hidden="true"></canvas>
   <div class="scene-veil" aria-hidden="true"></div>
   <canvas id="tentacles" class="tentacle-layer" aria-hidden="true"></canvas>
@@ -32,9 +32,9 @@
   <!-- Unified identity and navigation header -->
   <header class="nav" id="nav">
     <div class="nav__identity-row" aria-label="Hackathon organizers">
-      <a class="identity identity--swarm" href="#top" aria-label="ScienceSwarm Hackathon">
-        <img class="identity__swarm-crane" src="assets/logos/swarm-crane.svg" alt="" />
-        <span class="identity__swarm-word">SWARM</span>
+      <a class="identity identity--scienceclaw" href="#top" aria-label="ScienceClaw Hackathon">
+        <img class="identity__scienceclaw-mark" src="assets/logos/scienceclaw-mark.svg" alt="" />
+        <span class="identity__scienceclaw-word">ScienceClaw</span>
       </a>
       <div class="identity__institutions">
         <a class="identity identity--mit" href="https://www.mit.edu/" target="_blank"
@@ -75,10 +75,10 @@
         <span class="hero__meta-dot"></span>
         <span>MIT Media Lab</span>
       </div>
-      <img class="hero__crane" src="assets/logos/swarm-crane.svg" alt="" aria-hidden="true" />
+      <img class="hero__claw" src="assets/logos/scienceclaw-mark.svg" alt="" aria-hidden="true" />
       <h1 class="hero__title">
-        <span class="hero__line hero__line--primary">Science<em>Swarm</em></span>
-        <span class="hero__line hero__line--subtitle">A hackathon for building decentralized AI swarms that solve real scientific and technical problems.</span>
+        <span class="hero__line hero__line--primary">Science<em>Claw</em></span>
+        <span class="hero__line hero__line--subtitle">A hackathon for building decentralized collectives of AI agents that solve real scientific and technical problems.</span>
       </h1>
       <div class="hero__actions">
         <a class="btn btn--solid" href="apply.html">Apply</a>
@@ -87,7 +87,7 @@
       <div class="hero__stats">
         <div class="stat"><span class="stat__k">3 days</span><span class="stat__v">In-person</span></div>
         <div class="stat"><span class="stat__k">2–5</span><span class="stat__v">Per team</span></div>
-        <div class="stat"><span class="stat__k">∞</span><span class="stat__v">Agent swarms</span></div>
+        <div class="stat"><span class="stat__k">∞</span><span class="stat__v">Agent collectives</span></div>
         <div class="stat"><span class="stat__k">4</span><span class="stat__v">Challenge Areas</span></div>
       </div>
       <div class="hero__scrollcue" aria-hidden="true"><span></span></div>
@@ -96,8 +96,8 @@
     <!-- Ticker -->
     <div class="ticker" aria-hidden="true">
       <div class="ticker__track">
-        <span>Decentralized Infrastructure ✦ Real-World Applications ✦ Physical Agency ✦ Open Science ✦ Agent Swarms ✦ Collective Intelligence ✦&nbsp;</span>
-        <span>Decentralized Infrastructure ✦ Real-World Applications ✦ Physical Agency ✦ Open Science ✦ Agent Swarms ✦ Collective Intelligence ✦&nbsp;</span>
+        <span>Decentralized Infrastructure ✦ Real-World Applications ✦ Physical Agency ✦ Open Science ✦ Agent Collectives ✦ Collective Intelligence ✦&nbsp;</span>
+        <span>Decentralized Infrastructure ✦ Real-World Applications ✦ Physical Agency ✦ Open Science ✦ Agent Collectives ✦ Collective Intelligence ✦&nbsp;</span>
       </div>
     </div>
 
@@ -109,10 +109,10 @@
       </div>
       <div class="section__body">
         <p class="lede reveal">
-          ScienceSwarm explores when decentralized collective intelligence can produce capabilities beyond a single agent or conventional workflow.
+          ScienceClaw explores when decentralized collective intelligence can produce capabilities beyond a single agent or conventional workflow.
         </p>
         <p class="reveal">
-          Teams build working swarms of specialized agents, models, simulations, robots, sensors, and laboratory tools. Different parts of the swarm can hold distinct knowledge and capabilities, coordinate and adapt, and leave traceable scientific artifacts, provenance, findings, and unmet needs that the swarm can build upon—without requiring one central planner to prescribe the entire process.
+          Teams build working collectives of specialized agents, models, simulations, robots, sensors, and laboratory tools. Different members of the collective can hold distinct knowledge and capabilities, coordinate and adapt, and leave traceable scientific artifacts, provenance, findings, and unmet needs that the collective can build upon—without requiring one central planner to prescribe the entire process.
         </p>
       </div>
     </section>
@@ -149,11 +149,11 @@
       </div>
       <div class="section__body">
         <p class="lede reveal">
-          ScienceSwarm is model- and framework-agnostic. Teams can combine frontier models, open models, their own models, existing agent frameworks, scientific datasets, compute, robots, sensors, and laboratory infrastructure.
+          ScienceClaw is model- and framework-agnostic. Teams can combine frontier models, open models, their own models, existing agent frameworks, scientific datasets, compute, robots, sensors, and laboratory infrastructure.
         </p>
         <div class="card-grid">
           <div class="card reveal"><span class="card__num">R1</span><h3>Scientific datasets</h3><p>Shared corpora and domain data for grounding investigations.</p></div>
-          <div class="card reveal"><span class="card__num">R2</span><h3>AI models & tools</h3><p>Foundation models, agent frameworks, and open tooling to compose into swarms.</p></div>
+          <div class="card reveal"><span class="card__num">R2</span><h3>AI models & tools</h3><p>Foundation models, agent frameworks, and open tooling to compose into collectives.</p></div>
           <div class="card reveal"><span class="card__num">R3</span><h3>Compute & tokens</h3><p>A common pool of credits so experimentation is never bottlenecked.</p></div>
           <div class="card reveal"><span class="card__num">R4</span><h3>Hardware</h3><p>Robots, microcontrollers, and sensors for agents that act in the world.</p></div>
           <div class="card reveal"><span class="card__num">R5</span><h3>Lab access</h3><p>Cloud labs and experimental infrastructure for closing the loop on real experiments.</p></div>
@@ -180,7 +180,7 @@
           <div class="track reveal">
             <span class="track__num">A·01</span>
             <h3>Biology & Protein Design</h3>
-            <p>Swarms that hypothesize, design, and iterate across sequence, structure, and function.</p>
+            <p>Collectives that hypothesize, design, and iterate across sequence, structure, and function.</p>
           </div>
           <div class="track reveal">
             <span class="track__num">A·02</span>
@@ -298,14 +298,14 @@
     <!-- APPLY TEASER -->
     <section class="apply" id="apply">
       <div class="apply__inner reveal">
-        <span class="apply__kicker">Swarm · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
-        <h2 class="apply__title">Join the swarm.</h2>
+        <span class="apply__kicker">ScienceClaw · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
+        <h2 class="apply__title">Join the collective.</h2>
         <p>October 30 – November 1, 2026. Bring a problem — or come find one.</p>
         <a class="btn btn--solid btn--big" href="apply.html">Apply now</a>
       </div>
     </section>
     <footer class="footer">
-      <span>Swarm · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
+      <span>ScienceClaw · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
       <span>The Internet of Agents</span>
       <nav class="footer__compliance" aria-label="Site information">
         <span>Contact: <a href="mailto:fw2@mit.edu">fw2@mit.edu</a></span>

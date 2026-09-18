@@ -16,21 +16,21 @@ SWARM_LOGO = ROOT / "swarm" / "assets" / "logos" / "LOGO_LAMM_full_black.svg"
 FLYER_HTML = ROOT / "v2" / "flyer.html"
 PUBLIC_PAIRS = {
     FLYER_HTML: ROOT / "swarm" / "flyer.html",
-    ROOT / "v2" / "assets" / "social" / "swarm-apply-qr.svg": ROOT
+    ROOT / "v2" / "assets" / "social" / "scienceclaw-apply-qr.svg": ROOT
     / "swarm"
     / "assets"
     / "social"
-    / "swarm-apply-qr.svg",
-    ROOT / "v2" / "assets" / "social" / "swarm-hackathon-flyer-16x9.png": ROOT
+    / "scienceclaw-apply-qr.svg",
+    ROOT / "v2" / "assets" / "social" / "scienceclaw-hackathon-flyer-16x9.png": ROOT
     / "swarm"
     / "assets"
     / "social"
-    / "swarm-hackathon-flyer-16x9.png",
-    ROOT / "v2" / "assets" / "social" / "swarm-hackathon-flyer-16x9.pdf": ROOT
+    / "scienceclaw-hackathon-flyer-16x9.png",
+    ROOT / "v2" / "assets" / "social" / "scienceclaw-hackathon-flyer-16x9.pdf": ROOT
     / "swarm"
     / "assets"
     / "social"
-    / "swarm-hackathon-flyer-16x9.pdf",
+    / "scienceclaw-hackathon-flyer-16x9.pdf",
 }
 
 
@@ -81,7 +81,7 @@ def verify_publication_outputs() -> None:
             raise AssertionError(
                 f"published {published.relative_to(ROOT)} differs from {source.relative_to(ROOT)}"
             )
-    public_png = ROOT / "swarm" / "assets" / "social" / "swarm-hackathon-flyer-16x9.png"
+    public_png = ROOT / "swarm" / "assets" / "social" / "scienceclaw-hackathon-flyer-16x9.png"
     with Image.open(public_png) as image:
         if image.format != "PNG" or image.size != (1600, 900):
             raise AssertionError("published flyer must be a 1600x900 PNG")

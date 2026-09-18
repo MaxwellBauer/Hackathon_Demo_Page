@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Apply — Swarm · The Internet of Agents Hackathon</title>
-  <meta name="description" content="Apply to the Swarm hackathon. MIT Media Lab, Oct 30 – Nov 1, 2026." />
-  <link rel="icon" type="image/svg+xml" href="assets/logos/swarm-favicon.svg?v=2" />
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/logos/swarm-favicon-32.png?v=2" />
-  <link rel="icon" type="image/x-icon" href="assets/logos/favicon.ico?v=2" />
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/logos/apple-touch-icon.png?v=2" />
+  <title>Apply — ScienceClaw · The Internet of Agents Hackathon</title>
+  <meta name="description" content="Apply to the ScienceClaw hackathon. MIT Media Lab, Oct 30 – Nov 1, 2026." />
+  <link rel="icon" type="image/svg+xml" href="assets/logos/scienceclaw-favicon.svg?v=3" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logos/scienceclaw-favicon-32.png?v=3" />
+  <link rel="icon" type="image/x-icon" href="assets/logos/favicon.ico?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/logos/apple-touch-icon.png?v=3" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;1,6..12,300;1,6..12,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -19,9 +19,9 @@
   <!-- Unified identity and navigation header -->
   <header class="nav nav--scrolled">
     <div class="nav__identity-row" aria-label="Hackathon organizers">
-      <a class="identity identity--swarm" href="index.html" aria-label="Swarm Hackathon home">
-        <img class="identity__swarm-crane" src="assets/logos/swarm-crane.svg" alt="" />
-        <span class="identity__swarm-word">SWARM</span>
+      <a class="identity identity--scienceclaw" href="index.html" aria-label="ScienceClaw Hackathon home">
+        <img class="identity__scienceclaw-mark" src="assets/logos/scienceclaw-mark.svg" alt="" />
+        <span class="identity__scienceclaw-word">ScienceClaw</span>
       </a>
       <div class="identity__institutions">
         <a class="identity identity--mit" href="https://www.mit.edu/" target="_blank"
@@ -50,19 +50,19 @@
 
   <main class="apply-main">
     <section class="apply-page__inner">
-      <span class="apply__kicker">Swarm · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
+      <span class="apply__kicker">ScienceClaw · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
       <h1 class="apply-page__title">Apply to build</h1>
       <p class="apply-page__sub">Teams of 2–5. Tell us what you want to make and we'll get back to you.</p>
 
       <form class="apply-form" id="app-form" action="https://formspree.io/f/mljeldnn" method="POST">
-        <input type="hidden" name="_subject" value="New Swarm Hackathon application" />
+        <input type="hidden" name="_subject" value="New ScienceClaw Hackathon application" />
         <label class="form-honeypot" aria-hidden="true">
           Leave this field empty
           <input name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
         </label>
 
-        <section class="apply-form__section" aria-labelledby="about-heading">
-          <h2 class="apply-form__section-title" id="about-heading">About you</h2>
+        <section class="apply-form__section" aria-labelledby="personal-info-heading">
+          <h2 class="apply-form__section-title" id="personal-info-heading">Personal Information</h2>
 
           <div class="apply-form__grid">
             <label class="field">
@@ -88,7 +88,6 @@
             <div class="apply-form__choices">
               <label class="chk"><input type="radio" name="institution" value="MIT" required /><span>MIT</span></label>
               <label class="chk"><input type="radio" name="institution" value="Harvard" /><span>Harvard</span></label>
-              <label class="chk"><input type="radio" name="institution" value="RISD" /><span>RISD</span></label>
               <label class="chk"><input id="institution-other-choice" type="radio" name="institution" value="Other" /><span>Other</span></label>
             </div>
             <label class="field field--other">
@@ -107,6 +106,13 @@
               <textarea name="companies" rows="3"></textarea>
             </label>
           </div>
+
+          <div class="apply-form__grid">
+            <label class="field"><span class="field__label">Personal website</span><input name="personal_website" type="url" placeholder="https://" /></label>
+            <label class="field"><span class="field__label">GitHub</span><input name="github" type="url" placeholder="https://github.com/" /></label>
+            <label class="field"><span class="field__label">LinkedIn</span><input name="linkedin" type="url" placeholder="https://linkedin.com/in/" /></label>
+            <label class="field"><span class="field__label">Instagram</span><input name="instagram" type="url" placeholder="https://instagram.com/" /></label>
+          </div>
         </section>
 
         <section class="apply-form__section" aria-labelledby="problem-heading">
@@ -118,8 +124,8 @@
           </label>
 
           <label class="field field--full">
-            <span class="field__label">Why would a decentralized agentic swarm be particularly well-suited to solving this problem? <b>*</b></span>
-            <textarea name="swarm_suitability" rows="6" maxlength="1800" required></textarea>
+            <span class="field__label">Why would a decentralized agent collective be particularly well-suited to solving this problem? <b>*</b></span>
+            <textarea name="collective_suitability" rows="6" maxlength="1800" required></textarea>
           </label>
         </section>
 
@@ -161,23 +167,11 @@
           </label>
         </section>
 
-        <section class="apply-form__section" aria-labelledby="links-heading">
-          <h2 class="apply-form__section-title" id="links-heading">Links &amp; Consent</h2>
-
-          <div class="apply-form__grid">
-            <label class="field"><span class="field__label">Personal website</span><input name="personal_website" type="url" placeholder="https://" /></label>
-            <label class="field"><span class="field__label">GitHub</span><input name="github" type="url" placeholder="https://github.com/" /></label>
-            <label class="field"><span class="field__label">LinkedIn</span><input name="linkedin" type="url" placeholder="https://linkedin.com/in/" /></label>
-            <label class="field"><span class="field__label">Instagram</span><input name="instagram" type="url" placeholder="https://instagram.com/" /></label>
-          </div>
-
-          <div class="field field--full">
-            <span class="field__label">Resume/CV</span>
-            <a class="btn btn--ghost dropbox-upload" href="https://www.dropbox.com/request/4s23vn31qgdfonarumpf" target="_blank" rel="noopener noreferrer">Upload Resume/CV</a>
-          </div>
-
+        <section class="apply-form__section" aria-labelledby="consent-heading">
+          <h2 class="apply-form__section-title" id="consent-heading">Consent</h2>
+          <p class="apply-form__section-note">We will share personal information.</p>
           <fieldset class="question-group">
-            <legend class="field__label">May we share your information with attendees, sponsors, and recruiters? <b>*</b></legend>
+            <legend class="field__label">May we share your personal information? <b>*</b></legend>
             <div class="apply-form__choices">
               <label class="chk"><input type="radio" name="public_sharing_consent" value="Yes" required /><span>Yes</span></label>
               <label class="chk"><input type="radio" name="public_sharing_consent" value="No" /><span>No</span></label>
@@ -200,7 +194,7 @@
   </main>
 
   <footer class="footer">
-    <span>Swarm · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
+    <span>ScienceClaw · Oct 30 – Nov 1, 2026 · MIT Media Lab</span>
     <span>The Internet of Agents</span>
     <nav class="footer__compliance" aria-label="Site information">
       <span>Contact: <a href="mailto:fw2@mit.edu">fw2@mit.edu</a></span>

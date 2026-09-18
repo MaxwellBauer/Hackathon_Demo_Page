@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the Swarm flyer QR code and export its HTML source to PNG and PDF."""
+"""Build the ScienceClaw flyer QR code and export its HTML source to PNG and PDF."""
 
 from __future__ import annotations
 
@@ -12,13 +12,13 @@ import cv2
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "v2" / "assets" / "social"
 HTML_PATH = ROOT / "v2" / "flyer.html"
-QR_PATH = OUTPUT_DIR / "swarm-apply-qr.svg"
-PNG_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.png"
-PDF_PATH = OUTPUT_DIR / "swarm-hackathon-flyer-16x9.pdf"
+QR_PATH = OUTPUT_DIR / "scienceclaw-apply-qr.svg"
+PNG_PATH = OUTPUT_DIR / "scienceclaw-hackathon-flyer-16x9.png"
+PDF_PATH = OUTPUT_DIR / "scienceclaw-hackathon-flyer-16x9.pdf"
 CAPTIONS_PATH = OUTPUT_DIR / "social-captions.md"
 PUBLIC_DIR = ROOT / "swarm"
 PUBLIC_SOCIAL_DIR = PUBLIC_DIR / "assets" / "social"
-APPLICATION_URL = "https://swarmhack.ai/apply.html"
+APPLICATION_URL = "https://scienceclaw.dev/apply.html"
 
 
 def qr_row_runs(matrix) -> str:
@@ -54,9 +54,9 @@ def build_captions() -> str:
 
 ## LinkedIn
 
-Applications are open for ScienceSwarm: Internet of Agents Hackathon.
+Applications are open for ScienceClaw: Internet of Agents Hackathon.
 
-Join us at the MIT Media Lab from October 30–November 1, 2026 to build decentralized agent swarms that tackle meaningful scientific and engineering problems.
+Join us at the MIT Media Lab from October 30–November 1, 2026 to build decentralized agent collectives that tackle meaningful scientific and engineering problems.
 
 Apply directly: {APPLICATION_URL}
 
@@ -64,11 +64,11 @@ Apply directly: {APPLICATION_URL}
 
 ## X
 
-Applications are open for ScienceSwarm: Internet of Agents Hackathon.
+Applications are open for ScienceClaw: Internet of Agents Hackathon.
 
 Oct 30–Nov 1, 2026 · MIT Media Lab 6th floor
 
-Build decentralized agent swarms for meaningful scientific and engineering problems.
+Build decentralized agent collectives for meaningful scientific and engineering problems.
 
 Apply: {APPLICATION_URL}
 '''
@@ -81,6 +81,7 @@ def export_flyer() -> None:
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(args=["--font-render-hinting=none"])
         page = browser.new_page(viewport={"width": 1600, "height": 900}, device_scale_factor=1)
+        page.emulate_media(reduced_motion="reduce")
         page.goto(HTML_PATH.as_uri(), wait_until="networkidle")
         page.evaluate(
             """async () => {
@@ -141,8 +142,8 @@ def export_flyer() -> None:
         if "Bitter" not in primary["family"] or any(primary[key] != value for key, value in expected.items()):
             raise RuntimeError(f"Headline styles do not match the website: {primary}")
         if float(primary["size"].removesuffix("px")) <= float(subtitle["size"].removesuffix("px")):
-            raise RuntimeError("ScienceSwarm must be visually dominant")
-        if primary["text"] != "ScienceSwarm" or subtitle["text"] != "Internet of Agents Hackathon":
+            raise RuntimeError("ScienceClaw must be visually dominant")
+        if primary["text"] != "ScienceClaw" or subtitle["text"] != "Internet of Agents Hackathon":
             raise RuntimeError("Flyer headline copy differs from the approved hierarchy")
 
         geometry = page.evaluate(

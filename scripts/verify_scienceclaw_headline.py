@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify the ScienceSwarm headline hierarchy and published flyer parity."""
+"""Verify the ScienceClaw headline hierarchy and published flyer parity."""
 
 from __future__ import annotations
 
@@ -9,12 +9,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 EXPECTED = {
-    "hero__line--primary": "ScienceSwarm",
+    "hero__line--primary": "ScienceClaw",
     "hero__line--subtitle": (
-        "A hackathon for building decentralized AI swarms that solve real scientific "
+        "A hackathon for building decentralized collectives of AI agents that solve real scientific "
         "and technical problems."
     ),
-    "flyer__title-primary": "ScienceSwarm",
+    "flyer__title-primary": "ScienceClaw",
     "flyer__title-subtitle": "Internet of Agents Hackathon",
 }
 VOID_ELEMENTS = {
@@ -97,10 +97,10 @@ def verify_headlines() -> None:
         )
 
     assert (
-        "<title>ScienceSwarm — Internet of Agents Hackathon</title>" in homepage
+        "<title>ScienceClaw — Internet of Agents Hackathon</title>" in homepage
     ), "homepage title mismatch"
     assert (
-        "<title>ScienceSwarm — Internet of Agents Hackathon Flyer</title>" in flyer
+        "<title>ScienceClaw — Internet of Agents Hackathon Flyer</title>" in flyer
     ), "flyer title mismatch"
     assert ".hero__line--subtitle" in stylesheet, (
         "stylesheet missing .hero__line--subtitle selector"
@@ -120,7 +120,7 @@ def main() -> int:
     except (AssertionError, FileNotFoundError) as error:
         print(f"FAIL: {error}")
         return 1
-    print("PASS ScienceSwarm headline hierarchy")
+    print("PASS ScienceClaw headline hierarchy")
     return 0
 
 

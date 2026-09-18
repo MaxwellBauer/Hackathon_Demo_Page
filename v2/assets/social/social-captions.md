@@ -2,20 +2,20 @@
 
 ## LinkedIn
 
-Applications are open for ScienceSwarm: Internet of Agents Hackathon.
+Applications are open for ScienceClaw: Internet of Agents Hackathon.
 
-Join us at the MIT Media Lab from October 30–November 1, 2026 to build decentralized agent swarms that tackle meaningful scientific and engineering problems.
+Join us at the MIT Media Lab from October 30–November 1, 2026 to build decentralized agent collectives that tackle meaningful scientific and engineering problems.
 
-Apply directly: https://swarmhack.ai/apply.html
+Apply directly: https://scienceclaw.dev/apply.html
 
 #AI #AgenticSystems #Hackathon #MITMediaLab #MultiAgentSystems
 
 ## X
 
-Applications are open for ScienceSwarm: Internet of Agents Hackathon.
+Applications are open for ScienceClaw: Internet of Agents Hackathon.
 
 Oct 30–Nov 1, 2026 · MIT Media Lab 6th floor
 
-Build decentralized agent swarms for meaningful scientific and engineering problems.
+Build decentralized agent collectives for meaningful scientific and engineering problems.
 
-Apply: https://swarmhack.ai/apply.html
+Apply: https://scienceclaw.dev/apply.html

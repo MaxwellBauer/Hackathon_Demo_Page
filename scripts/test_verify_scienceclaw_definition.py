@@ -1,4 +1,4 @@
-"""Regression coverage for the ScienceSwarm definition verifier."""
+"""Regression coverage for the ScienceClaw definition verifier."""
 
 from __future__ import annotations
 
@@ -7,8 +7,8 @@ from pathlib import Path
 import unittest
 
 
-SCRIPT = Path(__file__).with_name("verify_scienceswarm_definition.py")
-SPEC = importlib.util.spec_from_file_location("verify_scienceswarm_definition", SCRIPT)
+SCRIPT = Path(__file__).with_name("verify_scienceclaw_definition.py")
+SPEC = importlib.util.spec_from_file_location("verify_scienceclaw_definition", SCRIPT)
 assert SPEC is not None and SPEC.loader is not None
 MODULE = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(MODULE)

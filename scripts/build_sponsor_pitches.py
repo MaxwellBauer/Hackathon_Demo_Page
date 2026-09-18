@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export the ScienceSwarm sponsor deck and one-pager from their HTML sources."""
+"""Export the ScienceClaw sponsor deck and one-pager from their HTML sources."""
 
 from __future__ import annotations
 
@@ -82,7 +82,7 @@ def main() -> None:
         export_pdf(
             page,
             SOURCE_DIR / "deck.html",
-            output_dir / "scienceswarm-founding-partnership-deck.pdf",
+            output_dir / "scienceclaw-founding-partnership-deck.pdf",
             "16in",
             "9in",
             0.96,
@@ -91,7 +91,7 @@ def main() -> None:
         export_pdf(
             page,
             SOURCE_DIR / "one-pager.html",
-            output_dir / "scienceswarm-sponsorship-opportunity.pdf",
+            output_dir / "scienceclaw-sponsorship-opportunity.pdf",
             "8.5in",
             "11in",
             1,

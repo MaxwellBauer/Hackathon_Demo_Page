@@ -17,9 +17,9 @@ from build_social_flyer import APPLICATION_URL
 ROOT = Path(__file__).resolve().parents[1]
 V2_DIR = ROOT / "v2"
 FLYER_HTML = V2_DIR / "flyer.html"
-QR_PATH = V2_DIR / "assets" / "social" / "swarm-apply-qr.svg"
+QR_PATH = V2_DIR / "assets" / "social" / "scienceclaw-apply-qr.svg"
 CAPTIONS_PATH = V2_DIR / "assets" / "social" / "social-captions.md"
-EXPECTED_APPLICATION_URL = "https://swarmhack.ai/apply.html"
+EXPECTED_APPLICATION_URL = "https://scienceclaw.dev/apply.html"
 OLD_APPLICATION_HOST = "infinite-hackathon.vercel.app"
 
 

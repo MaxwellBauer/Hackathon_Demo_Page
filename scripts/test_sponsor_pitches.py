@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Browser-level tests for the ScienceSwarm sponsor materials."""
+"""Browser-level tests for the ScienceClaw sponsor materials."""
 
 from __future__ import annotations
 
@@ -78,19 +78,19 @@ class SponsorPitchBrowserTests(unittest.TestCase):
 
     def test_deck_renders_thirteen_approved_slides_in_order(self) -> None:
         expected_titles = [
-            "Build the swarm that builds the future of science",
+            "Build the collective that builds the future of science",
             "The next leap in scientific AI is coordination",
-            "ScienceSwarm at a glance",
+            "ScienceClaw at a glance",
             "What teams build and validate",
             "Four challenge areas",
             "The event is a multi-agent experiment",
-            "Where partners enter the swarm",
+            "Where partners enter the collective",
             "What partners gain",
             "A partner journey, not a logo placement",
             "What sponsorship unlocks",
             "Four ways to build with us",
             "Founding partnership benefits",
-            "Build the swarm with us",
+            "Build the collective with us",
         ]
         page = self.browser.new_page(viewport={"width": 1600, "height": 900})
         try:
@@ -109,7 +109,7 @@ class SponsorPitchBrowserTests(unittest.TestCase):
             self.assertEqual(sheet.count(), 1)
             self.assertEqual(
                 sheet.locator("h1").inner_text(),
-                "Build the swarm that builds the future of science.",
+                "Build the collective that builds the future of science.",
             )
             self.assertEqual(sheet.locator(".sheet-fact").count(), 4)
             self.assertEqual(
@@ -132,12 +132,12 @@ class SponsorPitchBrowserTests(unittest.TestCase):
             for path in ("sponsor_pitches/deck.html", "sponsor_pitches/one-pager.html"):
                 with self.subTest(path=path):
                     page.goto(f"{self.base_url}/{path}", wait_until="load")
-                    contract = page.evaluate("window.SWARM_SPONSOR_CONTENT")
+                    contract = page.evaluate("window.SCIENCECLAW_SPONSOR_CONTENT")
                     self.assertIsNotNone(contract)
-                    self.assertEqual(contract["headline"], "Build the swarm that builds the future of science.")
+                    self.assertEqual(contract["headline"], "Build the collective that builds the future of science.")
                     self.assertEqual(contract["event"]["targetParticipants"], 150)
                     self.assertEqual(contract["event"]["contact"], "fw2@mit.edu")
-                    self.assertEqual(contract["event"]["url"], "https://swarmhack.ai")
+                    self.assertEqual(contract["event"]["url"], "https://scienceclaw.dev")
                     self.assertEqual(contract["tiers"], expected_tiers)
                     self.assertEqual(
                         contract["capabilityPartner"]["terms"],
@@ -264,8 +264,8 @@ class SponsorPitchBrowserTests(unittest.TestCase):
                 tracked_mtimes,
             )
             cases = (
-                ("scienceswarm-founding-partnership-deck.pdf", 13, (1152, 648)),
-                ("scienceswarm-sponsorship-opportunity.pdf", 1, (612, 792)),
+                ("scienceclaw-founding-partnership-deck.pdf", 13, (1152, 648)),
+                ("scienceclaw-sponsorship-opportunity.pdf", 1, (612, 792)),
             )
             for filename, expected_pages, expected_points in cases:
                 for path in (temporary_exports / filename, exports / filename):
@@ -286,7 +286,7 @@ class SponsorPitchBrowserTests(unittest.TestCase):
                         text = subprocess.run(
                             ["pdftotext", str(path), "-"], capture_output=True, text=True, check=True
                         ).stdout
-                        self.assertIn("Build the swarm", text)
+                        self.assertIn("Build the collective", text)
                         self.assertIn("$50K", text)
                 generated_text = subprocess.run(
                     ["pdftotext", str(temporary_exports / filename), "-"],
