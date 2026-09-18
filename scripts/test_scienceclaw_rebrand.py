@@ -78,6 +78,24 @@ class ScienceClawRenderedIdentityTests(unittest.TestCase):
                 page.close()
                 self.assertEqual(wordmark, "ScienceClaw")
 
+    def test_flyer_header_keeps_brand_separate_from_organizers(self) -> None:
+        page = self.browser.new_page(viewport={"width": 1600, "height": 900})
+        page.goto((ROOT / "swarm" / "flyer.html").as_uri(), wait_until="networkidle")
+
+        brand = page.locator(".brand").bounding_box()
+        divider = page.locator(".organizers__divider").bounding_box()
+        mit = page.locator(".organizer--mit").bounding_box()
+        page.close()
+
+        self.assertIsNotNone(brand)
+        self.assertIsNotNone(divider)
+        self.assertIsNotNone(mit)
+        assert brand is not None and divider is not None and mit is not None
+        brand_right = brand["x"] + brand["width"]
+        divider_right = divider["x"] + divider["width"]
+        self.assertLessEqual(brand_right + 24, divider["x"])
+        self.assertLessEqual(divider_right + 40, mit["x"])
+
     def test_application_groups_profile_links_with_personal_information(self) -> None:
         page = self.browser.new_page()
         page.goto((ROOT / "swarm" / "apply.html").as_uri(), wait_until="domcontentloaded")
