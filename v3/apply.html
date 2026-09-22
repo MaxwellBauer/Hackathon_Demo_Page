@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apply — INFINITE · The Internet of Agents Hackathon</title>
+  <meta name="description" content="Apply to the INFINITE hackathon. MIT Media Lab, Oct 30 – Nov 1, 2026." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;1,6..12,300;1,6..12,400&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="apply-page">
+
+  <!-- Nav -->
+  <header class="nav">
+    <a class="nav__brand" href="index.html">
+      <span class="nav__mark">∞</span>
+      <span class="nav__word">INFINITE</span>
+    </a>
+    <nav class="nav__links">
+      <a href="index.html">Back to site</a>
+    </nav>
+  </header>
+
+  <main class="apply-main">
+    <section class="apply-page__inner">
+      <span class="apply__kicker">MIT Media Lab · Cambridge, MA · Oct 30 – Nov 1, 2026</span>
+      <h1 class="apply-page__title">Apply to build</h1>
+      <p class="apply-page__sub">Teams of 2–5. Tell us what you want to make and we'll get back to you.</p>
+
+      <form class="apply-form" id="app-form" novalidate>
+        <div class="apply-form__grid">
+          <label class="field">
+            <span class="field__label">Name <b>*</b></span>
+            <input name="name" type="text" autocomplete="name" required />
+          </label>
+          <label class="field">
+            <span class="field__label">Email <b>*</b></span>
+            <input name="email" type="email" autocomplete="email" required />
+          </label>
+          <label class="field">
+            <span class="field__label">School, lab, or company <b>*</b></span>
+            <input name="affiliation" type="text" autocomplete="organization" required />
+          </label>
+          <label class="field">
+            <span class="field__label">What you do</span>
+            <select name="role">
+              <option>Student</option>
+              <option>Researcher</option>
+              <option>Engineer</option>
+              <option>Designer</option>
+              <option>Founder</option>
+              <option>Other</option>
+            </select>
+          </label>
+        </div>
+
+        <fieldset class="apply-form__set">
+          <legend class="field__label">Tracks you'd work in</legend>
+          <div class="apply-form__checks">
+            <label class="chk"><input type="checkbox" name="tracks" value="Infrastructure" /><span>Decentralized infrastructure</span></label>
+            <label class="chk"><input type="checkbox" name="tracks" value="Applications" /><span>Real-world applications</span></label>
+            <label class="chk"><input type="checkbox" name="tracks" value="Physical agency" /><span>Physical agency &amp; robotics</span></label>
+            <label class="chk"><input type="checkbox" name="tracks" value="Open science" /><span>Open science</span></label>
+          </div>
+        </fieldset>
+
+        <label class="field field--full">
+          <span class="field__label">What do you want to build? <b>*</b></span>
+          <textarea name="pitch" rows="5" maxlength="900" required></textarea>
+        </label>
+
+        <div class="apply-form__grid">
+          <label class="field">
+            <span class="field__label">A link, if you have one</span>
+            <input name="link" type="url" placeholder="https://" />
+          </label>
+          <label class="field">
+            <span class="field__label">Access or dietary needs</span>
+            <input name="needs" type="text" />
+          </label>
+        </div>
+
+        <div class="apply-form__row">
+          <button class="btn btn--solid btn--big" type="submit">Send application</button>
+          <span class="apply-form__status" id="app-status"></span>
+        </div>
+      </form>
+
+      <div class="apply-done" id="app-done" hidden>
+        <p class="apply__kicker">Received</p>
+        <h2 class="apply-page__title">You're in the field</h2>
+        <p class="apply-page__sub">We have your application. Decisions go out by email — watch for a message from the Media Lab. Questions? Write to <a href="mailto:hello@infinitehack.org">hello@infinitehack.org</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    document.getElementById("app-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      document.getElementById("app-form").style.display = "none";
+      document.getElementById("app-done").hidden = false;
+    });
+  </script>
+</body>
+</html>
