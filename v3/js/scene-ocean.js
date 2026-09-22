@@ -567,6 +567,7 @@ for (let i = 0; i < COLONY; i++) {
     glowFreq: THREE.MathUtils.randFloat(0.6, 1.6),
     glowBase: THREE.MathUtils.randFloat(0.2, 0.38),
     yaw,
+    heading: yaw,
   });
 }
 
@@ -737,11 +738,17 @@ function updateColony(dt, t) {
     const bob = Math.sin(t * l.legFreq * 0.5 + l.phase) * 0.06;
     pos.y += (SIT_Y + bob - pos.y) * (1 - Math.exp(-3 * dt));
 
-    // Face travel direction (slow, deliberate turn)
-    const targetYaw = Math.atan2(l.vel.x, l.vel.z);
-    let d = targetYaw - l.yaw;
+    // Face travel direction — smooth the target, then cap the turn rate
+    // so separation/wander jitter never makes the heading twitch.
+    const desiredYaw = Math.atan2(l.vel.x, l.vel.z);
+    let dh = desiredYaw - l.heading;
+    dh = Math.atan2(Math.sin(dh), Math.cos(dh));
+    l.heading += dh * (1 - Math.exp(-1.1 * dt));
+
+    let d = l.heading - l.yaw;
     d = Math.atan2(Math.sin(d), Math.cos(d));
-    l.yaw += d * (1 - Math.exp(-1.6 * dt));
+    const maxTurn = 1.1 * dt; // rad/frame cap
+    l.yaw += THREE.MathUtils.clamp(d, -maxTurn, maxTurn);
     l.group.rotation.y = l.yaw;
 
     // Scuttle: leg cadence scales with how fast it's walking
