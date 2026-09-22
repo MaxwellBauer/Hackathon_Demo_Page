@@ -2,7 +2,7 @@
 
 Static site for the **INFINITE: The Internet of Agents Hackathon**, MIT Media Lab, Oct 30 – Nov 1, 2026.
 
-Three visual themes of the same hackathon page — pick the one you like, or use them side-by-side to A/B test the look.
+Four visual themes of the same hackathon page — pick the one you like, or use them side-by-side to A/B test the look.
 
 ## swarm — Black & gold (live)
 
@@ -20,12 +20,20 @@ Re-themed fork: glowing infinity logo, partner logos, layered tentacles/anemone 
 
 ![v2 — origami cranes](v2/cranes-gold.gif)
 
+## v3 — Lobster colony (black & gold variant)
+
+Same black & gold theme, new background: a top-down ocean bed where a colony of
+cute low-poly golden lobsters scuttle around, wired together as a living network
+(glowing links + travelling data packets), with instanced sea grass swaying in
+the current. The origami cranes/fish and tentacle overlay are replaced by
+`js/scene-ocean.js`.
+
 ## Run
 
 No build step. Any static file server works:
 
 ```bash
-cd swarm   # or v1, v2
+cd swarm   # or v1, v2, v3
 python3 -m http.server 8000
 ```
 
@@ -38,6 +46,7 @@ The 3D scene pulls Three.js from jsDelivr CDN (`three@0.160.0`), so an internet 
 - `swarm/` — live black & gold build (deployed at infinite-hackathon.vercel.app), improved crane model
 - `v1/` — blue synthwave theme (original)
 - `v2/` — black & gold theme (variant)
+- `v3/` — black & gold theme with the top-down golden lobster colony background
 
 All themes share the same nav/sections/apply page and the same `js/main.js` interactions. Only the palette, hero logo treatment, and the canvas overlay effects differ.
 
