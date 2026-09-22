@@ -3,15 +3,16 @@
    Nav state, scroll reveals, animated rubric bars.
    ============================================================ */
 
-// Nav background on scroll + scene veil once past the hero
+// Nav background on scroll + progressive scene veil as you leave the hero
 const nav = document.getElementById("nav");
+const sceneVeil = document.querySelector(".scene-veil");
 const onScroll = () => {
   nav.classList.toggle("nav--scrolled", window.scrollY > 40);
-  if (window.scrollY > window.innerHeight * 0.5) {
-    document.body.setAttribute("data-scrolled", "");
-  } else {
-    document.body.removeAttribute("data-scrolled");
-  }
+
+  // Ramp the dim in over the first half-viewport of scrolling so the copy
+  // stays legible against the background once you leave the title.
+  const t = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.5)));
+  if (sceneVeil) sceneVeil.style.opacity = (t * 0.55).toFixed(3);
 };
 window.addEventListener("scroll", onScroll, { passive: true });
 onScroll();
